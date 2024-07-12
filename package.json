@@ -21,6 +21,7 @@
     "@react-navigation/native-stack": "^6.10.0",
     "@rneui/themed": "^4.0.0-rc.8",
     "@supabase/supabase-js": "^2.43.5",
+    "axios": "^1.7.2",
     "expo": "~51.0.17",
     "expo-constants": "~16.0.2",
     "expo-dev-client": "~4.0.19",

@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, Button} from "react-native";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "./AuthContext";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app";
 import * as ImagePicker from 'expo-image-picker';
 import ImageViewer from "./ImageViewer";
+import postUser from "../apiRequests"
 
 type Props = NativeStackScreenProps<RootStackParamList, "Registration">;
 
@@ -16,7 +17,16 @@ function Registration({ navigation }: Props) {
   const [isRegistered, setIsRegistered] = useState(false);
   const [checkPassword, setCheckPassword] = useState('')
   const [selectedImage, setSelectedImage] = useState<any | null>(null);
+  const [permission, requestPermission] = ImagePicker.useCameraPermissions();
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [age, setAge] = useState('')
+  const [profilePicture, setProfilePicture] = useState(null)
+  const [height, setHeight] = useState('')
+  const [weight, setWeight] = useState('')
+
   
+
     const handleCreateAccount = () => {
       if (password===checkPassword) {
       createUserWithEmailAndPassword(auth, email, password)
@@ -25,11 +35,20 @@ function Registration({ navigation }: Props) {
           console.log("account created");
           const user = userCredential.user;
           setIsRegistered(true);
-        })
+          postUser(firstName, lastName, age, profilePicture, height, weight)
+        }
+      )
         .catch((error) => {
           Alert.alert(error.message);
         });}
     };
+
+    const takePicture = async () => {
+      let camera = await ImagePicker.launchCameraAsync({})
+      if (!camera.canceled) {
+        console.log(camera.assets[0].uri);
+      }
+    }
 
     const pickImageAsync = async () => {
       // No permissions request is necessary for launching the image library
@@ -64,6 +83,11 @@ function Registration({ navigation }: Props) {
           borderWidth: 2,
           width: "60%",
         }}
+        onChangeText={(text) => {
+          setFirstName(text);
+        }
+      }
+      value={firstName}
       />
       <Text style={{ fontWeight: "bold", fontSize: 18 }}>Last Name</Text>
       <TextInput
@@ -75,6 +99,11 @@ function Registration({ navigation }: Props) {
           borderWidth: 2,
           width: "60%",
         }}
+        onChangeText={(text) => {
+          setLastName(text);
+        }
+      }
+      value={lastName}
       />
        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Age</Text>
       <TextInput
@@ -86,6 +115,11 @@ function Registration({ navigation }: Props) {
           borderWidth: 2,
           width: "60%",
         }}
+        onChangeText={(text) => {
+          setAge(text);
+        }
+      }
+      value={age}
       />
        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Height</Text>
       <TextInput
@@ -97,6 +131,11 @@ function Registration({ navigation }: Props) {
           borderWidth: 2,
           width: "60%",
         }}
+        onChangeText={(text) => {
+          setHeight(text);
+        }
+      }
+      value={height}
       />
        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Weight</Text>
       <TextInput
@@ -108,10 +147,36 @@ function Registration({ navigation }: Props) {
           borderWidth: 2,
           width: "60%",
         }}
+        onChangeText={(text) => {
+          setWeight(text);
+        }
+      }
+      value={weight}
       />
+      <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5 }}>Upload a profile picture</Text>
+      <TouchableOpacity style={{
+            borderRadius: 3,
+            borderColor: "black",
+            backgroundColor: "lightgrey",
+            padding: 2,
+            borderStyle: "solid",
+            borderWidth: 2,
+            width:150,
+            marginBottom:10
+            }} onPress={takePicture}>
+        <Text style={{fontSize: 18, textAlign:'center'}} >Take photo</Text>
+      </TouchableOpacity>
 
-      <TouchableOpacity onPress={pickImageAsync}>
-        <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5 }}>Select image</Text>
+      <TouchableOpacity style={{
+            borderRadius: 3,
+            borderColor: "black",
+            backgroundColor: "lightgrey",
+            padding: 2,
+            borderStyle: "solid",
+            borderWidth: 2,
+            width:150
+            }} onPress={pickImageAsync}>
+        <Text style={{fontSize: 18, textAlign:'center'}} >Select image from Gallery</Text>
       <ImageViewer
           selectedImage={selectedImage}
         />
