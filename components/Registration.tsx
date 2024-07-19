@@ -6,7 +6,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app";
 import * as ImagePicker from 'expo-image-picker';
 import ImageViewer from "./ImageViewer";
-import postUser from "../apiRequests"
+import {postUser} from "../apiRequests"
 
 type Props = NativeStackScreenProps<RootStackParamList, "Registration">;
 

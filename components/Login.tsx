@@ -5,6 +5,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthContext } from "./AuthContext";
 
 import type { RootStackParamList } from "../app/index";
+import { getUserDetails } from "@/apiRequests";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
@@ -19,6 +20,7 @@ function Login({ navigation }: Props) {
         console.log("logged in");
         const user = userCredential.user;
         navigation.navigate("Home");
+        getUserDetails(email)
       })
       .catch((error) => {
         Alert.alert(error.message);
