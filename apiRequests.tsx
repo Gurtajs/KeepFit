@@ -58,6 +58,15 @@ export function patchUser(id: number, path: string, value: any) {
     });
 }
 
+export function getWorkouts() {
+  return axios.get(
+    `https://keepfitsite-a7fyg4fmc9dracam.ukwest-01.azurewebsites.net/api/workouts`
+  ).then((response) => {
+    return response.data
+  }).catch((error) => {
+    console.log(error)
+  })
+}
 
 
 
@@ -65,5 +74,5 @@ export default {
   postUser,
   getUserDetails,
   patchUser,
-  
+  getWorkouts
 };
