@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { Children, createContext, useContext, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, Button} from "react-native";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "./AuthContext";
@@ -7,12 +7,16 @@ import { RootStackParamList } from "@/app";
 import * as ImagePicker from 'expo-image-picker';
 import ImageViewer from "./ImageViewer";
 import {postUser} from "../apiRequests"
+import { RegistrationContext } from "./RegistrationContext";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Registration">;
+
 
 function Registration({ navigation }: Props) {
   const { email, setEmail, password, setPassword, auth } =
     useContext(AuthContext);
+
+  // const {firstName, setFirstName} = useContext(RegistrationContext)
 
   const [isRegistered, setIsRegistered] = useState(false);
   const [checkPassword, setCheckPassword] = useState('')
@@ -25,8 +29,6 @@ function Registration({ navigation }: Props) {
   const [height, setHeight] = useState('')
   const [weight, setWeight] = useState('')
 
-  
-
     const handleCreateAccount = () => {
       if (password===checkPassword) {
       createUserWithEmailAndPassword(auth, email, password)
@@ -35,7 +37,7 @@ function Registration({ navigation }: Props) {
           console.log("account created");
           const user = userCredential.user;
           setIsRegistered(true);
-          postUser(firstName, lastName, age, profilePicture, height, weight)
+          postUser(email, firstName, lastName, age, profilePicture, height, weight)
         }
       )
         .catch((error) => {
@@ -270,4 +272,4 @@ function Registration({ navigation }: Props) {
   );
 }
 
-export default Registration;
+export {Registration}

@@ -6,7 +6,6 @@ interface Props {
 }
 
 export function Footer({ navigation} : Props) {
-
   return (
     <>
      <View style={{flex:1, flexDirection: "row", justifyContent: "space-between", alignItems: 'flex-end', margin: 10,}}>

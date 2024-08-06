@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -12,9 +12,8 @@ type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 function Login({ navigation }: Props) {
   const { email, setEmail, password, setPassword, auth } =
     useContext(AuthContext);
- 
-  const { userDetails, setUserDetails } =
-  useContext(UserContext);
+
+  const { userDetails, setUserDetails } = useContext(UserContext);
 
   const handleSignIn = () => {
     signInWithEmailAndPassword(auth, email, password)
@@ -23,9 +22,8 @@ function Login({ navigation }: Props) {
         console.log("logged in");
         const user = userCredential.user;
         navigation.navigate("Home");
-        getUserDetails(email).then((response) => {
-          setUserDetails(response)
-        })
+
+    
       })
       .catch((error) => {
         Alert.alert(error.message);
@@ -33,10 +31,10 @@ function Login({ navigation }: Props) {
   };
 
   const handleRegistration = () => {
-    navigation.navigate("Registration") 
-    setEmail('') 
-    setPassword('')
-  }
+    navigation.navigate("Registration");
+    setEmail("");
+    setPassword("");
+  };
 
   return (
     <View style={{ paddingLeft: 10, paddingTop: 10 }}>

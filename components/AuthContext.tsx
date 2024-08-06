@@ -21,7 +21,7 @@ const AuthContext = createContext<ContextType>({
   setPassword: () => {},
   auth: null,
 })
-  
+
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
