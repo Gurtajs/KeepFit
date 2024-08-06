@@ -58,6 +58,7 @@ function Login({ navigation }: Props) {
         Password
       </Text>
       <TextInput
+        secureTextEntry={true}
         style={{
           borderRadius: 3,
           borderColor: "darkgrey",

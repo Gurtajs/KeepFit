@@ -45,42 +45,51 @@ export default function UserDetails({ navigation }: Props) {
 
   return (
     <>
-      <View style={{ flex: 1 }}>
-
-        <Text style={{ fontSize: 18 }}> First name: </Text>
+      <View style={{ flex: 1, marginLeft:10, marginTop:15}}>
+       <View style={{borderWidth: 2, borderColor: "darkgrey", borderStyle: "solid", borderRadius:5, width: "60%"}}>
+        <Text style={{ fontSize: 16 }}> First name </Text>
         <TextInput
           onChangeText={(text) => setFirstName(text)}
           value={firstName}
         />
+        </View>
         <TouchableOpacity onPress={editUserFirstName}>
-          <Text>Edit</Text>
+          <Text style={{marginBottom:15}}>Edit</Text>
         </TouchableOpacity>
 
-        <Text style={{ fontSize: 18 }}>Last name: </Text>
+        <View style={{borderWidth: 2, borderColor: "darkgrey", borderStyle: "solid", borderRadius:5, width: "60%"}}>
+        <Text style={{ fontSize: 16 }}>Last name </Text>
         <TextInput
           onChangeText={(text) => setLastName(text)}
           value={lastName}
         />
+         </View>
         <TouchableOpacity onPress={editUserLastName}>
-          <Text>Edit</Text>
+          <Text style={{marginBottom:15}}>Edit</Text>
         </TouchableOpacity>
 
-        <Text style={{ fontSize: 18 }}>Age: </Text>
+        <View style={{borderWidth: 2, borderColor: "darkgrey", borderStyle: "solid", borderRadius:5, width: "60%"}}>
+        <Text style={{ fontSize: 16 }}>Age </Text>
         <TextInput onChangeText={(text) => setAge(text)} value={age.toString()} />
+        </View>
         <TouchableOpacity onPress={editUserAge}>
-          <Text>Edit</Text>
+          <Text style={{marginBottom:15}}>Edit</Text>
         </TouchableOpacity>
 
-        <Text style={{ fontSize: 18 }}>Height: </Text>
+        <View style={{borderWidth: 2, borderColor: "darkgrey", borderStyle: "solid", borderRadius:5, width: "60%"}}>
+        <Text style={{ fontSize: 16 }}>Height </Text>
         <TextInput onChangeText={(text) => setHeight(text)} value={height.toString()} />
+        </View>
         <TouchableOpacity onPress={editUserHeight}>
-          <Text>Edit</Text>
+          <Text style={{marginBottom:15}}>Edit</Text>
         </TouchableOpacity>
 
-        <Text style={{ fontSize: 18 }}>Weight: </Text>
+        <View style={{borderWidth: 2, borderColor: "darkgrey", borderStyle: "solid", borderRadius:5, width: "60%"}}>
+        <Text style={{ fontSize: 16 }}>Weight </Text>
         <TextInput onChangeText={(text) => setWeight(text)} value={weight.toString()} />
+        </View>
         <TouchableOpacity onPress={editUserWeight}>
-          <Text>Edit</Text>
+          <Text style={{marginBottom:15}}>Edit</Text>
         </TouchableOpacity>
 
       </View>

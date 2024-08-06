@@ -212,6 +212,7 @@ function Registration({ navigation }: Props) {
           borderWidth: 2,
           width: "60%",
         }}
+        secureTextEntry={true}
         onChangeText={(text) => {
           setPassword(text);
         }}
@@ -222,7 +223,8 @@ function Registration({ navigation }: Props) {
         Enter your password again
       </Text>
       <TextInput
-      style={{
+        secureTextEntry={true}
+        style={{
           borderRadius: 3,
           borderColor: "darkgrey",
           padding: 2,
