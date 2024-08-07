@@ -1,11 +1,11 @@
 import { UserContext } from "./UserContext";
 import { useContext, useEffect, useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Footer } from "./Footer";
 import type { RootStackParamList } from "../app/index";
 import { AuthContext } from "./AuthContext";
-import { getUserDetails, getWorkouts } from "../apiRequests";
+import { getUserDetails, getWorkouts, getWorkoutsByUser, postWorkout } from "../apiRequests";
 // import { RegistrationContext } from "./Registration";
 import { useFocusEffect } from "@react-navigation/native";
 import React from "react";
@@ -28,28 +28,32 @@ export default function Home({ navigation }: Props) {
     React.useCallback(() => {
       getUserDetails(email).then((response) => {
         setUserDetails(response);
-      });
+      })
     }, [])
   );
 
+
   useEffect(() => {
-    getWorkouts().then((response) => {
+    if ((userDetails as any).userId) {getWorkoutsByUser((userDetails as any).userId).then((response) => {
       setWorkouts(response);
       setLoading(true);
-      console.log(response);
-    });
-  }, []);
+    })}
+  }, [userDetails, workouts]);
 
+ 
   const showWorkoutForm= () => {
     setShowForm((showForm) => !showForm);
   };
 
   const addWorkout = () => {
-
+    postWorkout(exerciseName, weight, sets, reps, workoutDate, (userDetails as any).userId).then((response) => {
+      setWorkouts([response, workouts])
+    })
   }
 
   return (
     <>
+    <ScrollView>
       <Text style={{ fontSize: 18, marginLeft: 10, paddingBottom: 10 }}>
         Welcome back {(userDetails as any).firstName}
       </Text>
@@ -82,21 +86,21 @@ export default function Home({ navigation }: Props) {
           />
           <TextInput
             onChangeText={(text) => {
-              setExerciseName(text);
+              setWeight(text);
             }}
             value={weight}
             placeholder="Enter weight lifted"
           />
           <TextInput
             onChangeText={(text) => {
-              setExerciseName(text);
+              setSets(text);
             }}
             value={sets}
             placeholder="Enter number of sets"
           />
           <TextInput
             onChangeText={(text) => {
-              setExerciseName(text);
+              setReps(text);
             }}
             value={reps}
             placeholder="Enter number of reps"
@@ -129,15 +133,19 @@ export default function Home({ navigation }: Props) {
         Recent Workouts
       </Text>
       {loading ? (
-        <View style={{ marginLeft: 10 }}>
-          <Text>{(workouts as any)[0].exerciseName} </Text>
-          <Text>Weight: {(workouts as any)[0].weight}kg</Text>
-          <Text>Sets: {(workouts as any)[0].sets}</Text>
-          <Text>Reps: {(workouts as any)[0].reps}</Text>
-          <Text>Workout date: {(workouts as any)[0].workoutDate}</Text>
-        </View>
-      ) : null}
+          (workouts as any).map((workout:any) => (
+              <View style={{ marginLeft: 10 }}>
+              <Text>{workout.exerciseName} </Text>
+              <Text>Weight: {workout.weight}kg</Text>
+              <Text>Sets: {workout.sets}</Text>
+              <Text>Reps: {workout.reps}</Text>
+              <Text>Workout date: {workout.workoutDate}</Text>
+            </View>
+          )
+          )) : null}
+
       <Footer navigation={navigation} />
+      </ScrollView>
     </>
   );
 }

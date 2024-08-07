@@ -68,11 +68,33 @@ export function getWorkouts() {
   })
 }
 
+export function getWorkoutsByUser(id: number) {
+  return axios.get(
+    `https://keepfitsite-a7fyg4fmc9dracam.ukwest-01.azurewebsites.net/api/users/${id}/workouts`
+  ).then((response) => {
+    return response.data
+  }).catch((error) => {
+    console.log(error)
+  })
+}
+
+export function postWorkout(exerciseName: string, weight: string, sets: string, reps: string, workoutDate: string, userId: number) {
+  return axios.post(
+    `https://keepfitsite-a7fyg4fmc9dracam.ukwest-01.azurewebsites.net/api/workouts`, {
+      exerciseName, weight, sets, reps, workoutDate, userId
+    }
+  ).then((response) => {
+    console.log(response.data)
+    return response.data
+  })
+}
 
 
 export default {
   postUser,
   getUserDetails,
   patchUser,
-  getWorkouts
+  getWorkouts,
+  getWorkoutsByUser, 
+  postWorkout
 };
