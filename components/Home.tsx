@@ -17,11 +17,11 @@ import {
   getWorkoutsByUser,
   postWorkout,
   getMuscleGroups,
-  getUserWorkoutByMuscleGroup
+  getUserWorkoutByMuscleGroup,
 } from "../apiRequests";
 import { useFocusEffect } from "@react-navigation/native";
 import React from "react";
-import DropDownPicker from 'react-native-dropdown-picker';
+import DropDownPicker from "react-native-dropdown-picker";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 
@@ -38,16 +38,17 @@ export default function Home({ navigation }: Props) {
   const [workoutDate, setWorkoutDate] = useState("");
   const [muscleGroups, setMuscleGroups] = useState<any[]>([]);
 
-
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [items, setItems] = useState([ {label: 'Abdominals', value: 'Abdominals'},
-    {label: 'Back', value: 'Back'},
-    {label: 'Biceps', value: 'Biceps'}, {label: 'Chest', value: 'Chest'},
-    {label: 'Legs', value: 'Legs'},
-    {label: 'Shoulders', value: 'Shoulders'},
-    {label: 'Triceps', value: 'Triceps'}]);  
-
+  const [items, setItems] = useState([
+    { label: "Abdominals", value: "Abdominals" },
+    { label: "Back", value: "Back" },
+    { label: "Biceps", value: "Biceps" },
+    { label: "Chest", value: "Chest" },
+    { label: "Legs", value: "Legs" },
+    { label: "Shoulders", value: "Shoulders" },
+    { label: "Triceps", value: "Triceps" },
+  ]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -56,8 +57,6 @@ export default function Home({ navigation }: Props) {
       });
     }, [])
   );
-
-  console.log(workouts)
 
   useEffect(() => {
     if ((userDetails as any).userId) {
@@ -68,33 +67,34 @@ export default function Home({ navigation }: Props) {
     }
   }, [userDetails]);
 
-  // useEffect(() => {
-  //   getMuscleGroups().then((response: any) => {
-  //     setMuscleGroups(response);
-  //   });
-  // }, []);
+  const groupBy = workouts.reduce((acc, obj) => {
+    if (!acc[obj.workoutDate]) acc[obj.workoutDate] = {};
+    if (!acc[obj.workoutDate][obj.muscleGroup])
+      acc[obj.workoutDate][obj.muscleGroup] = [];
+    acc[obj.workoutDate][obj.muscleGroup].push(obj);
+    return acc;
+  }, {});
 
   const showWorkoutForm = () => {
     setShowForm((showForm) => !showForm);
   };
 
-  console.log((userDetails as any).userId);
-
   const addWorkout = () => {
-    if (value) {postWorkout(
-      value,
-      exerciseName,
-      weight,
-      sets,
-      reps,
-      workoutDate,
-      (userDetails as any).userId
-    ).then((response) => {
-      setWorkouts([response, ...workouts]);
-    })}
+    if (value) {
+      postWorkout(
+        value,
+        exerciseName,
+        weight,
+        sets,
+        reps,
+        workoutDate,
+        (userDetails as any).userId
+      ).then((response) => {
+        setWorkouts([response, ...workouts]);
+      });
+    }
   };
 
-  
   return (
     <>
       <ScrollView>
@@ -120,52 +120,59 @@ export default function Home({ navigation }: Props) {
         </TouchableOpacity>
         {showForm ? (
           <>
-        <DropDownPicker
-        open={open}
-        value={value}
-        items={items}
-        setOpen={setOpen}
-        setValue={setValue}
-        setItems={setItems}
-        placeholder="Select a muscle group"
-        style={{width: 200, marginTop: 20, marginLeft:10}}
-        />
-        <View style={{marginLeft:10}}>
-            <TextInput
-              onChangeText={(text) => {
-                setExerciseName(text);
+            <DropDownPicker
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setItems}
+              placeholder="Select a muscle group"
+              style={{
+                width: 200,
+                marginTop: 20,
+                marginLeft: 10,
+                backgroundColor: "lightgray",
               }}
-              value={exerciseName}
-              placeholder="Enter exercise name"
+              listMode="SCROLLVIEW"
             />
-            <TextInput
-              onChangeText={(text) => {
-                setWeight(text);
-              }}
-              value={weight}
-              placeholder="Enter weight lifted"
-            />
-            <TextInput
-              onChangeText={(text) => {
-                setSets(text);
-              }}
-              value={sets}
-              placeholder="Enter number of sets"
-            />
-            <TextInput
-              onChangeText={(text) => {
-                setReps(text);
-              }}
-              value={reps}
-              placeholder="Enter number of reps"
-            />
-            <TextInput
-              onChangeText={(text) => {
-                setWorkoutDate(text);
-              }}
-              value={workoutDate}
-              placeholder="Enter workout date"
-            />
+
+            <View style={{ marginLeft: 10 }}>
+              <TextInput
+                onChangeText={(text) => {
+                  setExerciseName(text);
+                }}
+                value={exerciseName}
+                placeholder="Enter exercise name"
+              />
+              <TextInput
+                onChangeText={(text) => {
+                  setWeight(text);
+                }}
+                value={weight}
+                placeholder="Enter weight lifted"
+              />
+              <TextInput
+                onChangeText={(text) => {
+                  setSets(text);
+                }}
+                value={sets}
+                placeholder="Enter number of sets"
+              />
+              <TextInput
+                onChangeText={(text) => {
+                  setReps(text);
+                }}
+                value={reps}
+                placeholder="Enter number of reps"
+              />
+              <TextInput
+                onChangeText={(text) => {
+                  setWorkoutDate(text);
+                }}
+                value={workoutDate}
+                placeholder="Enter workout date"
+              />
             </View>
             <TouchableOpacity onPress={addWorkout}>
               <Text
@@ -189,19 +196,55 @@ export default function Home({ navigation }: Props) {
         <Text style={{ fontSize: 16, marginTop: 10, marginLeft: 10 }}>
           Recent Workouts
         </Text>
-        {loading
-          ? (workouts as any).map((workout: any) => (
-              <View style={{ marginLeft: 10 }} key={workout.workoutId}>
-                 <Text>{workout.muscleGroup} </Text>
-                <Text>{workout.exerciseName} </Text>
-                <Text>Weight: {workout.weight}kg</Text>
-                <Text>Sets: {workout.sets}</Text>
-                <Text>Reps: {workout.reps}</Text>
-                <Text>Workout date: {workout.workoutDate}</Text>
-              </View>
-            ))
-          : null}
 
+        {Object.keys(groupBy).map((dates: string) => (
+          <>
+            <Text style={{ fontWeight: "bold", marginLeft: 6, fontSize: 18 }}>
+              {" " +
+                (dates[5] +
+                  dates[6] +
+                  "-" +
+                  dates[8] +
+                  dates[9] +
+                  "-" +
+                  dates[0] +
+                  dates[1] +
+                  dates[2] +
+                  dates[3])}
+            </Text>
+            {Object.keys(groupBy[dates]).map((workouts: any) => (
+              <>
+                <Text style={{ marginLeft: 10, fontSize: 18 }}>{workouts}</Text>
+                <View style={{ marginBottom: 10, marginLeft: 10 }}>
+                  {groupBy[dates][workouts].map((workout: any) => (
+                    <>
+                      <Text style={{ marginTop: 2 }}>
+                        {workout.exerciseName}
+                      </Text>
+                      <Text>Weight: {workout.weight}kg</Text>
+                      <Text>Sets: {workout.sets}</Text>
+                      <Text>Reps: {workout.reps}</Text>
+                      <Text style={{ marginBottom: 10 }}>
+                        Workout date:{" "}
+                        {" " +
+                          (workout.workoutDate[5] +
+                            workout.workoutDate[6] +
+                            "-" +
+                            workout.workoutDate[8] +
+                            workout.workoutDate[9] +
+                            "-" +
+                            workout.workoutDate[0] +
+                            workout.workoutDate[1] +
+                            workout.workoutDate[2] +
+                            workout.workoutDate[3])}
+                      </Text>
+                    </>
+                  ))}
+                </View>
+              </>
+            ))}
+          </>
+        ))}
         <Footer navigation={navigation} />
       </ScrollView>
     </>

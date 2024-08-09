@@ -38,11 +38,11 @@ export function patchUser(id: number, path: string, value: any) {
       `https://keepfitsite-a7fyg4fmc9dracam.ukwest-01.azurewebsites.net/api/users/${id}`,
       [
         {
-          operationType: 0,
-          path: `/${path}`,
-          op: "replace",
-          value: value,
-        },
+          "operationType": 0,
+          "path": `/${path}`,
+          "op": "replace",
+          "value": value
+        }
       ],
       {
         headers: {

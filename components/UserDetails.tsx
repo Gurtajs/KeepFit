@@ -5,11 +5,7 @@ import { Footer } from "./Footer";
 import type { RootStackParamList } from "../app/index";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
-  patchUser,
-  // patchUserLastName,
-  // patchUserAge,
-  // patchUserHeight,
-  // patchUserWeight,
+  patchUser
 } from "../apiRequests";
 
 type Props = NativeStackScreenProps<RootStackParamList, "UserDetails">;
@@ -24,23 +20,23 @@ export default function UserDetails({ navigation }: Props) {
   const [weight, setWeight] = useState((userDetails as any).weight);
 
   const editUserFirstName = () => {
-    return patchUser((userDetails as any).userId, 'firstName', firstName);
+    patchUser((userDetails as any).userId, 'firstName', firstName);
   };
 
   const editUserLastName = () => {
-    return patchUser((userDetails as any).userId, 'lastName', lastName)
+    patchUser((userDetails as any).userId, 'lastName', lastName)
   };
 
   const editUserAge = () => {
-    return patchUser((userDetails as any).userId, 'age', age);
+    patchUser((userDetails as any).userId, 'age', age);
   };
 
   const editUserHeight = () => {
-    return patchUser((userDetails as any).userId, 'height', height);
+    patchUser((userDetails as any).userId, 'height', height);
   };
 
   const editUserWeight = () => {
-    return patchUser((userDetails as any).userId, 'weight', weight);
+    patchUser((userDetails as any).userId, 'weight', weight);
   };
 
   return (
