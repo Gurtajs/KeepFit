@@ -54,7 +54,7 @@ export default function UserDetails({ navigation }: Props) {
         </TouchableOpacity>
 
         <View style={{borderWidth: 2, borderColor: "darkgrey", borderStyle: "solid", borderRadius:5, width: "60%"}}>
-        <Text style={{ fontSize: 16 }}>Last name </Text>
+        <Text style={{ fontSize: 16 }}> Last name </Text>
         <TextInput
           onChangeText={(text) => setLastName(text)}
           value={lastName}
@@ -65,7 +65,7 @@ export default function UserDetails({ navigation }: Props) {
         </TouchableOpacity>
 
         <View style={{borderWidth: 2, borderColor: "darkgrey", borderStyle: "solid", borderRadius:5, width: "60%"}}>
-        <Text style={{ fontSize: 16 }}>Age </Text>
+        <Text style={{ fontSize: 16 }}> Age </Text>
         <TextInput onChangeText={(text) => setAge(text)} value={age.toString()} />
         </View>
         <TouchableOpacity onPress={editUserAge}>
@@ -73,7 +73,7 @@ export default function UserDetails({ navigation }: Props) {
         </TouchableOpacity>
 
         <View style={{borderWidth: 2, borderColor: "darkgrey", borderStyle: "solid", borderRadius:5, width: "60%"}}>
-        <Text style={{ fontSize: 16 }}>Height </Text>
+        <Text style={{ fontSize: 16 }}> Height </Text>
         <TextInput onChangeText={(text) => setHeight(text)} value={height.toString()} />
         </View>
         <TouchableOpacity onPress={editUserHeight}>
@@ -81,7 +81,7 @@ export default function UserDetails({ navigation }: Props) {
         </TouchableOpacity>
 
         <View style={{borderWidth: 2, borderColor: "darkgrey", borderStyle: "solid", borderRadius:5, width: "60%"}}>
-        <Text style={{ fontSize: 16 }}>Weight </Text>
+        <Text style={{ fontSize: 16 }}> Weight </Text>
         <TextInput onChangeText={(text) => setWeight(text)} value={weight.toString()} />
         </View>
         <TouchableOpacity onPress={editUserWeight}>
@@ -89,7 +89,10 @@ export default function UserDetails({ navigation }: Props) {
         </TouchableOpacity>
 
       </View>
+      <View style={{flex: 1, position: 'absolute', bottom:0, flexDirection: "row", justifyContent: "space-between", alignItems: 'flex-end', backgroundColor: "lightblue", left: 0,
+    right: 0}}>
       <Footer navigation={navigation} />
+      </View>
     </>
   );
 }
