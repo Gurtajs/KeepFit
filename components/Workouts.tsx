@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../app/index";
@@ -29,6 +30,8 @@ export default function Workouts({ navigation }: Props) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const { userDetails, setUserDetails } = useContext(UserContext);
+  const [loading, setLoading] = useState(false)
+  
   const [items, setItems] = useState([
     { label: "Abdominals", value: "Abdominals" },
     { label: "Back", value: "Back" },
@@ -68,10 +71,9 @@ export default function Workouts({ navigation }: Props) {
   }, {});
 
   return (
-    <View style={{paddingBottom:30}}>
+    <View style={{paddingBottom:30, flex:1 }}>
       <ScrollView>
         <Text style={{ fontSize: 18, marginLeft: 10 }}>Workouts</Text>
-
         <TouchableOpacity onPress={showWorkoutForm}>
           <Text
             style={{
@@ -187,7 +189,7 @@ export default function Workouts({ navigation }: Props) {
                 <View style={{ marginBottom: 10, marginLeft: 10 }}>
                   {groupBy[dates][workouts].map((workout: any) => (
                     <>
-                      <Text style={{ marginTop: 2 }}>
+                      <Text style={{ marginTop: 2 }} key={workout.workoutId}>
                         {workout.exerciseName}
                       </Text>
                       <Text>Weight: {workout.weight}kg</Text>
