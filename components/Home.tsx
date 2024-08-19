@@ -43,6 +43,7 @@ export default function Home({ navigation }: Props) {
   useEffect(() => {
     if ((userDetails as any).userId) {
       getWorkoutsByUser((userDetails as any).userId).then((response) => {
+        console.log(response)
         setWorkouts(response);
         setLoading(true);
       });
@@ -58,7 +59,7 @@ export default function Home({ navigation }: Props) {
   }, {});
  
 
-  return loading ? (
+  return  loading ? (
     <View style={{ paddingBottom: 30, flex:1 }}>
       <ScrollView>
         <Text style={{ fontSize: 18, marginLeft: 10, paddingBottom: 10 }}>
@@ -141,5 +142,5 @@ export default function Home({ navigation }: Props) {
       <Text>Fetching your data</Text>
       <ActivityIndicator size="large" />
     </View>
-  );
+  )
 }
