@@ -54,7 +54,7 @@ export default function Workouts({ navigation }: Props) {
         weight,
         sets,
         reps,
-        workoutDate,
+        formatDate,
         (userDetails as any).userId
       ).then((response) => {
         setWorkouts([response, ...workouts]);
@@ -62,6 +62,21 @@ export default function Workouts({ navigation }: Props) {
     }
   };
 
+  console.log(workoutDate)
+  
+  const formatDate =  
+    (workoutDate[3] +
+     workoutDate[4] +
+      "-" +
+     workoutDate[0] +
+     workoutDate[1] +
+      "-" +
+     workoutDate[6] +
+     workoutDate[7] +
+     workoutDate[8] +
+     workoutDate[9])
+
+     console.log(formatDate)
   const groupBy = workouts.reduce((acc, obj) => {
     if (!acc[obj.workoutDate]) acc[obj.workoutDate] = {};
     if (!acc[obj.workoutDate][obj.muscleGroup])
@@ -169,26 +184,26 @@ export default function Workouts({ navigation }: Props) {
         ) : null}
        <Text style={{ marginLeft: 10 }}>All workouts</Text>
         {Object.keys(groupBy).map((dates: string) => (
-          <>
+          <View key={dates}>
             <Text style={{ fontWeight: "bold", marginLeft: 6, fontSize: 18 }}>
               {" " +
-                (dates[5] +
-                  dates[6] +
-                  "-" +
-                  dates[8] +
+                (dates[8] +
                   dates[9] +
+                  "-" +
+                  dates[5] +
+                  dates[6] +
                   "-" +
                   dates[0] +
                   dates[1] +
                   dates[2] +
                   dates[3])}
             </Text>
-            {Object.keys(groupBy[dates]).map((workouts: any) => (
-              <>
-                <Text style={{ marginLeft: 10, fontSize: 18 }}>{workouts}</Text>
+            {Object.keys(groupBy[dates]).map((muscleGroup: any) => (
+              <View key = {`${dates}-${muscleGroup}`}>
+                <Text style={{ marginLeft: 10, fontSize: 18 }}>{muscleGroup}</Text>
                 <View style={{ marginBottom: 10, marginLeft: 10 }}>
-                  {groupBy[dates][workouts].map((workout: any) => (
-                    <>
+                  {groupBy[dates][muscleGroup].map((workout: any) => (
+                    <View key={workout.workoutId}>
                       <Text style={{ marginTop: 2 }} key={workout.workoutId}>
                         {workout.exerciseName}
                       </Text>
@@ -196,25 +211,24 @@ export default function Workouts({ navigation }: Props) {
                       <Text>Sets: {workout.sets}</Text>
                       <Text>Reps: {workout.reps}</Text>
                       <Text style={{ marginBottom: 10 }}>
-                        Workout date:{" "}
-                        {" " +
-                          (workout.workoutDate[5] +
-                            workout.workoutDate[6] +
-                            "-" +
-                            workout.workoutDate[8] +
-                            workout.workoutDate[9] +
-                            "-" +
-                            workout.workoutDate[0] +
-                            workout.workoutDate[1] +
-                            workout.workoutDate[2] +
-                            workout.workoutDate[3])}
+                        Workout date:  {" " +
+                            (workout.workoutDate[8] +
+                              workout.workoutDate[9] +
+                              "-" +
+                              workout.workoutDate[5] +
+                              workout.workoutDate[6] +
+                              "-" +
+                              workout.workoutDate[0] +
+                              workout.workoutDate[1] +
+                              workout.workoutDate[2] +
+                              workout.workoutDate[3])}
                       </Text>
-                    </>
+                    </View>
                   ))}
                 </View>
-              </>
+              </View>
             ))}
-          </>
+          </View>
         ))}
       </ScrollView>
       <View style={{position: 'absolute', bottom:0, flex:1, flexDirection: "row", justifyContent: "space-between", alignItems: 'flex-end', backgroundColor: "lightblue", width: "100%" }}>

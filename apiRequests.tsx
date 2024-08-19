@@ -11,7 +11,7 @@ export function postUser(
 ) {
   return axios
     .post(
-      `https://722b-77-102-154-75.ngrok-free.app/api/users`,
+      `https://ecee-77-102-154-75.ngrok-free.app/api/users`,
       { email, firstName, lastName, age, profilePicture, height, weight }
     )
     .then((response) => {
@@ -22,7 +22,7 @@ export function postUser(
 export function getUserDetails(email: string) {
   return axios
     .post(
-      `https://722b-77-102-154-75.ngrok-free.app/api/users/details`, 
+      `https://ecee-77-102-154-75.ngrok-free.app/api/users/details`, 
       {
         email,
       }
@@ -39,7 +39,7 @@ export function getUserDetails(email: string) {
 export function patchUser(id: number, path: string, value: any) {
   return axios
     .patch(
-      `https://722b-77-102-154-75.ngrok-free.app/api/users/${id}`,
+      `https://ecee-77-102-154-75.ngrok-free.app/api/users/${id}`,
       [
         {
           "operationType": 0,
@@ -64,7 +64,7 @@ export function patchUser(id: number, path: string, value: any) {
 
 export function getWorkouts() {
   return axios.get(
-    `https://722b-77-102-154-75.ngrok-free.app/api/workouts`
+    `https://ecee-77-102-154-75.ngrok-free.app/api/workouts`
   ).then((response) => {
     return response.data
   }).catch((error) => {
@@ -74,7 +74,7 @@ export function getWorkouts() {
 
 export function getWorkoutsByUser(id: number) {
   return axios.get(
-    `https://722b-77-102-154-75.ngrok-free.app/api/users/${id}/workouts`
+    `https://ecee-77-102-154-75.ngrok-free.app/api/users/${id}/workouts`
   ).then((response) => {
     return response.data
   }).catch((error) => {
@@ -84,7 +84,7 @@ export function getWorkoutsByUser(id: number) {
 
 export function postWorkout(muscleGroup: string, exerciseName: string, weight: string, sets: string, reps: string, workoutDate: string, userId: number) {
   return axios.post(
-    `https://722b-77-102-154-75.ngrok-free.app/api/workouts`, {
+    `https://ecee-77-102-154-75.ngrok-free.app/api/workouts`, {
       muscleGroup, exerciseName, weight, sets, reps, workoutDate, userId
     }
   ).then((response) => {
@@ -93,7 +93,7 @@ export function postWorkout(muscleGroup: string, exerciseName: string, weight: s
 }
 
 export function getMuscleGroups() {
-  return axios.get('https://722b-77-102-154-75.ngrok-free.app/api/musclegroups').then((response) => {
+  return axios.get('https://ecee-77-102-154-75.ngrok-free.app/api/musclegroups').then((response) => {
     console.log(response.data)
     return response.data
   }).catch((error) => {
@@ -102,7 +102,7 @@ export function getMuscleGroups() {
 }
 
 export function getUserWorkoutByMuscleGroup(userId: number, muscleGroup: string) {
-  return axios.get(`https://722b-77-102-154-75.ngrok-free.app/api/users/${userId}/workouts/${muscleGroup}`).then((response) => {
+  return axios.get(`https://ecee-77-102-154-75.ngrok-free.app/api/users/${userId}/workouts/${muscleGroup}`).then((response) => {
     return response.data
   }).catch((error) => {
     console.log(error)

@@ -57,7 +57,7 @@ export default function Home({ navigation }: Props) {
     acc[obj.workoutDate][obj.muscleGroup].push(obj);
     return acc;
   }, {});
- 
+
 
   return  loading ? (
     <View style={{ paddingBottom: 30, flex:1 }}>
@@ -70,31 +70,31 @@ export default function Home({ navigation }: Props) {
           Your recent workouts:
         </Text>
         {Object.keys(groupBy)
-          .slice(0, 3)
+          .slice(0, 3)                                                             
           .map((dates: string) => (
-            <>
+            <View key = {dates}>
               <Text style={{ fontWeight: "bold", marginLeft: 6, fontSize: 18 }}>
                 {" " +
-                  (dates[5] +
-                    dates[6] +
-                    "-" +
-                    dates[8] +
+                  (dates[8] +
                     dates[9] +
+                    "-" +
+                    dates[5] +
+                    dates[6] +
                     "-" +
                     dates[0] +
                     dates[1] +
                     dates[2] +
                     dates[3])}
               </Text>
-              {Object.keys(groupBy[dates]).map((workouts: any) => (
-                <>
+              {Object.keys(groupBy[dates]).map((muscleGroup: any) => (
+                <View key={`${dates}-${muscleGroup}`}>
                   <Text style={{ marginLeft: 10, fontSize: 18 }}>
-                    {workouts}
+                    {muscleGroup}
                   </Text>
                   <View style={{ marginBottom: 10, marginLeft: 10 }}>
-                    {groupBy[dates][workouts].map((workout: any) => (
-                      <>
-                        <Text style={{ marginTop: 2 }} key={workout.workoutId}>
+                    {groupBy[dates][muscleGroup].map((workout: any) => (
+                      <View key={workout.workoutId}>
+                        <Text style={{ marginTop: 2 }} >
                           {workout.exerciseName}
                         </Text>
                         <Text>Weight: {workout.weight}kg</Text>
@@ -103,23 +103,23 @@ export default function Home({ navigation }: Props) {
                         <Text style={{ marginBottom: 10 }}>
                           Workout date:{" "}
                           {" " +
-                            (workout.workoutDate[5] +
-                              workout.workoutDate[6] +
-                              "-" +
-                              workout.workoutDate[8] +
+                            (workout.workoutDate[8] +
                               workout.workoutDate[9] +
+                              "-" +
+                              workout.workoutDate[5] +
+                              workout.workoutDate[6] +
                               "-" +
                               workout.workoutDate[0] +
                               workout.workoutDate[1] +
                               workout.workoutDate[2] +
                               workout.workoutDate[3])}
                         </Text>
-                      </>
+                      </View>
                     ))}
                   </View>
-                </>
+                </View>
               ))}
-            </>
+            </View>
           ))}
       </ScrollView>
       <View
