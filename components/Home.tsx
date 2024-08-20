@@ -43,7 +43,6 @@ export default function Home({ navigation }: Props) {
   useEffect(() => {
     if ((userDetails as any).userId) {
       getWorkoutsByUser((userDetails as any).userId).then((response) => {
-        console.log(response)
         setWorkouts(response);
         setLoading(true);
       });
@@ -58,70 +57,113 @@ export default function Home({ navigation }: Props) {
     return acc;
   }, {});
 
+  return loading ? (
+    <View style={{ paddingBottom: 30, flex: 1, paddingLeft: 5 }}>
+      <View style={{ paddingBottom: 10 }}>
+        <ScrollView>
+          <Text
+            style={{
+              fontSize: 18,
+              marginLeft: 10,
+              paddingBottom: 10,
+              paddingTop: 5,
+            }}
+          >
+            Welcome back {(userDetails as any).firstName}
+          </Text>
 
-  return  loading ? (
-    <View style={{ paddingBottom: 30, flex:1 }}>
-      <ScrollView>
-        <Text style={{ fontSize: 18, marginLeft: 10, paddingBottom: 10 }}>
-          Welcome back {(userDetails as any).firstName}
-        </Text>
-
-        <Text style={{ fontSize: 16, marginTop: 10, marginLeft: 10 }}>
-          Your recent workouts:
-        </Text>
-        {Object.keys(groupBy)
-          .slice(0, 3)                                                             
-          .map((dates: string) => (
-            <View key = {dates}>
-              <Text style={{ fontWeight: "bold", marginLeft: 6, fontSize: 18 }}>
-                {" " +
-                  (dates[8] +
-                    dates[9] +
-                    "-" +
-                    dates[5] +
-                    dates[6] +
-                    "-" +
-                    dates[0] +
-                    dates[1] +
-                    dates[2] +
-                    dates[3])}
-              </Text>
-              {Object.keys(groupBy[dates]).map((muscleGroup: any) => (
-                <View key={`${dates}-${muscleGroup}`}>
-                  <Text style={{ marginLeft: 10, fontSize: 18 }}>
-                    {muscleGroup}
-                  </Text>
-                  <View style={{ marginBottom: 10, marginLeft: 10 }}>
-                    {groupBy[dates][muscleGroup].map((workout: any) => (
-                      <View key={workout.workoutId}>
-                        <Text style={{ marginTop: 2 }} >
-                          {workout.exerciseName}
-                        </Text>
-                        <Text>Weight: {workout.weight}kg</Text>
-                        <Text>Sets: {workout.sets}</Text>
-                        <Text>Reps: {workout.reps}</Text>
-                        <Text style={{ marginBottom: 10 }}>
-                          Workout date:{" "}
-                          {" " +
-                            (workout.workoutDate[8] +
-                              workout.workoutDate[9] +
-                              "-" +
-                              workout.workoutDate[5] +
-                              workout.workoutDate[6] +
-                              "-" +
-                              workout.workoutDate[0] +
-                              workout.workoutDate[1] +
-                              workout.workoutDate[2] +
-                              workout.workoutDate[3])}
-                        </Text>
-                      </View>
-                    ))}
+          <Text
+            style={{
+              fontSize: 16,
+              marginTop: 10,
+              marginLeft: 10,
+              marginBottom: 5,
+            }}
+          >
+            Your recent workouts:
+          </Text>
+          {Object.keys(groupBy)
+            .slice(0, 3)
+            .map((dates: string) => (
+              <View key={dates}>
+                <Text
+                  style={{ fontWeight: "bold", marginLeft: 6, fontSize: 16 }}
+                >
+                  {" " +
+                    (dates[8] +
+                      dates[9] +
+                      "-" +
+                      dates[5] +
+                      dates[6] +
+                      "-" +
+                      dates[0] +
+                      dates[1] +
+                      dates[2] +
+                      dates[3])}
+                </Text>
+                {Object.keys(groupBy[dates]).map((muscleGroup: any) => (
+                  <View key={`${dates}-${muscleGroup}`}>
+                    <Text style={{ marginLeft: 10, fontSize: 16 }}>
+                      {muscleGroup}
+                    </Text>
+                    <View style={{ marginBottom: 10, marginLeft: 10 }}>
+                      {groupBy[dates][muscleGroup].map((workout: any) => (
+                        <View
+                          style={{
+                            borderRadius: 3,
+                            borderColor: "black",
+                            padding: 2,
+                            borderStyle: "solid",
+                            borderWidth: 2,
+                            width: "70%",
+                            backgroundColor:
+                              muscleGroup === "Abdominals"
+                                ? "pink"
+                                : "white" && muscleGroup === "Back"
+                                ? "lavender"
+                                : "white" && muscleGroup === "Biceps"
+                                ? "lightcoral"
+                                : "white" && muscleGroup === "Chest"
+                                ? "plum"
+                                : "white" && muscleGroup === "Legs"
+                                ? "lightgreen"
+                                : "white" && muscleGroup === "Shoulders"
+                                ? "lightyellow"
+                                : "white" && muscleGroup === "Triceps"
+                                ? "mediumturquoise"
+                                : "white",
+                          }}
+                          key={workout.workoutId}
+                        >
+                          <Text style={{ marginTop: 2 }}>
+                            {workout.exerciseName}
+                          </Text>
+                          <Text>Weight: {workout.weight}kg</Text>
+                          <Text>Sets: {workout.sets}</Text>
+                          <Text>Reps: {workout.reps}</Text>
+                          <Text style={{ marginBottom: 10 }}>
+                            Workout date:{" "}
+                            {" " +
+                              (workout.workoutDate[8] +
+                                workout.workoutDate[9] +
+                                "-" +
+                                workout.workoutDate[5] +
+                                workout.workoutDate[6] +
+                                "-" +
+                                workout.workoutDate[0] +
+                                workout.workoutDate[1] +
+                                workout.workoutDate[2] +
+                                workout.workoutDate[3])}
+                          </Text>
+                        </View>
+                      ))}
+                    </View>
                   </View>
-                </View>
-              ))}
-            </View>
-          ))}
-      </ScrollView>
+                ))}
+              </View>
+            ))}
+        </ScrollView>
+      </View>
       <View
         style={{
           position: "absolute",
@@ -142,5 +184,5 @@ export default function Home({ navigation }: Props) {
       <Text>Fetching your data</Text>
       <ActivityIndicator size="large" />
     </View>
-  )
+  );
 }
