@@ -57,8 +57,10 @@ export default function Home({ navigation }: Props) {
     return acc;
   }, {});
 
-  return loading ? (
+  return (
     <View style={{ paddingBottom: 30, flex: 1, paddingLeft: 5 }}>
+  {loading ? (
+    <View style={{flex: 1}}>
       <View style={{ paddingBottom: 10 }}>
         <ScrollView>
           <Text
@@ -71,7 +73,6 @@ export default function Home({ navigation }: Props) {
           >
             Welcome back {(userDetails as any).firstName}
           </Text>
-
           <Text
             style={{
               fontSize: 16,
@@ -164,7 +165,15 @@ export default function Home({ navigation }: Props) {
             ))}
         </ScrollView>
       </View>
-      <View
+      
+    </View>
+  ) : (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Fetching your data</Text>
+      <ActivityIndicator size="large" />
+    </View>
+  )}
+  <View
         style={{
           position: "absolute",
           bottom: 0,
@@ -178,11 +187,6 @@ export default function Home({ navigation }: Props) {
       >
         <Footer navigation={navigation} />
       </View>
-    </View>
-  ) : (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Fetching your data</Text>
-      <ActivityIndicator size="large" />
-    </View>
-  );
+  </View>
+)
 }

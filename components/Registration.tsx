@@ -61,7 +61,7 @@ function Registration({ navigation }: Props) {
         quality: 1,
       });
   
-      console.log(result);
+     
   
       if (!result.canceled) {
         setSelectedImage(result.assets[0].uri);
@@ -73,7 +73,7 @@ function Registration({ navigation }: Props) {
 
   return (
     <ScrollView>
-    <View style={{ paddingLeft: 10, paddingTop: 10 }}>
+    <View style={{ paddingLeft: 10, paddingTop: 10}}>
       <Text style={{ fontSize: 20, paddingBottom: 10 }}>Register here</Text>
       <Text style={{ fontWeight: "bold", fontSize: 18 }}>First Name</Text>
       <TextInput
@@ -124,6 +124,7 @@ function Registration({ navigation }: Props) {
       value={age}
       />
        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Height</Text>
+       <View style={{flexDirection:"row", gap:5}}>
       <TextInput
         style={{
           borderRadius: 3,
@@ -139,7 +140,27 @@ function Registration({ navigation }: Props) {
       }
       value={height}
       />
+       <TouchableOpacity style={{
+            borderRadius: 3,
+            borderColor: "black",
+            backgroundColor: "lightgrey",
+            padding: 2,
+            borderStyle: "solid",
+            borderWidth: 2,
+            width: "14%",
+          }}><Text style={{textAlign:"center", fontSize:16}}>cm</Text></TouchableOpacity>
+      <TouchableOpacity style={{
+            borderRadius: 3,
+            borderColor: "black",
+            backgroundColor: "lightgrey",
+            padding: 2,
+            borderStyle: "solid",
+            borderWidth: 2,
+            width: "14%",
+          }}><Text style={{textAlign:"center", fontSize:16}}>ft</Text></TouchableOpacity>
+          </View>
        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Weight</Text>
+       <View style={{flexDirection:"row", gap:5}}>
       <TextInput
         style={{
           borderRadius: 3,
@@ -154,7 +175,26 @@ function Registration({ navigation }: Props) {
         }
       }
       value={weight}
-      />
+      /> 
+      <TouchableOpacity style={{
+            borderRadius: 3,
+            borderColor: "black",
+            backgroundColor: "lightgrey",
+            padding: 2,
+            borderStyle: "solid",
+            borderWidth: 2,
+            width: "14%",
+          }}><Text style={{textAlign:"center", fontSize:16}}>kg</Text></TouchableOpacity>
+      <TouchableOpacity style={{
+            borderRadius: 3,
+            borderColor: "black",
+            backgroundColor: "lightgrey",
+            padding: 2,
+            borderStyle: "solid",
+            borderWidth: 2,
+            width: "14%",
+          }}><Text style={{textAlign:"center", fontSize:16}}>lbs</Text></TouchableOpacity>
+          </View>
       <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5 }}>Upload a profile picture</Text>
       <TouchableOpacity style={{
             borderRadius: 3,
@@ -256,8 +296,8 @@ function Registration({ navigation }: Props) {
         </Text>
       </TouchableOpacity>
       {isRegistered ? (
-        <Text>
-          You have successfully registered! Go back to{" "}
+        <View style={{flexDirection:"row"}}>
+          <Text>You have successfully registered! Go back to the{" "}</Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Login");
@@ -265,9 +305,10 @@ function Registration({ navigation }: Props) {
               setPassword('')
             }}
           >
-            <Text>Login</Text>
+            <Text style={{fontWeight:"bold"}}>login {""}</Text>
           </TouchableOpacity>
-        </Text>
+          <Text>page</Text>
+        </View>
       ) : null}
     </View>
     </ScrollView>
