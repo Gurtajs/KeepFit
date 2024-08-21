@@ -8,11 +8,11 @@ import {
   patchUser
 } from "../apiRequests";
 
+
 type Props = NativeStackScreenProps<RootStackParamList, "UserDetails">;
 
 export default function UserDetails({ navigation }: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
-
   const [firstName, setFirstName] = useState((userDetails as any).firstName);
   const [lastName, setLastName] = useState((userDetails as any).lastName);
   const [age, setAge] = useState((userDetails as any).age);
@@ -44,7 +44,7 @@ export default function UserDetails({ navigation }: Props) {
       <View style={{ flex: 1, marginLeft:10, marginTop:15}}>
        <View style={{borderWidth: 2, borderColor: "darkgrey", borderStyle: "solid", borderRadius:5, width: "60%"}}>
         <Text style={{ fontSize: 16 }}> First name </Text>
-        <TextInput
+        <TextInput style={{paddingLeft:4}}
           onChangeText={(text) => setFirstName(text)}
           value={firstName}
         />
@@ -55,7 +55,7 @@ export default function UserDetails({ navigation }: Props) {
 
         <View style={{borderWidth: 2, borderColor: "darkgrey", borderStyle: "solid", borderRadius:5, width: "60%"}}>
         <Text style={{ fontSize: 16 }}> Last name </Text>
-        <TextInput
+        <TextInput style={{paddingLeft:4}}
           onChangeText={(text) => setLastName(text)}
           value={lastName}
         />
@@ -66,7 +66,7 @@ export default function UserDetails({ navigation }: Props) {
 
         <View style={{borderWidth: 2, borderColor: "darkgrey", borderStyle: "solid", borderRadius:5, width: "60%"}}>
         <Text style={{ fontSize: 16 }}> Age </Text>
-        <TextInput onChangeText={(text) => setAge(text)} value={age.toString()} />
+        <TextInput style={{paddingLeft:4}} onChangeText={(text) => setAge(text)} value={age.toString()} />
         </View>
         <TouchableOpacity onPress={editUserAge}>
           <Text style={{marginBottom:15}}>Edit</Text>
@@ -74,7 +74,10 @@ export default function UserDetails({ navigation }: Props) {
 
         <View style={{borderWidth: 2, borderColor: "darkgrey", borderStyle: "solid", borderRadius:5, width: "60%"}}>
         <Text style={{ fontSize: 16 }}> Height </Text>
-        <TextInput onChangeText={(text) => setHeight(text)} value={height.toString()} />
+        <View style={{flexDirection:"row", alignItems:"center", gap:3}}>
+        <TextInput style={{paddingLeft:4}} onChangeText={(text) => setHeight(text)} value={height}/> 
+        <Text>{(userDetails as any).heightUnit}</Text>
+        </View>
         </View>
         <TouchableOpacity onPress={editUserHeight}>
           <Text style={{marginBottom:15}}>Edit</Text>
@@ -82,7 +85,10 @@ export default function UserDetails({ navigation }: Props) {
 
         <View style={{borderWidth: 2, borderColor: "darkgrey", borderStyle: "solid", borderRadius:5, width: "60%"}}>
         <Text style={{ fontSize: 16 }}> Weight </Text>
-        <TextInput onChangeText={(text) => setWeight(text)} value={weight.toString()} />
+        <View style={{flexDirection:"row", alignItems:"center"}}>
+        <TextInput style={{paddingLeft:4}} onChangeText={(text) => setWeight(text)} value={weight.toString()} />
+        <Text style={{marginLeft:2}}>{(userDetails as any).weightUnit}</Text>
+        </View>
         </View>
         <TouchableOpacity onPress={editUserWeight}>
           <Text style={{marginBottom:15}}>Edit</Text>
