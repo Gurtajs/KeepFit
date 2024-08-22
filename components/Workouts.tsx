@@ -66,6 +66,12 @@ export default function Workouts({ navigation }: Props) {
         setWorkouts([response, ...workouts]);
       });
     }
+    setValue(null)
+    setExerciseName("")
+    setWeight("")
+    setSets("")
+    setReps("")
+    setWorkoutDate("")
   };
 
   const openCalendar = () => {

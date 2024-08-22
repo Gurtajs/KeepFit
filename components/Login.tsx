@@ -18,12 +18,8 @@ function Login({ navigation }: Props) {
   const handleSignIn = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
-        console.log("logged in");
         const user = userCredential.user;
         navigation.navigate("Home");
-
-    
       })
       .catch((error) => {
         Alert.alert(error.message);

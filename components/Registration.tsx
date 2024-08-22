@@ -41,9 +41,22 @@ function Registration({ navigation }: Props) {
   const [isPressedFt, setIsPressedFt] = useState(false)
   const [isPressedKg, setIsPressedKg] = useState(false)
   const [isPressedLbs, setIsPressedLbs] = useState(false)
-
+  const [firstNameError, setFirstNameError] = useState(false)
+  const [lastNameError, setLastNameError] = useState(false)
+  const [ageError, setAgeError] = useState(false)
   const handleCreateAccount = () => {
-    if (password === checkPassword) {
+
+    if (!firstName) {
+      setFirstNameError(true)
+    }
+    if (!lastName) {
+      setLastNameError(true)
+    }
+    if (!age) {
+      setAgeError(true)
+    }
+    
+    if (password === checkPassword && password.match(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}\[\]:;<>,.?/~_+\-=|\\]).{8,32}$/)) {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed up
@@ -95,7 +108,7 @@ function Registration({ navigation }: Props) {
     <ScrollView>
       <View style={{ paddingLeft: 10, paddingTop: 10 }}>
         <Text style={{ fontSize: 20, paddingBottom: 10 }}>Register here</Text>
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>First Name</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 18 }}>First Name<Text style={{color:'red'}}>*</Text></Text>
         <TextInput
           style={{
             borderRadius: 3,
@@ -111,7 +124,8 @@ function Registration({ navigation }: Props) {
           }}
           value={firstName}
         />
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Last Name</Text>
+        {firstNameError ? <Text style={{color:'red'}}>First name cannot be blank</Text> : null}
+        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Last Name<Text style={{color:'red'}}>*</Text></Text>
         <TextInput
           style={{
             borderRadius: 3,
@@ -127,7 +141,8 @@ function Registration({ navigation }: Props) {
           }}
           value={lastName}
         />
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Age</Text>
+          {lastNameError ? <Text style={{color:'red'}}>Last name cannot be blank</Text> : null}
+        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Age<Text style={{color:'red'}}>*</Text></Text>
         <TextInput
           style={{
             borderRadius: 3,
@@ -143,6 +158,7 @@ function Registration({ navigation }: Props) {
           }}
           value={age}
         />
+          {ageError ? <Text style={{color:'red'}}>Age cannot be blank</Text> : null}
         <Text style={{ fontWeight: "bold", fontSize: 18 }}>Height</Text>
         <View style={{ flexDirection: "row", gap: 5 }}>
           <TextInput
@@ -162,11 +178,11 @@ function Registration({ navigation }: Props) {
           />
           <TouchableOpacity
             style={isPressedCm? {borderRadius: 3,
-              borderColor: "red",
+              borderColor: "lightblue",
               backgroundColor: "lightgrey",
               padding: 2,
               borderStyle: "solid",
-              borderWidth: 2,
+              borderWidth: 5,
               width: "14%",
             }: {
               borderRadius: 3,
@@ -187,11 +203,11 @@ function Registration({ navigation }: Props) {
           </TouchableOpacity>
           <TouchableOpacity
             style={isPressedFt? {borderRadius: 3,
-              borderColor: "red",
+              borderColor: "lightblue",
               backgroundColor: "lightgrey",
               padding: 2,
               borderStyle: "solid",
-              borderWidth: 2,
+              borderWidth: 5,
               width: "14%",
             }:{
               borderRadius: 3,
@@ -230,11 +246,11 @@ function Registration({ navigation }: Props) {
           />
           <TouchableOpacity
             style={isPressedKg? {borderRadius: 3,
-              borderColor: "red",
+              borderColor: "lightblue",
               backgroundColor: "lightgrey",
               padding: 2,
               borderStyle: "solid",
-              borderWidth: 2,
+              borderWidth: 5,
               width: "14%",
             }:{
               borderRadius: 3,
@@ -255,11 +271,11 @@ function Registration({ navigation }: Props) {
           </TouchableOpacity>
           <TouchableOpacity
             style={isPressedLbs? {borderRadius: 3,
-              borderColor: "red",
+              borderColor: "lightblue",
               backgroundColor: "lightgrey",
               padding: 2,
               borderStyle: "solid",
-              borderWidth: 2,
+              borderWidth: 5,
               width: "14%",
             }:{
               borderRadius: 3,
@@ -316,7 +332,7 @@ function Registration({ navigation }: Props) {
           <ImageViewer selectedImage={selectedImage} />
         </TouchableOpacity>
 
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Email</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Email<Text style={{color:'red'}}>*</Text></Text>
         <TextInput
           style={{
             borderRadius: 3,
@@ -333,7 +349,7 @@ function Registration({ navigation }: Props) {
           placeholder="Enter your email"
         />
         <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5 }}>
-          Password
+          Password<Text style={{color:'red'}}>*</Text>
         </Text>
         <TextInput
           style={{
@@ -352,7 +368,7 @@ function Registration({ navigation }: Props) {
           placeholder="Enter your password"
         />
         <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5 }}>
-          Enter your password again
+          Enter your password again<Text style={{color:'red'}}>*</Text>
         </Text>
         <TextInput
           secureTextEntry={true}
@@ -370,6 +386,7 @@ function Registration({ navigation }: Props) {
           value={checkPassword}
           placeholder="Enter your password again"
         />
+        {password && !password.match(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}\[\]:;<>,.?/~_+\-=|\\]).{8,32}$/) ?<View><Text style={{ color: "red" }}>Password must be:</Text><Text style={{ color: "red" }}>at least 8 characters in length and no more than 32</Text><Text style={{ color: "red" }}>at least one upper case and lower case letter</Text><Text style={{ color: "red" }}>at least one upper case and lower case letter</Text></View>:null}
         {password !== checkPassword &&
         password.length &&
         checkPassword.length ? (
