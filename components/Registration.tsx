@@ -105,10 +105,10 @@ function Registration({ navigation }: Props) {
   };
 
   return (
-    <ScrollView>
-      <View style={{ paddingLeft: 10, paddingTop: 10 }}>
-        <Text style={{ fontSize: 20, paddingBottom: 10 }}>Register here</Text>
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>First Name<Text style={{color:'red'}}>*</Text></Text>
+    <ScrollView style={{flex:1}}>
+      <View style={{ paddingLeft: 10, paddingTop: 10, height: '100%', backgroundColor:'#121212', flex:1}}>
+        <Text style={{ fontSize: 20, paddingBottom: 10, color:'#FAF9F6'}}>Register here</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 18, color:'#FAF9F6' }}>First Name<Text style={{color:'red'}}>*</Text></Text>
         <TextInput
           style={{
             borderRadius: 3,
@@ -117,15 +117,18 @@ function Registration({ navigation }: Props) {
             borderStyle: "solid",
             borderWidth: 2,
             width: "60%",
+            color:'#FAF9F6',
+       
           }}
           placeholder="Enter your first name"
+          placeholderTextColor={'#FAF9F6'}
           onChangeText={(text) => {
             setFirstName(text);
           }}
           value={firstName}
         />
         {firstNameError ? <Text style={{color:'red'}}>First name cannot be blank</Text> : null}
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Last Name<Text style={{color:'red'}}>*</Text></Text>
+        <Text style={{ fontWeight: "bold", fontSize: 18, color:'#FAF9F6' }}>Last Name<Text style={{color:'red'}}>*</Text></Text>
         <TextInput
           style={{
             borderRadius: 3,
@@ -134,15 +137,17 @@ function Registration({ navigation }: Props) {
             borderStyle: "solid",
             borderWidth: 2,
             width: "60%",
+            color:'#FAF9F6',
           }}
           placeholder="Enter your last name"
+          placeholderTextColor={'#FAF9F6'}
           onChangeText={(text) => {
             setLastName(text);
           }}
           value={lastName}
         />
           {lastNameError ? <Text style={{color:'red'}}>Last name cannot be blank</Text> : null}
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Age<Text style={{color:'red'}}>*</Text></Text>
+        <Text style={{ fontWeight: "bold", fontSize: 18,  color:'#FAF9F6'}}>Age<Text style={{color:'red'}}>*</Text></Text>
         <TextInput
           style={{
             borderRadius: 3,
@@ -151,15 +156,17 @@ function Registration({ navigation }: Props) {
             borderStyle: "solid",
             borderWidth: 2,
             width: "60%",
+            color:'#FAF9F6',
           }}
           placeholder="Enter your age"
+          placeholderTextColor={'#FAF9F6'}
           onChangeText={(text) => {
             setAge(text);
           }}
           value={age}
         />
           {ageError ? <Text style={{color:'red'}}>Age cannot be blank</Text> : null}
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Height</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 18,  color:'#FAF9F6' }}>Height</Text>
         <View style={{ flexDirection: "row", gap: 5 }}>
           <TextInput
             style={{
@@ -169,8 +176,10 @@ function Registration({ navigation }: Props) {
               borderStyle: "solid",
               borderWidth: 2,
               width: "60%",
+              color:'#FAF9F6',
             }}
             placeholder="Enter your height (e.g. 5'11&quot;)"
+            placeholderTextColor={'#FAF9F6'}
             onChangeText={(text) => {
               setHeight(text);
             }}
@@ -227,7 +236,7 @@ function Registration({ navigation }: Props) {
             <Text style={{ textAlign: "center", fontSize: 16 }}>ft</Text>
           </TouchableOpacity>
         </View>
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Weight</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 18,  color:'#FAF9F6' }}>Weight</Text>
         <View style={{ flexDirection: "row", gap: 5 }}>
           <TextInput
             style={{
@@ -237,8 +246,10 @@ function Registration({ navigation }: Props) {
               borderStyle: "solid",
               borderWidth: 2,
               width: "60%",
+              color:'#FAF9F6',
             }}
             placeholder="Enter your weight"
+            placeholderTextColor={'#FAF9F6'}
             onChangeText={(text) => {
               setWeight(text);
             }}
@@ -295,7 +306,7 @@ function Registration({ navigation }: Props) {
             <Text style={{ textAlign: "center", fontSize: 16 }}>lbs</Text>
           </TouchableOpacity>
         </View>
-        <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5 }}>
+        <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5,  color:'#FAF9F6'}}>
           Upload a profile picture
         </Text>
         <TouchableOpacity
@@ -332,7 +343,7 @@ function Registration({ navigation }: Props) {
           <ImageViewer selectedImage={selectedImage} />
         </TouchableOpacity>
 
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>Email<Text style={{color:'red'}}>*</Text></Text>
+        <Text style={{ fontWeight: "bold", fontSize: 18,  color:'#FAF9F6' }}>Email<Text style={{color:'red'}}>*</Text></Text>
         <TextInput
           style={{
             borderRadius: 3,
@@ -341,14 +352,16 @@ function Registration({ navigation }: Props) {
             borderStyle: "solid",
             borderWidth: 2,
             width: "60%",
+            color:'#FAF9F6',
           }}
           onChangeText={(text) => {
             setEmail(text);
           }}
           value={email}
           placeholder="Enter your email"
+          placeholderTextColor={'#FAF9F6'}
         />
-        <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5 }}>
+        <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5,  color:'#FAF9F6' }}>
           Password<Text style={{color:'red'}}>*</Text>
         </Text>
         <TextInput
@@ -359,6 +372,7 @@ function Registration({ navigation }: Props) {
             borderStyle: "solid",
             borderWidth: 2,
             width: "60%",
+            color:'#FAF9F6',
           }}
           secureTextEntry={true}
           onChangeText={(text) => {
@@ -366,8 +380,9 @@ function Registration({ navigation }: Props) {
           }}
           value={password}
           placeholder="Enter your password"
+          placeholderTextColor={'#FAF9F6'}
         />
-        <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5 }}>
+        <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5,  color:'#FAF9F6' }}>
           Enter your password again<Text style={{color:'red'}}>*</Text>
         </Text>
         <TextInput
@@ -379,12 +394,14 @@ function Registration({ navigation }: Props) {
             borderStyle: "solid",
             borderWidth: 2,
             width: "60%",
+            color:'#FAF9F6',
           }}
           onChangeText={(text) => {
             setCheckPassword(text);
           }}
           value={checkPassword}
           placeholder="Enter your password again"
+          placeholderTextColor={'#FAF9F6'}
         />
         {password && !password.match(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}\[\]:;<>,.?/~_+\-=|\\]).{8,32}$/) ?<View><Text style={{ color: "red" }}>Password must be:</Text><Text style={{ color: "red" }}>at least 8 characters in length and no more than 32</Text><Text style={{ color: "red" }}>at least one upper case and lower case letter</Text><Text style={{ color: "red" }}>at least one upper case and lower case letter</Text></View>:null}
         {password !== checkPassword &&
@@ -413,7 +430,7 @@ function Registration({ navigation }: Props) {
         </TouchableOpacity>
         {isRegistered ? (
           <View style={{ flexDirection: "row" }}>
-            <Text>You have successfully registered! Go back to the </Text>
+            <Text style={{color:'#FAF9F6'}}>You have successfully registered! Go back to the </Text>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("Login");
@@ -421,9 +438,9 @@ function Registration({ navigation }: Props) {
                 setPassword("");
               }}
             >
-              <Text style={{ fontWeight: "bold" }}>login {""}</Text>
+              <Text style={{ fontWeight: "bold", color:'#FAF9F6'  }}>login {""}</Text>
             </TouchableOpacity>
-            <Text>page</Text>
+            <Text style={{color:'#FAF9F6'}}>page</Text>
           </View>
         ) : null}
       </View>

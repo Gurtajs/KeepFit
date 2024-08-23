@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert, Image } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthContext } from "./AuthContext";
@@ -33,8 +33,11 @@ function Login({ navigation }: Props) {
   };
 
   return (
-    <View style={{ paddingLeft: 10, paddingTop: 10 }}>
-      <Text style={{ fontWeight: "bold", fontSize: 18 }}>Email</Text>
+    <View style={{ paddingTop: "40%", backgroundColor:'#121212', height:'100%'}}>
+      <Image source={require('../assets/images/logo.png')} style={{height:'20%', width:'90%', alignSelf:"center"}}/>
+      <View style={{alignSelf:"center"}}>
+        <View style={{paddingBottom: 5}}>
+      <Text style={{ fontWeight: "bold", fontSize: 18, color:'#FAF9F6' }}>Email</Text>
       <TextInput
         style={{
           borderRadius: 3,
@@ -42,15 +45,19 @@ function Login({ navigation }: Props) {
           padding: 2,
           borderStyle: "solid",
           borderWidth: 2,
-          width: "60%",
+          width: 180,
+          color:'#FAF9F6',
+          paddingLeft:5
         }}
         onChangeText={(text) => {
           setEmail(text);
         }}
         value={email}
         placeholder="Enter your email"
+        placeholderTextColor={'#FAF9F6'}
       />
-      <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5 }}>
+      </View>
+      <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5, color:'#FAF9F6' }}>
         Password
       </Text>
       <TextInput
@@ -61,14 +68,18 @@ function Login({ navigation }: Props) {
           padding: 2,
           borderStyle: "solid",
           borderWidth: 2,
-          width: "60%",
+          width: 180,
+          paddingLeft:5,
+          color:'#FAF9F6',
         }}
         onChangeText={(text) => {
           setPassword(text);
         }}
         value={password}
         placeholder="Enter your password"
+        placeholderTextColor={'#FAF9F6'}
       />
+      <View style={{alignItems:"center"}}>
       <TouchableOpacity style={{ paddingTop: 10 }} onPress={handleSignIn}>
         <Text
           style={{
@@ -79,7 +90,7 @@ function Login({ navigation }: Props) {
             padding: 2,
             borderStyle: "solid",
             borderWidth: 2,
-            width: "14%",
+            width: 160,
             textAlign: "center",
           }}
         >
@@ -87,8 +98,10 @@ function Login({ navigation }: Props) {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleRegistration}>
-        <Text style={{ fontSize: 14 }}>Not a user? Register</Text>
+        <Text style={{ fontSize: 14, color:'#FAF9F6' }}>Not a user? Register</Text>
       </TouchableOpacity>
+      </View>
+      </View>
     </View>
   );
 }
