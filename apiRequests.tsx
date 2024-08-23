@@ -18,7 +18,10 @@ export function postUser(
     )
     .then((response) => {
       return response.data;
-    });
+    })
+    .catch((error) =>{
+      console.log(error)
+    })
 }
 
 export function getUserDetails(email: string) {
@@ -90,6 +93,9 @@ export function postWorkout(muscleGroup: string, exerciseName: string, weight: s
     }
   ).then((response) => {
     return response.data
+  })
+  .catch((error) =>{
+    console.log(error)
   })
 }
 

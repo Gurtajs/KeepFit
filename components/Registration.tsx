@@ -41,13 +41,13 @@ function Registration({ navigation }: Props) {
   const [isPressedFt, setIsPressedFt] = useState(false)
   const [isPressedKg, setIsPressedKg] = useState(false)
   const [isPressedLbs, setIsPressedLbs] = useState(false)
-  const [firstNameError, setFirstNameError] = useState(false)
+  const [firstNameError, setFirstNameError] = useState("")
   const [lastNameError, setLastNameError] = useState(false)
   const [ageError, setAgeError] = useState(false)
   const handleCreateAccount = () => {
 
     if (!firstName) {
-      setFirstNameError(true)
+      setFirstNameError("Exercise name cannot be blank")
     }
     if (!lastName) {
       setLastNameError(true)
@@ -56,7 +56,7 @@ function Registration({ navigation }: Props) {
       setAgeError(true)
     }
     
-    if (password === checkPassword && password.match(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}\[\]:;<>,.?/~_+\-=|\\]).{8,32}$/)) {
+    if (password === checkPassword && password.match(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}\[\]:;<>,.?/~_+\-=|\\]).{8,32}$/) && firstName && lastName && age ) {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed up
