@@ -1,15 +1,16 @@
 import { useState, useContext } from "react";
 import { UserContext } from "./UserContext";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View, Image } from "react-native";
 import { Footer } from "./Footer";
 import type { RootStackParamList } from "../app/index";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { patchUser } from "../apiRequests";
-
+import { ImageContext } from "./ImageContext";
 type Props = NativeStackScreenProps<RootStackParamList, "UserDetails">;
 
 export default function UserDetails({ navigation }: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
+  const {selectedImage, setSelectedImage} = useContext(ImageContext)
   const [firstName, setFirstName] = useState((userDetails as any).firstName);
   const [lastName, setLastName] = useState((userDetails as any).lastName);
   const [age, setAge] = useState((userDetails as any).age);
@@ -62,15 +63,19 @@ export default function UserDetails({ navigation }: Props) {
   };
 
   return (
-    <>
-      <View style={{ flex: 1, marginLeft: 10, marginTop: 15 }}>
+    <View style={{flex:1}}>
+      <View style={{ flex: 1, marginTop: 15, alignSelf:"center" }}>
+          <Image
+            source={{ uri: (userDetails as any).profilePicture }}
+            style={{ width: 150, height: 150, borderRadius:100, marginTop:20, marginBottom:30, alignSelf:"center" }}
+          />
         <View
           style={{
             borderWidth: 2,
             borderColor: "darkgrey",
             borderStyle: "solid",
             borderRadius: 5,
-            width: "60%",
+            width: 300,
           }}
         >
           <Text style={{ fontSize: 16 }}> First name </Text>
@@ -80,7 +85,7 @@ export default function UserDetails({ navigation }: Props) {
             value={firstName}
           />
         </View>
-        <View style={{ flexDirection: "row", gap: 25 }}>
+        <View style={{ flexDirection: "row", gap: 25}}>
           <TouchableOpacity onPress={editUserFirstName}>
             <Text style={{ marginBottom: 15 }}>Edit</Text>
           </TouchableOpacity>
@@ -93,7 +98,7 @@ export default function UserDetails({ navigation }: Props) {
             borderColor: "darkgrey",
             borderStyle: "solid",
             borderRadius: 5,
-            width: "60%",
+            width: 300,
           }}
         >
           <Text style={{ fontSize: 16 }}> Last name </Text>
@@ -116,7 +121,7 @@ export default function UserDetails({ navigation }: Props) {
             borderColor: "darkgrey",
             borderStyle: "solid",
             borderRadius: 5,
-            width: "60%",
+            width: 300,
           }}
         >
           <Text style={{ fontSize: 16 }}> Age </Text>
@@ -139,7 +144,7 @@ export default function UserDetails({ navigation }: Props) {
             borderColor: "darkgrey",
             borderStyle: "solid",
             borderRadius: 5,
-            width: "60%",
+            width: 300,
           }}
         >
           <Text style={{ fontSize: 16 }}> Height </Text>
@@ -165,7 +170,7 @@ export default function UserDetails({ navigation }: Props) {
             borderColor: "darkgrey",
             borderStyle: "solid",
             borderRadius: 5,
-            width: "60%",
+            width: 300,
           }}
         >
           <Text style={{ fontSize: 16 }}> Weight </Text>
@@ -202,6 +207,6 @@ export default function UserDetails({ navigation }: Props) {
       >
         <Footer navigation={navigation} />
       </View>
-    </>
+    </View>
   );
 }

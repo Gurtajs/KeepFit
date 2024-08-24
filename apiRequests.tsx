@@ -11,10 +11,11 @@ export function postUser(
   weight: string,
   weightUnit: string
 ) {
+  console.log("api",profilePicture)
   return axios
     .post(
-      `https://fd30-77-102-154-75.ngrok-free.app/api/users`,
-      { email, firstName, lastName, age, profilePicture, height, heightUnit, weight, weightUnit }
+      `https://88ff-77-102-154-75.ngrok-free.app/api/users`,
+      { email, firstName, lastName, age, profilePicture, weight, weightUnit, height, heightUnit }
     )
     .then((response) => {
       return response.data;
@@ -27,7 +28,7 @@ export function postUser(
 export function getUserDetails(email: string) {
   return axios
     .post(
-      `https://fd30-77-102-154-75.ngrok-free.app/api/users/details`, 
+      `https://88ff-77-102-154-75.ngrok-free.app/api/users/details`, 
       {
         email,
       }
@@ -43,7 +44,7 @@ export function getUserDetails(email: string) {
 export function patchUser(id: number, path: string, value: any) {
   return axios
     .patch(
-      `https://fd30-77-102-154-75.ngrok-free.app/api/users/${id}`,
+      `https://88ff-77-102-154-75.ngrok-free.app/api/users/${id}`,
       [
         {
           "operationType": 0,
@@ -68,7 +69,7 @@ export function patchUser(id: number, path: string, value: any) {
 
 export function getWorkouts() {
   return axios.get(
-    `https://fd30-77-102-154-75.ngrok-free.app/api/workouts`
+    `https://88ff-77-102-154-75.ngrok-free.app/api/workouts`
   ).then((response) => {
     return response.data
   }).catch((error) => {
@@ -78,7 +79,7 @@ export function getWorkouts() {
 
 export function getWorkoutsByUser(id: number) {
   return axios.get(
-    `https://fd30-77-102-154-75.ngrok-free.app/api/users/${id}/workouts`
+    `https://88ff-77-102-154-75.ngrok-free.app/api/users/${id}/workouts`
   ).then((response) => {
     return response.data
   }).catch((error) => {
@@ -88,7 +89,7 @@ export function getWorkoutsByUser(id: number) {
 
 export function postWorkout(muscleGroup: string, exerciseName: string, weight: string, sets: string, reps: string, workoutDate: string, userId: number) {
   return axios.post(
-    `https://fd30-77-102-154-75.ngrok-free.app/api/workouts`, {
+    `https://88ff-77-102-154-75.ngrok-free.app/api/workouts`, {
       muscleGroup, exerciseName, weight, sets, reps, workoutDate, userId
     }
   ).then((response) => {
@@ -100,7 +101,7 @@ export function postWorkout(muscleGroup: string, exerciseName: string, weight: s
 }
 
 export function getMuscleGroups() {
-  return axios.get('https://fd30-77-102-154-75.ngrok-free.app/api/musclegroups').then((response) => {
+  return axios.get('https://88ff-77-102-154-75.ngrok-free.app/api/musclegroups').then((response) => {
     return response.data
   }).catch((error) => {
     console.log(error)
@@ -108,7 +109,7 @@ export function getMuscleGroups() {
 }
 
 export function getUserWorkoutByMuscleGroup(userId: number, muscleGroup: string) {
-  return axios.get(`https://fd30-77-102-154-75.ngrok-free.app/api/users/${userId}/workouts/${muscleGroup}`).then((response) => {
+  return axios.get(`https://88ff-77-102-154-75.ngrok-free.app/api/users/${userId}/workouts/${muscleGroup}`).then((response) => {
     return response.data
   }).catch((error) => {
     console.log(error)
@@ -117,7 +118,7 @@ export function getUserWorkoutByMuscleGroup(userId: number, muscleGroup: string)
 
 export function getWorkoutsByUserDate(id: number, date:string) {
   return axios.get(
-    `https://fd30-77-102-154-75.ngrok-free.app/api/users/${id}/workouts/${date}`
+    `https://88ff-77-102-154-75.ngrok-free.app/api/users/${id}/workouts/${date}`
   ).then((response) => {
     
     return response.data

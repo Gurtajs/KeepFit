@@ -117,6 +117,7 @@ export default function Home({ navigation }: Props) {
                             borderStyle: "solid",
                             borderWidth: 2,
                             width: "70%",
+                            marginBottom: 10,
                             backgroundColor:
                               muscleGroup === "Abdominals"
                                 ? "pink"

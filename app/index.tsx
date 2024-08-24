@@ -8,6 +8,7 @@ import { UserProvider } from "../components/UserContext";
 import UserDetails from "@/components/UserDetails";
 import Workouts from "../components/Workouts"
 import { WorkoutProvider } from "@/components/WorkoutContext";
+import { ImageProvider } from "@/components/ImageContext";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -22,6 +23,7 @@ export default function Index() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
+    <ImageProvider>
     <UserProvider>
     <AuthProvider>
     <WorkoutProvider>
@@ -35,5 +37,6 @@ export default function Index() {
     </WorkoutProvider>
     </AuthProvider>
     </UserProvider>
+    </ImageProvider>
   );
 }
