@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
+  Image
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Footer } from "./Footer";
@@ -22,7 +23,7 @@ import {
 } from "../apiRequests";
 import { useFocusEffect } from "@react-navigation/native";
 import { WorkoutContext } from "./WorkoutContext";
-
+import Header from "./Header";
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 
 export default function Home({ navigation }: Props) {
@@ -58,6 +59,8 @@ export default function Home({ navigation }: Props) {
   }, {});
 
   return (
+    <View style={{flex:1, backgroundColor:'#222222'}}>
+    <Header/>
     <View style={{ paddingBottom: 30, flex: 1, paddingLeft: 5 }}>
   {loading ? (
     <View style={{flex: 1}}>
@@ -69,6 +72,7 @@ export default function Home({ navigation }: Props) {
               marginLeft: 10,
               paddingBottom: 10,
               paddingTop: 5,
+              color:'#FAF9F6'
             }}
           >
             Welcome back {(userDetails as any).firstName}
@@ -79,6 +83,7 @@ export default function Home({ navigation }: Props) {
               marginTop: 10,
               marginLeft: 10,
               marginBottom: 5,
+              color:'#FAF9F6'
             }}
           >
             Your recent workouts:
@@ -170,7 +175,7 @@ export default function Home({ navigation }: Props) {
     </View>
   ) : (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Fetching your data</Text>
+      <Text style={{color:'#FAF9F6'}}>Fetching your data</Text>
       <ActivityIndicator size="large" />
     </View>
   )}
@@ -188,6 +193,7 @@ export default function Home({ navigation }: Props) {
       >
         <Footer navigation={navigation} />
       </View>
+  </View>
   </View>
 )
 }

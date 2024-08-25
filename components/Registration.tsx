@@ -78,11 +78,12 @@ function Registration({ navigation }: Props) {
             lastName,
             age,
             selectedImage,
-            weight,
-            weightUnit,
             height,
-            heightUnit
+            heightUnit,
+            weight,
+            weightUnit
           );
+          setSelectedImage('')
         })
         .catch((error) => {
           Alert.alert(error.message);
@@ -91,7 +92,8 @@ function Registration({ navigation }: Props) {
   };
 
   const takePicture = async () => {
-    let camera = await ImagePicker.launchCameraAsync({})
+    let camera = await ImagePicker.launchCameraAsync({
+      quality: 0.5, })
     if (!camera.canceled) {
       console.log(camera.assets[0].uri)
       setSelectedImage(camera.assets[0].uri);
@@ -112,7 +114,7 @@ function Registration({ navigation }: Props) {
       alert("You did not select any image.");
     }
   };
-
+  
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#121212" }}>
       <View
