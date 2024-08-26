@@ -12,12 +12,17 @@ import {
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../app/index";
 import { Footer } from "./Footer";
-import { getWorkoutsByUserDate, postWorkout } from "../apiRequests";
+import {
+  deleteWorkoutByWorkoutId,
+  getWorkoutsByUserDate,
+  postWorkout,
+} from "../apiRequests";
 import DropDownPicker from "react-native-dropdown-picker";
 import { WorkoutContext } from "./WorkoutContext";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import Header from "./Header";
 type Props = NativeStackScreenProps<RootStackParamList, "Workouts">;
+import DeleteWorkout from "./DeleteWorkout";
 
 export default function Workouts({ navigation }: Props) {
   const { workouts, setWorkouts } = useContext(WorkoutContext);
@@ -45,15 +50,70 @@ export default function Workouts({ navigation }: Props) {
   const [repsIncorrect, setRepsIncorrect] = useState(false);
   const [setsIncorrect, setSetsIncorrect] = useState(false);
   const [weightIncorrect, setWeightIncorrect] = useState(false);
-
   const [items, setItems] = useState([
-    { label: "Abdominals", value: "Abdominals" },
-    { label: "Back", value: "Back" },
-    { label: "Biceps", value: "Biceps" },
-    { label: "Chest", value: "Chest" },
-    { label: "Legs", value: "Legs" },
-    { label: "Shoulders", value: "Shoulders" },
-    { label: "Triceps", value: "Triceps" },
+    {
+      label: "Abdominals",
+      value: "Abdominals",
+      labelStyle: {},
+      containerStyle: {
+        backgroundColor: "pink",
+        height: 40,
+      },
+    },
+    {
+      label: "Back",
+      value: "Back",
+      labelStyle: {},
+      containerStyle: {
+        backgroundColor: "#d4d4f7",
+        height: 40,
+      },
+    },
+    {
+      label: "Biceps",
+      value: "Biceps",
+      labelStyle: {},
+      containerStyle: {
+        backgroundColor: "#ff8f66",
+        height: 40,
+      },
+    },
+    {
+      label: "Chest",
+      value: "Chest",
+      labelStyle: {},
+      containerStyle: {
+        backgroundColor: "plum",
+        height: 40,
+      },
+    },
+    {
+      label: "Legs",
+      value: "Legs",
+      labelStyle: {},
+      containerStyle: {
+        backgroundColor: "lightgreen",
+        height: 40,
+      },
+    },
+    {
+      label: "Shoulders",
+      value: "Shoulders",
+      labelStyle: {},
+      containerStyle: {
+        backgroundColor: "#ffffcc",
+        height: 40,
+      },
+    },
+    {
+      label: "Triceps",
+      value: "Triceps",
+      labelStyle: {},
+      containerStyle: {
+        backgroundColor: "mediumturquoise",
+        height: 40,
+      },
+    },
   ]);
 
   const showWorkoutForm = () => {
@@ -124,7 +184,6 @@ export default function Workouts({ navigation }: Props) {
       ).then((response) => {
         setWorkouts([response, ...workouts]);
       });
-
       setValue("");
       setExerciseName("");
       setWeight("");
@@ -193,7 +252,7 @@ export default function Workouts({ navigation }: Props) {
   });
 
   return (
-    <View style={{ flex: 1, backgroundColor:'#222222' }}>
+    <View style={{ flex: 1, backgroundColor: "#222222" }}>
       <Header />
       <View style={{ paddingBottom: 30, flex: 1, paddingLeft: 5 }}>
         <View style={{ paddingBottom: 10 }}>
@@ -204,7 +263,7 @@ export default function Workouts({ navigation }: Props) {
                 marginLeft: 10,
                 marginTop: 5,
                 marginBottom: 10,
-                color:'#FAF9F6'
+                color: "#FAF9F6",
               }}
             >
               Workouts
@@ -221,7 +280,7 @@ export default function Workouts({ navigation }: Props) {
                   fontSize: 16,
                   padding: 2,
                   textAlign: "center",
-                  color:'#FAF9F6'
+                  color: "#FAF9F6",
                 }}
               >
                 Add workout
@@ -229,12 +288,16 @@ export default function Workouts({ navigation }: Props) {
             </TouchableOpacity>
             <View style={{ flexDirection: "row", paddingTop: 5, gap: 15 }}>
               <TouchableOpacity onPress={openCalendar}>
-                <Text style={{ marginLeft: 10, fontSize: 16, color:'#FAF9F6'}}>
+                <Text
+                  style={{ marginLeft: 10, fontSize: 16, color: "#FAF9F6" }}
+                >
                   Show workouts by date
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={showAllWorkouts}>
-                <Text style={{ fontSize: 16, marginLeft: 10, color:'#FAF9F6'}}>
+                <Text
+                  style={{ fontSize: 16, marginLeft: 10, color: "#FAF9F6" }}
+                >
                   Show all workouts
                 </Text>
               </TouchableOpacity>
@@ -259,12 +322,26 @@ export default function Workouts({ navigation }: Props) {
                   setValue={setValue}
                   setItems={setItems}
                   placeholder="Select a muscle group"
-                  containerStyle={{ width: 300, marginLeft: 8,  }}
+                  containerStyle={{ width: 250, marginLeft: 8 }}
                   style={{
                     width: 200,
                     marginTop: 20,
-                    backgroundColor: "lightgray",
-                    
+                    backgroundColor:
+                      value === "Abdominals"
+                        ? "pink"
+                        : "white" && value === "Back"
+                        ? "#d4d4f7"
+                        : "white" && value === "Biceps"
+                        ? "#ff8f66"
+                        : "white" && value === "Chest"
+                        ? "plum"
+                        : "white" && value === "Legs"
+                        ? "lightgreen"
+                        : "white" && value === "Shoulders"
+                        ? "#ffffcc"
+                        : "white" && value === "Triceps"
+                        ? "mediumturquoise"
+                        : "white",
                   }}
                   listMode="SCROLLVIEW"
                 />
@@ -276,7 +353,7 @@ export default function Workouts({ navigation }: Props) {
                     }}
                     value={exerciseName}
                     placeholder="Enter exercise name"
-                    placeholderTextColor={'#FAF9F6'}
+                    placeholderTextColor={"#FAF9F6"}
                   />
                   {exerciseNameError ? (
                     <Text style={{ color: "red" }}>
@@ -289,9 +366,9 @@ export default function Workouts({ navigation }: Props) {
                     }}
                     value={weight}
                     placeholder="Enter weight lifted"
-                    placeholderTextColor={'#FAF9F6'}
+                    placeholderTextColor={"#FAF9F6"}
                   />
-                  {weightIncorrect ? (
+                  {weight && weightIncorrect ? (
                     <Text style={{ color: "red" }}>
                       Number must be inserted
                     </Text>
@@ -302,7 +379,7 @@ export default function Workouts({ navigation }: Props) {
                     }}
                     value={sets}
                     placeholder="Enter number of sets"
-                    placeholderTextColor={'#FAF9F6'}
+                    placeholderTextColor={"#FAF9F6"}
                   />
                   {setsError ? (
                     <Text style={{ color: "red" }}>
@@ -320,7 +397,7 @@ export default function Workouts({ navigation }: Props) {
                     }}
                     value={reps}
                     placeholder="Enter number of reps"
-                    placeholderTextColor={'#FAF9F6'}
+                    placeholderTextColor={"#FAF9F6"}
                   />
                   {repsError ? (
                     <Text style={{ color: "red" }}>
@@ -338,7 +415,7 @@ export default function Workouts({ navigation }: Props) {
                     }}
                     value={workoutDate}
                     placeholder="Enter workout date DD-MM-YYYY"
-                    placeholderTextColor={'#FAF9F6'}
+                    placeholderTextColor={"#FAF9F6"}
                   />
                   {workoutDateError ? (
                     <Text style={{ color: "red" }}>
@@ -363,7 +440,7 @@ export default function Workouts({ navigation }: Props) {
                       fontSize: 12,
                       padding: 2,
                       textAlign: "center",
-                      color:'#FAF9F6'
+                      color: "#FAF9F6",
                     }}
                   >
                     Add
@@ -380,6 +457,7 @@ export default function Workouts({ navigation }: Props) {
                       fontSize: 16,
                       marginLeft: 10,
                       marginTop: 10,
+                      color: "#FAF9F6",
                     }}
                   >
                     {dates[8] +
@@ -395,7 +473,13 @@ export default function Workouts({ navigation }: Props) {
                   </Text>
                   {Object.keys(groupBy[dates]).map((muscleGroup: any) => (
                     <View key={`${dates}-${muscleGroup}`}>
-                      <Text style={{ marginLeft: 10, fontSize: 16 }}>
+                      <Text
+                        style={{
+                          marginLeft: 10,
+                          fontSize: 16,
+                          color: "#FAF9F6",
+                        }}
+                      >
                         {muscleGroup ? (
                           muscleGroup
                         ) : (
@@ -404,58 +488,103 @@ export default function Workouts({ navigation }: Props) {
                       </Text>
                       <View style={{ marginBottom: 10, marginLeft: 10 }}>
                         {groupBy[dates][muscleGroup].map((workout: any) => (
-                          <View
-                            style={{
-                              borderRadius: 3,
-                              borderColor: "black",
-                              padding: 2,
-                              borderStyle: "solid",
-                              borderWidth: 2,
-                              width: "70%",
-                              marginBottom: 10,
-                              backgroundColor:
-                                muscleGroup === "Abdominals"
-                                  ? "pink"
-                                  : "white" && muscleGroup === "Back"
-                                  ? "lavender"
-                                  : "white" && muscleGroup === "Biceps"
-                                  ? "lightcoral"
-                                  : "white" && muscleGroup === "Chest"
-                                  ? "plum"
-                                  : "white" && muscleGroup === "Legs"
-                                  ? "lightgreen"
-                                  : "white" && muscleGroup === "Shoulders"
-                                  ? "lightyellow"
-                                  : "white" && muscleGroup === "Triceps"
-                                  ? "mediumturquoise"
-                                  : "white",
-                            }}
-                            key={workout.workoutId}
-                          >
-                            <Text
-                              style={{ marginTop: 2, color:'#FAF9F6' }}
+                          <View style={{ flex: 1 }}>
+                            <View
+                              style={{
+                                borderColor: "black",
+                                borderStyle: "solid",
+                                borderWidth: 2,
+                                borderRadius: 8,
+                                width: "70%",
+                                marginBottom: 10,
+                                paddingTop: 25,
+                                paddingLeft: 5,
+                                padding: 2,
+                                backgroundColor:
+                                  muscleGroup === "Abdominals"
+                                    ? "pink"
+                                    : "white" && muscleGroup === "Back"
+                                    ? "#d4d4f7"
+                                    : "white" && muscleGroup === "Biceps"
+                                    ? "#ff8f66"
+                                    : "white" && muscleGroup === "Chest"
+                                    ? "plum"
+                                    : "white" && muscleGroup === "Legs"
+                                    ? "lightgreen"
+                                    : "white" && muscleGroup === "Shoulders"
+                                    ? "#ffffcc"
+                                    : "white" && muscleGroup === "Triceps"
+                                    ? "mediumturquoise"
+                                    : "white",
+                              }}
                               key={workout.workoutId}
                             >
-                              {workout.exerciseName}
-                            </Text>
-                            {weight.length > 0 ? (
-                              <Text style={{color:'#FAF9F6'}}>Weight: {workout.weight}kg</Text>
-                            ) : null}
-                            <Text style={{color:'#FAF9F6'}}>Sets: {workout.sets}</Text>
-                            <Text style={{color:'#FAF9F6'}}>Reps: {workout.reps}</Text>
-                            <Text style={{ marginBottom: 10, color:'#FAF9F6' }}>
-                              Workout date:{" "}
-                              {workout.workoutDate[8] +
-                                workout.workoutDate[9] +
-                                "-" +
-                                workout.workoutDate[5] +
-                                workout.workoutDate[6] +
-                                "-" +
-                                workout.workoutDate[0] +
-                                workout.workoutDate[1] +
-                                workout.workoutDate[2] +
-                                workout.workoutDate[3]}
-                            </Text>
+                              <View
+                                style={{
+                                  backgroundColor:
+                                    muscleGroup === "Abdominals"
+                                      ? "#ffb3bf"
+                                      : "white" && muscleGroup === "Back"
+                                      ? "#bfbff2"
+                                      : "white" && muscleGroup === "Biceps"
+                                      ? "#ff7f50"
+                                      : "white" && muscleGroup === "Chest"
+                                      ? "#d68fd6"
+                                      : "white" && muscleGroup === "Legs"
+                                      ? "#64e764"
+                                      : "white" && muscleGroup === "Shoulders"
+                                      ? "#ffff99"
+                                      : "white" && muscleGroup === "Triceps"
+                                      ? "#2eb8b3"
+                                      : "white",
+                                  position: "absolute",
+                                  paddingBottom: 2,
+                                  top: 0,
+                                  right: 0,
+                                  left: 0,
+                                  margin: 0,
+                                  padding: 0,
+                                  paddingLeft: 5,
+                                  borderStyle: "solid",
+                                  borderTopLeftRadius: 4,
+                                  borderTopRightRadius: 4,
+                                }}
+                              >
+                                <Text
+                                  style={{ marginTop: 2, fontWeight: "bold" }}
+                                  key={workout.workoutId}
+                                >
+                                  {workout.exerciseName}
+                                </Text>
+                              </View>
+
+                              {!weight.length ? (
+                                <Text style={{}}>
+                                  Weight: {workout.weight}kg
+                                </Text>
+                              ) : null}
+                              <Text style={{}}>Sets: {workout.sets}</Text>
+                              <Text style={{}}>Reps: {workout.reps}</Text>
+                              <Text style={{ marginBottom: 2 }}>
+                                Workout date:{" "}
+                                {workout.workoutDate[8] +
+                                  workout.workoutDate[9] +
+                                  "-" +
+                                  workout.workoutDate[5] +
+                                  workout.workoutDate[6] +
+                                  "-" +
+                                  workout.workoutDate[0] +
+                                  workout.workoutDate[1] +
+                                  workout.workoutDate[2] +
+                                  workout.workoutDate[3]}
+                              </Text>
+                            </View>
+                            <DeleteWorkout
+                              workouts={workouts}
+                              setWorkouts={setWorkouts}
+                              workout={workout}
+                              userDetails={userDetails}
+                            />
                           </View>
                         ))}
                       </View>
@@ -472,6 +601,7 @@ export default function Workouts({ navigation }: Props) {
                       fontSize: 16,
                       marginLeft: 10,
                       marginTop: 10,
+                      color: "#FAF9F6",
                     }}
                   >
                     {dates[8] +
@@ -487,7 +617,13 @@ export default function Workouts({ navigation }: Props) {
                   </Text>
                   {Object.keys(groupByDate[dates]).map((muscleGroup: any) => (
                     <View key={`${dates}-${muscleGroup}`}>
-                      <Text style={{ marginLeft: 10, fontSize: 16 }}>
+                      <Text
+                        style={{
+                          marginLeft: 10,
+                          fontSize: 16,
+                          color: "#FAF9F6",
+                        }}
+                      >
                         {muscleGroup ? (
                           muscleGroup
                         ) : (
@@ -525,7 +661,7 @@ export default function Workouts({ navigation }: Props) {
                             key={workout.workoutId}
                           >
                             <Text
-                              style={{ marginTop: 2, color:'#FAF9F6' }}
+                              style={{ marginTop: 2 }}
                               key={workout.workoutId}
                             >
                               {workout.exerciseName}
@@ -558,7 +694,12 @@ export default function Workouts({ navigation }: Props) {
             ) : (
               <View>
                 <Text
-                  style={{ flex: 1, textAlign: "center", marginTop: "50%", color:'#FAF9F6' }}
+                  style={{
+                    flex: 1,
+                    textAlign: "center",
+                    marginTop: "50%",
+                    color: "#FAF9F6",
+                  }}
                 >
                   No workouts to display
                 </Text>

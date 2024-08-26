@@ -93,7 +93,7 @@ export default function Home({ navigation }: Props) {
             .map((dates: string) => (
               <View key={dates}>
                 <Text
-                  style={{ fontWeight: "bold", marginLeft: 6, fontSize: 16 }}
+                  style={{ fontWeight: "bold", marginLeft: 6, fontSize: 16, color:'#FAF9F6' }}
                 >
                   {" " +
                     (dates[8] +
@@ -109,7 +109,7 @@ export default function Home({ navigation }: Props) {
                 </Text>
                 {Object.keys(groupBy[dates]).map((muscleGroup: any) => (
                   <View key={`${dates}-${muscleGroup}`}>
-                    <Text style={{ marginLeft: 10, fontSize: 16 }}>
+                    <Text style={{ marginLeft: 10, fontSize: 16, color:'#FAF9F6' }}>
                       {muscleGroup}
                     </Text>
                     <View style={{ marginBottom: 10, marginLeft: 10 }}>

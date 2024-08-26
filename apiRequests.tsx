@@ -120,8 +120,17 @@ export function getWorkoutsByUserDate(id: number, date:string) {
   return axios.get(
     `https://bb15-77-102-154-75.ngrok-free.app/api/users/${id}/workouts/${date}`
   ).then((response) => {
-    
     return response.data
+  }).catch((error) => {
+    console.log(error)
+  })
+}
+
+export function deleteWorkoutByWorkoutId(userId: number, workoutId: number) {
+  return axios.delete(
+    `https://bb15-77-102-154-75.ngrok-free.app/api/users/${userId}/workouts/${workoutId}`
+  ).then((response) =>{
+    console.log(response)
   }).catch((error) => {
     console.log(error)
   })
@@ -136,5 +145,6 @@ export default {
   postWorkout,
   getMuscleGroups,
   getUserWorkoutByMuscleGroup,
-  getWorkoutsByUserDate
+  getWorkoutsByUserDate,
+  deleteWorkoutByWorkoutId
 };
