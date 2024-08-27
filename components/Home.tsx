@@ -126,7 +126,7 @@ const groupBy = workouts.reduce((acc, obj) => {
                     </Text>
                     <View style={{ marginBottom: 10, marginLeft: 10 }}>
                       {groupBy[dates][muscleGroup].map((workout: any) => (
-                        <View style={{ flex: 1, marginBottom:20 }} key={workout.workoutId}>
+                        <View style={{ flex: 1}} key={workout.workoutId}>
                           <View
                             style={{
                               borderColor: "black",

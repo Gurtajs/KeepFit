@@ -42,6 +42,9 @@ export function getUserDetails(email: string) {
 }
 
 export function patchUser(id: number, path: string, value: any) {
+  console.log("api", id)
+  console.log("api", path)
+  console.log("api", value)
   return axios
     .patch(
       `https://bb15-77-102-154-75.ngrok-free.app/api/users/${id}`,

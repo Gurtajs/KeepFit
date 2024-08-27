@@ -1,4 +1,4 @@
-import { useState, useContext, useRef } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
 import { UserContext } from "./UserContext";
 import {
   Text,
@@ -9,6 +9,10 @@ import {
   ScrollView,
   Animated,
   Dimensions,
+  Modal,
+  Pressable,
+  TurboModuleRegistry,
+  Touchable,
 } from "react-native";
 import { Footer } from "./Footer";
 import type { RootStackParamList } from "../app/index";
@@ -16,6 +20,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { patchUser } from "../apiRequests";
 import { ImageContext } from "./ImageContext";
 import Header from "./Header";
+import * as ImagePicker from "expo-image-picker";
 type Props = NativeStackScreenProps<RootStackParamList, "UserDetails">;
 
 export default function UserDetails({ navigation }: Props) {
@@ -23,6 +28,7 @@ export default function UserDetails({ navigation }: Props) {
   const [firstName, setFirstName] = useState((userDetails as any).firstName);
   const [lastName, setLastName] = useState((userDetails as any).lastName);
   const [age, setAge] = useState((userDetails as any).age);
+  const [selectedImage, setSelectedImage] = useState((userDetails as any).profilePicture);
   const [height, setHeight] = useState((userDetails as any).height);
   const [weight, setWeight] = useState((userDetails as any).weight);
   const [editedFirstName, setEditedFirstName] = useState(false);
@@ -71,22 +77,136 @@ export default function UserDetails({ navigation }: Props) {
     }, 1200);
   };
 
+  useEffect(() => { 
+    if (selectedImage) {
+    patchUser((userDetails as any).userId, "profilePicture", selectedImage).then(() => {
+      setUserDetails({ ...userDetails, profilePicture: selectedImage });
+    })
+    }
+  }, [selectedImage])
+ 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openPopUp = () => {
+    setModalVisible(true);
+  };
+
+  const takePicture = async () => {
+    let camera = await ImagePicker.launchCameraAsync({
+      quality: 0.5,
+    });
+    if (!camera.canceled) {
+      setSelectedImage(camera.assets[0].uri);
+    }
+  };
+
+  const pickImageAsync = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.canceled) {
+      console.log(selectedImage)
+      setSelectedImage(result.assets[0].uri);
+    } else {
+      alert("You did not select any image.");
+    }
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>
       <ScrollView>
         <Header />
         <View style={{ flex: 1 }}>
           <View style={{ flex: 1, marginTop: 20, alignSelf: "center" }}>
-            <Image
-              source={{ uri: (userDetails as any).profilePicture }}
+            <View
               style={{
-                width: 150,
-                height: 150,
-                borderRadius: 100,
-                marginBottom: 15,
+                marginBottom: 20,
                 alignSelf: "center",
               }}
-            />
+            >
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor: "#121212",
+                      borderRadius: 20,
+                      padding: 25,
+                      alignItems: "center",
+                      shadowRadius: 4,
+                      elevation: 5,
+                      width: "50%",
+                      marginTop:60
+                    }}
+                  >
+                    <TouchableOpacity
+                      style={{
+                        borderRadius: 3,
+                        borderColor: "black",
+                        backgroundColor: "lightgrey",
+                        padding: 2,
+                        borderStyle: "solid",
+                        borderWidth: 2,
+                        width: 150,
+                        marginBottom: 10,
+                      }}
+                      onPress={takePicture}
+                    >
+                      <Text style={{ fontSize: 18, textAlign: "center" }}>
+                        Take photo
+                      </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={{
+                        borderRadius: 3,
+                        borderColor: "black",
+                        backgroundColor: "lightgrey",
+                        padding: 2,
+                        borderStyle: "solid",
+                        borderWidth: 2,
+                        width: 150,
+                      }}
+                      onPress={pickImageAsync}
+                    >
+                      <Text style={{ fontSize: 18, textAlign: "center" }}>
+                        Select image from Gallery
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                      <Text style={{color: "#FAF9F6", marginTop:10}}>Close popup</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
+
+              <TouchableOpacity onPress={openPopUp}>
+                <Image
+                  source={{ uri: (userDetails as any).profilePicture }}
+                  style={{
+                    width: 150,
+                    height: 150,
+                    borderRadius: 100,
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
             <View style={{ marginBottom: 40 }}>
               <View
                 style={{
@@ -206,7 +326,7 @@ export default function UserDetails({ navigation }: Props) {
                   <Text style={{ color: "#FAF9F6" }}>Height updated!</Text>
                 ) : null}
               </View>
-
+              
               <View
                 style={{
                   borderWidth: 2,

@@ -62,7 +62,7 @@ export default function AllWorkouts({
           </Text>
           <View style={{ marginBottom: 10, marginLeft: 10 }}>
             {groupBy[dates][muscleGroup].map((workout: any) => (
-              <View style={{ flex: 1, marginBottom:20 }} key={workout.workoutId}>
+              <View style={{ flex: 1}} key={workout.workoutId}>
                 <View
                   style={{
                     borderColor: "black",
@@ -131,8 +131,7 @@ export default function AllWorkouts({
                       {workout.exerciseName}
                     </Text>
                   </View>
-                  <Text style={{}}>Weight: {workout.weight}kg</Text>
-
+                  {workout.weight>0 ? <Text style={{}}>Weight: {workout.weight}kg</Text> : <Text style={{}}>Weight: - kg</Text> }
                   <Text style={{}}>Sets: {workout.sets}</Text>
                   <Text style={{}}>Reps: {workout.reps}</Text>
                   <Text style={{ marginBottom: 2 }}>

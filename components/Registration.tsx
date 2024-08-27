@@ -23,9 +23,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "Registration">;
 function Registration({ navigation }: Props) {
   const { email, setEmail, password, setPassword, auth } =
     useContext(AuthContext);
-
-  // const {firstName, setFirstName} = useContext(RegistrationContext)
-
+  
   const [isRegistered, setIsRegistered] = useState(false);
   const [checkPassword, setCheckPassword] = useState("");
   const {selectedImage, setSelectedImage} = useContext(ImageContext)
