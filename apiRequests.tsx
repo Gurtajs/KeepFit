@@ -130,7 +130,7 @@ export function deleteWorkoutByWorkoutId(userId: number, workoutId: number) {
   return axios.delete(
     `https://bb15-77-102-154-75.ngrok-free.app/api/users/${userId}/workouts/${workoutId}`
   ).then((response) =>{
-    console.log(response)
+    console.log("deleted")
   }).catch((error) => {
     console.log(error)
   })

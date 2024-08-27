@@ -1,5 +1,6 @@
 import { deleteWorkoutByWorkoutId } from "../apiRequests"
 import { TouchableOpacity, View, Text } from "react-native"
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 interface deleteProps {
   userDetails: object,
@@ -9,15 +10,21 @@ interface deleteProps {
 }
 
 export default function DeleteWorkout({userDetails, setWorkouts, workouts, workout}: deleteProps) {
+  
+  
   const deleteWorkout = () => {
-    deleteWorkoutByWorkoutId((userDetails as any).userId, (workouts as any).workoutId)
-    setWorkouts(workouts.filter((workoutToDelete) => {workoutToDelete.workoutId!=(workout as any).workoutId}))
+    deleteWorkoutByWorkoutId((userDetails as any).userId, (workout as any).workoutId)
+    const updatedWorkouts = workouts.filter((singleWorkout) => 
+    singleWorkout.workoutId!==(workout as any).workoutId
+    )
+    setWorkouts(updatedWorkouts)
   }
 
 
   return (
-    <View>
-      <TouchableOpacity onPress={deleteWorkout}><Text>Delete Workout</Text></TouchableOpacity>
+    <View style={{position:"absolute", bottom:0, right:0}}>
+      <TouchableOpacity onPress={deleteWorkout}><MaterialIcons name="delete" size={24} color="black" />
+      </TouchableOpacity>
     </View>
   )
 
