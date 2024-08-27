@@ -61,12 +61,13 @@ const groupBy = workouts.reduce((acc, obj) => {
 
   return (
     <View style={{flex:1, backgroundColor:'#222222'}}>
-    <Header/>
-    <View style={{ paddingBottom: 30, flex: 1, paddingLeft: 5 }}>
+    <View style={{ paddingBottom: 30, flex: 1}}>
   {loading ? (
     <View style={{flex: 1}}>
       <View style={{ paddingBottom: 10 }}>
         <ScrollView>
+        <Header/>
+        <View style={{paddingLeft:5}}>
           <Text
             style={{
               fontSize: 18,
@@ -226,6 +227,7 @@ const groupBy = workouts.reduce((acc, obj) => {
                 ))}
               </View>
             ))}
+            </View>
         </ScrollView>
       </View>
       

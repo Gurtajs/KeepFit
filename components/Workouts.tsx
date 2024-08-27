@@ -115,6 +115,7 @@ export default function Workouts({ navigation }: Props) {
       },
     },
   ]);
+  const [showsAllWorkoutsText, setShowsAllWorkoutsText] = useState(true)
 
   const showWorkoutForm = () => {
     setShowForm((showForm) => !showForm);
@@ -195,6 +196,7 @@ export default function Workouts({ navigation }: Props) {
 
   const openCalendar = () => {
     setShowCalendar((showCalendar) => !showCalendar);
+    setShowsAllWorkoutsText(true)
   };
 
   const formatDate =
@@ -237,7 +239,9 @@ export default function Workouts({ navigation }: Props) {
   }, [selected]);
 
   const showAllWorkouts = () => {
+    setShowCalendar(false)
     setShowWorkouts(true);
+    setShowsAllWorkoutsText(false)
   };
 
   const allDates: any[] = [];
@@ -253,10 +257,11 @@ export default function Workouts({ navigation }: Props) {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>
-      <Header />
-      <View style={{ paddingBottom: 30, flex: 1, paddingLeft: 5 }}>
-        <View style={{ paddingBottom: 10 }}>
-          <ScrollView>
+      <View style={{ paddingBottom: 30, flex: 1}}>
+        <View style={{ paddingBottom: 10, flex:1}}>
+          <ScrollView >
+          <Header />
+          <View style={{paddingLeft:5}}>
             <Text
               style={{
                 fontSize: 18,
@@ -295,11 +300,11 @@ export default function Workouts({ navigation }: Props) {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={showAllWorkouts}>
-                <Text
+                {showsAllWorkoutsText ? <Text
                   style={{ fontSize: 16, marginLeft: 10, color: "#FAF9F6" }}
                 >
                   Show all workouts
-                </Text>
+                </Text> : null}
               </TouchableOpacity>
             </View>
             {showCalendar ? (
@@ -471,6 +476,7 @@ export default function Workouts({ navigation }: Props) {
                 </Text>
               </View>
             )}
+            </View>
           </ScrollView>
         </View>
 

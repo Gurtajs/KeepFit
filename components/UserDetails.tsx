@@ -97,6 +97,7 @@ export default function UserDetails({ navigation }: Props) {
     });
     if (!camera.canceled) {
       setSelectedImage(camera.assets[0].uri);
+      setModalVisible(false)
     }
   };
 
@@ -109,8 +110,8 @@ export default function UserDetails({ navigation }: Props) {
       quality: 1,
     });
     if (!result.canceled) {
-      console.log(selectedImage)
       setSelectedImage(result.assets[0].uri);
+      setModalVisible(false)
     } else {
       alert("You did not select any image.");
     }
@@ -190,7 +191,7 @@ export default function UserDetails({ navigation }: Props) {
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-                      <Text style={{color: "#FAF9F6", marginTop:10}}>Close popup</Text>
+                      <Text style={{color: "#FAF9F6", marginTop:10}}>Close</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
