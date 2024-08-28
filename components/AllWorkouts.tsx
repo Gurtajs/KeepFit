@@ -27,8 +27,8 @@ export default function AllWorkouts({
   const { workouts, setWorkouts } = useContext(WorkoutContext);
 
   return (
-    Object.keys(groupBy).map((dates: any) => (
-    <View key={dates}>
+    Object.keys(groupBy).map((dates: any, i) => (
+    <View key={dates} style={{backgroundColor:i%2==0?"#2e2e2e":"#222222", marginTop:10}}>
       <Text
         style={{
           fontWeight: "bold",
@@ -58,7 +58,7 @@ export default function AllWorkouts({
               color: "#FAF9F6",
             }}
           >
-            {muscleGroup ? muscleGroup : <Text>Other exercises</Text>}
+           {muscleGroup}  
           </Text>
           <View style={{ marginBottom: 10, marginLeft: 10 }}>
             {groupBy[dates][muscleGroup].map((workout: any) => (
@@ -89,7 +89,8 @@ export default function AllWorkouts({
                         ? "#ffffcc"
                         : "white" && muscleGroup === "Triceps"
                         ? "mediumturquoise"
-                        : "white",
+                        : "white" && muscleGroup === "Other"
+                        ? "#ffd280" : "white",
                   }}
                   key={workout.workoutId}
                 >
@@ -110,7 +111,8 @@ export default function AllWorkouts({
                           ? "#ffff99"
                           : "white" && muscleGroup === "Triceps"
                           ? "#2eb8b3"
-                          : "white",
+                          : "white" && muscleGroup === "Other"
+                          ? "#ffc14d" : "white",
                       position: "absolute",
                       paddingBottom: 2,
                       top: 0,
@@ -160,6 +162,8 @@ export default function AllWorkouts({
         </View>
       ))}
     </View>
+    
   ))
+
 )
 }

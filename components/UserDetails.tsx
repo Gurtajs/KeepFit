@@ -28,7 +28,9 @@ export default function UserDetails({ navigation }: Props) {
   const [firstName, setFirstName] = useState((userDetails as any).firstName);
   const [lastName, setLastName] = useState((userDetails as any).lastName);
   const [age, setAge] = useState((userDetails as any).age);
-  const [selectedImage, setSelectedImage] = useState((userDetails as any).profilePicture);
+  const [selectedImage, setSelectedImage] = useState(
+    (userDetails as any).profilePicture
+  );
   const [height, setHeight] = useState((userDetails as any).height);
   const [weight, setWeight] = useState((userDetails as any).weight);
   const [editedFirstName, setEditedFirstName] = useState(false);
@@ -77,14 +79,18 @@ export default function UserDetails({ navigation }: Props) {
     }, 1200);
   };
 
-  useEffect(() => { 
+  useEffect(() => {
     if (selectedImage) {
-    patchUser((userDetails as any).userId, "profilePicture", selectedImage).then(() => {
-      setUserDetails({ ...userDetails, profilePicture: selectedImage });
-    })
+      patchUser(
+        (userDetails as any).userId,
+        "profilePicture",
+        selectedImage
+      ).then(() => {
+        setUserDetails({ ...userDetails, profilePicture: selectedImage });
+      });
     }
-  }, [selectedImage])
- 
+  }, [selectedImage]);
+
   const [modalVisible, setModalVisible] = useState(false);
 
   const openPopUp = () => {
@@ -97,7 +103,7 @@ export default function UserDetails({ navigation }: Props) {
     });
     if (!camera.canceled) {
       setSelectedImage(camera.assets[0].uri);
-      setModalVisible(false)
+      setModalVisible(false);
     }
   };
 
@@ -111,7 +117,7 @@ export default function UserDetails({ navigation }: Props) {
     });
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
-      setModalVisible(false)
+      setModalVisible(false);
     } else {
       alert("You did not select any image.");
     }
@@ -153,7 +159,7 @@ export default function UserDetails({ navigation }: Props) {
                       shadowRadius: 4,
                       elevation: 5,
                       width: "50%",
-                      marginTop:60
+                      marginTop: 60,
                     }}
                   >
                     <TouchableOpacity
@@ -190,8 +196,12 @@ export default function UserDetails({ navigation }: Props) {
                         Select image from Gallery
                       </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-                      <Text style={{color: "#FAF9F6", marginTop:10}}>Close</Text>
+                    <TouchableOpacity
+                      onPress={() => setModalVisible(!modalVisible)}
+                    >
+                      <Text style={{ color: "#FAF9F6", marginTop: 10 }}>
+                        Close
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -312,9 +322,11 @@ export default function UserDetails({ navigation }: Props) {
                     onChangeText={(text) => setHeight(text)}
                     value={height}
                   />
-                  <Text style={{ color: "#FAF9F6" }}>
-                    {(userDetails as any).heightUnit}
-                  </Text>
+                  {(userDetails as any).heightUnit === "cm" ? (
+                    <Text style={{ color: "#FAF9F6" }}>
+                      (userDetails as any).heightUnit{" "}
+                    </Text>
+                  ) : null}
                 </View>
               </View>
               <View style={{ flexDirection: "row", gap: 25 }}>
@@ -327,7 +339,7 @@ export default function UserDetails({ navigation }: Props) {
                   <Text style={{ color: "#FAF9F6" }}>Height updated!</Text>
                 ) : null}
               </View>
-              
+
               <View
                 style={{
                   borderWidth: 2,

@@ -31,13 +31,13 @@ export default function Home({ navigation }: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
   const { email, setEmail } = useContext(AuthContext);
   const { workouts, setWorkouts } = useContext(WorkoutContext);
-  const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
       getUserDetails(email).then((response) => {
         setUserDetails(response);
-        setLoading(true);
+        setLoaded(true);
       });
     }, [])
   );
@@ -46,7 +46,7 @@ export default function Home({ navigation }: Props) {
     if ((userDetails as any).userId) {
       getWorkoutsByUser((userDetails as any).userId).then((response) => {
         setWorkouts(response);
-        setLoading(true);
+        setLoaded(true);
       });
     }
   }, [userDetails]);
@@ -62,7 +62,7 @@ const groupBy = workouts.reduce((acc, obj) => {
   return (
     <View style={{flex:1, backgroundColor:'#222222'}}>
     <View style={{ paddingBottom: 30, flex: 1}}>
-  {loading ? (
+  {loaded ? (
     <View style={{flex: 1}}>
       <View style={{ paddingBottom: 10 }}>
         <ScrollView>
@@ -92,8 +92,8 @@ const groupBy = workouts.reduce((acc, obj) => {
           </Text>
           {Object.keys(groupBy)
             .slice(0, 3)
-            .map((dates: any) => (
-              <View key={dates}>
+            .map((dates: any, i) => (
+              <View key={dates} style={{backgroundColor:i%2==0?"#2e2e2e":"#222222", marginTop:10}}>
                 <Text
                   style={{
                     fontWeight: "bold",

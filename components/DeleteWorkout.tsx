@@ -23,7 +23,7 @@ export default function DeleteWorkout({userDetails, setWorkouts, workouts, worko
 
   return (
     <View style={{position:"absolute", bottom:0, right:0}}>
-      <TouchableOpacity onPress={deleteWorkout}><MaterialIcons name="delete" size={24} color="black" />
+      <TouchableOpacity onPress={deleteWorkout}><MaterialIcons name="delete" size={22} color="black" />
       </TouchableOpacity>
     </View>
   )

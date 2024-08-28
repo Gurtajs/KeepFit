@@ -114,11 +114,21 @@ export default function Workouts({ navigation }: Props) {
         height: 40,
       },
     },
+    {
+      label: "Other",
+      value: "Other",
+      labelStyle: {},
+      containerStyle: {
+        backgroundColor: "#ffd280",
+        height: 40,
+      },
+    },
   ]);
   const [showsAllWorkoutsText, setShowsAllWorkoutsText] = useState(true)
-
+  const [loaded, setLoaded] = useState(false);
   const showWorkoutForm = () => {
     setShowForm((showForm) => !showForm);
+    setShowCalendar(false)
   };
 
   const addWorkout = () => {
@@ -234,6 +244,7 @@ export default function Workouts({ navigation }: Props) {
         `${selected}T00:00:00`
       ).then((response: any) => {
         setWorkoutsByDate(response);
+        setLoaded(true)
       });
     }
   }, [selected]);
@@ -261,6 +272,7 @@ export default function Workouts({ navigation }: Props) {
         <View style={{ paddingBottom: 10, flex:1}}>
           <ScrollView >
           <Header />
+          
           <View style={{paddingLeft:5}}>
             <Text
               style={{
@@ -346,7 +358,8 @@ export default function Workouts({ navigation }: Props) {
                         ? "#ffffcc"
                         : "white" && value === "Triceps"
                         ? "mediumturquoise"
-                        : "white",
+                        : "white" && value === "Other"
+                        ? "#ffd280" : "white",
                   }}
                   listMode="SCROLLVIEW"
                 />
@@ -460,8 +473,10 @@ export default function Workouts({ navigation }: Props) {
             ) : null}
             {showWorkouts ? (
               <AllWorkouts workoutsByDate={workoutsByDate} groupBy={groupBy}/>
-            ) : workoutsByDate.length > 0 ? (
+            ) : loaded ? workoutsByDate.length > 0 ? (
+              <View style={{backgroundColor:"#222222"}}>
               <AllWorkouts workoutsByDate={workoutsByDate} groupBy={groupByDate}/>
+              </View>
             ) : (
               <View>
                 <Text
@@ -475,7 +490,10 @@ export default function Workouts({ navigation }: Props) {
                   No workouts to display
                 </Text>
               </View>
-            )}
+            ) :  <View style={{ flex: 1, marginTop:"50%", alignItems: "center" }}>
+            <Text style={{color:'#FAF9F6'}}>Fetching your data</Text>
+            <ActivityIndicator size="large" />
+          </View>}
             </View>
           </ScrollView>
         </View>
@@ -494,7 +512,9 @@ export default function Workouts({ navigation }: Props) {
         >
           <Footer navigation={navigation} />
         </View>
+        
       </View>
+      
     </View>
   );
 }
