@@ -3,10 +3,12 @@ import { View, Text } from "react-native";
 import DeleteWorkout from "./DeleteWorkout";
 import { WorkoutContext } from "./WorkoutContext";
 import { UserContext } from "./UserContext";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface WorkoutsProps {
   workoutsByDate: Array<any>;
   groupBy: Array<any>;
+  starRating: number;
 }
 
 interface Workout {
@@ -22,13 +24,19 @@ interface Workout {
 export default function AllWorkouts({
   workoutsByDate,
   groupBy,
+  starRating,
 }: WorkoutsProps) {
   const { userDetails, setUserDetails } = useContext(UserContext);
   const { workouts, setWorkouts } = useContext(WorkoutContext);
 
-  return (
-    Object.keys(groupBy).map((dates: any, i) => (
-    <View key={dates} style={{backgroundColor:i%2==0?"#2e2e2e":"#222222", marginTop:10}}>
+  return Object.keys(groupBy).map((dates: any, i) => (
+    <View
+      key={dates}
+      style={{
+        backgroundColor: i % 2 == 0 ? "#2e2e2e" : "#222222",
+        marginTop: 10,
+      }}
+    >
       <Text
         style={{
           fontWeight: "bold",
@@ -58,11 +66,11 @@ export default function AllWorkouts({
               color: "#FAF9F6",
             }}
           >
-           {muscleGroup}  
+            {muscleGroup}
           </Text>
           <View style={{ marginBottom: 10, marginLeft: 10 }}>
             {groupBy[dates][muscleGroup].map((workout: any) => (
-              <View style={{ flex: 1}} key={workout.workoutId}>
+              <View style={{ flex: 1 }} key={workout.workoutId}>
                 <View
                   style={{
                     borderColor: "black",
@@ -90,7 +98,8 @@ export default function AllWorkouts({
                         : "white" && muscleGroup === "Triceps"
                         ? "mediumturquoise"
                         : "white" && muscleGroup === "Other"
-                        ? "#ffd280" : "white",
+                        ? "#ffd280"
+                        : "white",
                   }}
                   key={workout.workoutId}
                 >
@@ -112,7 +121,8 @@ export default function AllWorkouts({
                           : "white" && muscleGroup === "Triceps"
                           ? "#2eb8b3"
                           : "white" && muscleGroup === "Other"
-                          ? "#ffc14d" : "white",
+                          ? "#ffc14d"
+                          : "white",
                       position: "absolute",
                       paddingBottom: 2,
                       top: 0,
@@ -133,7 +143,11 @@ export default function AllWorkouts({
                       {workout.exerciseName}
                     </Text>
                   </View>
-                  {workout.weight>0 ? <Text style={{}}>Weight: {workout.weight}kg</Text> : <Text style={{}}>Weight: - kg</Text> }
+                  {workout.weight > 0 ? (
+                    <Text style={{}}>Weight: {workout.weight}kg</Text>
+                  ) : (
+                    <Text style={{}}>Weight: - kg</Text>
+                  )}
                   <Text style={{}}>Sets: {workout.sets}</Text>
                   <Text style={{}}>Reps: {workout.reps}</Text>
                   <Text style={{ marginBottom: 2 }}>
@@ -150,11 +164,16 @@ export default function AllWorkouts({
                       workout.workoutDate[3]}
                   </Text>
                   <DeleteWorkout
-                  workouts={workouts}
-                  setWorkouts={setWorkouts}
-                  workout={workout}
-                  userDetails={userDetails}
-                />
+                    workouts={workouts}
+                    setWorkouts={setWorkouts}
+                    workout={workout}
+                    userDetails={userDetails}
+                  />
+                  <View style={{flexDirection:"row"}}>
+                 {Array.from({length: workout.rating}).map((_, index) => (
+                   <Ionicons name={"star"} size={24} color="#ffb300" key={index}/>
+                 ))}
+                  </View>
                 </View>
               </View>
             ))}
@@ -162,8 +181,5 @@ export default function AllWorkouts({
         </View>
       ))}
     </View>
-    
-  ))
-
-)
+  ));
 }

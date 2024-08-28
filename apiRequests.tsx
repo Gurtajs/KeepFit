@@ -87,10 +87,10 @@ export function getWorkoutsByUser(id: number) {
   })
 }
 
-export function postWorkout(muscleGroup: string, exerciseName: string, weight: string, sets: string, reps: string, workoutDate: string, userId: number) {
+export function postWorkout(muscleGroup: string, exerciseName: string, weight: string, sets: string, reps: string, workoutDate: string, rating: number, userId: number) {
   return axios.post(
     `https://bb15-77-102-154-75.ngrok-free.app/api/workouts`, {
-      muscleGroup, exerciseName, weight, sets, reps, workoutDate, userId
+      muscleGroup, exerciseName, weight, sets, reps, workoutDate, rating, userId
     }
   ).then((response) => {
     return response.data

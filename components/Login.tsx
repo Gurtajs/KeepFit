@@ -13,6 +13,7 @@ import { AuthContext } from "./AuthContext";
 import { UserContext } from "./UserContext";
 import type { RootStackParamList } from "../app/index";
 import { getUserDetails } from "../apiRequests";
+import StarRating from "./StarRating";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 

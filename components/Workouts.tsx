@@ -24,6 +24,7 @@ import Header from "./Header";
 type Props = NativeStackScreenProps<RootStackParamList, "Workouts">;
 import DeleteWorkout from "./DeleteWorkout";
 import AllWorkouts from "./AllWorkouts";
+import StarRating from "./StarRating";
 
 export default function Workouts({ navigation }: Props) {
   const { workouts, setWorkouts } = useContext(WorkoutContext);
@@ -126,6 +127,7 @@ export default function Workouts({ navigation }: Props) {
   ]);
   const [showsAllWorkoutsText, setShowsAllWorkoutsText] = useState(true)
   const [loaded, setLoaded] = useState(false);
+  const [starRating, setStarRating] = useState(0);
   const showWorkoutForm = () => {
     setShowForm((showForm) => !showForm);
     setShowCalendar(false)
@@ -191,6 +193,7 @@ export default function Workouts({ navigation }: Props) {
         sets,
         reps,
         formatDate,
+        starRating,
         (userDetails as any).userId
       ).then((response) => {
         setWorkouts([response, ...workouts]);
@@ -201,12 +204,14 @@ export default function Workouts({ navigation }: Props) {
       setSets("");
       setReps("");
       setWorkoutDate("");
+      setStarRating(0)
     }
   };
 
   const openCalendar = () => {
     setShowCalendar((showCalendar) => !showCalendar);
     setShowsAllWorkoutsText(true)
+    setShowForm(false)
   };
 
   const formatDate =
@@ -253,6 +258,7 @@ export default function Workouts({ navigation }: Props) {
     setShowCalendar(false)
     setShowWorkouts(true);
     setShowsAllWorkoutsText(false)
+    setShowForm(false)
   };
 
   const allDates: any[] = [];
@@ -447,9 +453,10 @@ export default function Workouts({ navigation }: Props) {
                   ) : null}
                   {workoutDateIncorrect ? (
                     <Text style={{ color: "red" }}>
-                      Workout date needs to be in this format DD-MM-YYYY
+                      Workout date needs to be in the format DD-MM-YYYY
                     </Text>
                   ) : null}
+                  <StarRating starRating={starRating} setStarRating={setStarRating}/>
                 </View>
                 <TouchableOpacity onPress={addWorkout}>
                   <Text
@@ -472,10 +479,10 @@ export default function Workouts({ navigation }: Props) {
               </>
             ) : null}
             {showWorkouts ? (
-              <AllWorkouts workoutsByDate={workoutsByDate} groupBy={groupBy}/>
+              <AllWorkouts workoutsByDate={workoutsByDate} groupBy={groupBy} starRating={starRating}/>
             ) : loaded ? workoutsByDate.length > 0 ? (
               <View style={{backgroundColor:"#222222"}}>
-              <AllWorkouts workoutsByDate={workoutsByDate} groupBy={groupByDate}/>
+              <AllWorkouts workoutsByDate={workoutsByDate} groupBy={groupByDate} starRating={starRating}/>
               </View>
             ) : (
               <View>
@@ -512,9 +519,7 @@ export default function Workouts({ navigation }: Props) {
         >
           <Footer navigation={navigation} />
         </View>
-        
-      </View>
-      
+      </View>  
     </View>
   );
 }
