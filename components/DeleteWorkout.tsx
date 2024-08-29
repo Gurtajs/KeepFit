@@ -66,25 +66,39 @@ export default function DeleteWorkout({
             <Text style={{ color: "#FAF9F6" }}>
               Are you sure you want to delete this workout?
             </Text>
-            <View style={{ flexDirection: "row", alignContent: "center", gap:60, marginTop:10 }}>
-            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={{borderRadius: 3,
-                        borderColor: "black",
-                        backgroundColor: "#686868",
-                        padding:5,
-                        borderStyle: "solid"}}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignContent: "center",
+                gap: 60,
+                marginTop: 10,
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => setModalVisible(!modalVisible)}
+                style={{
+                  borderRadius: 3,
+                  borderColor: "black",
+                  backgroundColor: "#686868",
+                  padding: 5,
+                  borderStyle: "solid",
+                }}
+              >
                 <Text style={{ color: "#FAF9F6" }}>Cancel</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={deleteWorkout} style={{
-                        borderRadius: 3,
-                        borderColor: "black",
-                        backgroundColor: "#FF3333",
-                        padding:5,
-                        borderStyle: "solid"   
-                      }}>
+              <TouchableOpacity
+                onPress={deleteWorkout}
+                style={{
+                  borderRadius: 3,
+                  borderColor: "black",
+                  backgroundColor: "#FF3333",
+                  padding: 5,
+                  borderStyle: "solid",
+                }}
+              >
                 <Text
                   style={{
                     color: "#FAF9F6",
-                    
                   }}
                 >
                   Delete

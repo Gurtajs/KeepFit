@@ -5,3 +5,4 @@ This fitness mobile application allows users to log their workouts, track their 
 - Log in to their account
 - Update their profile information on the profile page
 - View their recorded workouts
+- Delete their workouts
