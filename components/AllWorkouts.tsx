@@ -171,7 +171,7 @@ export default function AllWorkouts({
                   />
                   <View style={{flexDirection:"row"}}>
                  {Array.from({length: workout.rating}).map((_, index) => (
-                   <Ionicons name={"star"} size={24} color="#ffb300" key={index}/>
+                   <Ionicons name={"star"} size={24} color="#ffb300" key={index} />
                  ))}
                   </View>
                 </View>

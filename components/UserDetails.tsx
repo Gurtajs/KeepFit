@@ -152,7 +152,7 @@ export default function UserDetails({ navigation }: Props) {
                 >
                   <View
                     style={{
-                      backgroundColor: "#121212",
+                      backgroundColor: "#383838",
                       borderRadius: 20,
                       padding: 25,
                       alignItems: "center",
