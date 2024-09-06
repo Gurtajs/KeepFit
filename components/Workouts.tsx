@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../app/index";
-import { Footer } from "./Footer";
+import Footer from "./Footer";
 import {
   deleteWorkoutByWorkoutId,
   getWorkoutsByUserDate,
@@ -252,7 +252,7 @@ export default function Workouts({ navigation }: Props) {
         setLoaded(true)
       });
     }
-  }, [selected]);
+  }, [selected, workouts]);
 
   const showAllWorkouts = () => {
     setShowCalendar(false)
@@ -504,21 +504,7 @@ export default function Workouts({ navigation }: Props) {
             </View>
           </ScrollView>
         </View>
-
-        <View
-          style={{
-            position: "absolute",
-            bottom: 0,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "flex-end",
-            backgroundColor: "lightblue",
-            left: 0,
-            right: 0,
-          }}
-        >
           <Footer navigation={navigation} />
-        </View>
       </View>  
     </View>
   );

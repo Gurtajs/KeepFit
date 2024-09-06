@@ -9,10 +9,9 @@ type RatingProp = {
 }
 
 export default function StarRating({starRating, setStarRating}: RatingProp) {
-
   return (
     <View>
-      <Text style={{color:"#FAF9F6"}}>Rate your workout </Text>
+      <Text style={{color:"#FAF9F6"}}>Rate your workout:</Text>
       <View style={{ flex: 1, flexDirection: "row", gap: 3, margin:2, marginBottom:7
       }}>
       <TouchableOpacity onPress={() => setStarRating((prevValue)=> prevValue === 0 ? 1 : prevValue === 1 ? 0 : prevValue-prevValue+1)}>
@@ -20,7 +19,6 @@ export default function StarRating({starRating, setStarRating}: RatingProp) {
           name={starRating >= 1 ? "star": "star-outline"}
           size={24}
           color='#ffb300'
-         
         />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setStarRating(2)}>

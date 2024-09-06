@@ -222,7 +222,7 @@ function Registration({ navigation }: Props) {
               isPressedCm
                 ? {
                     borderRadius: 3,
-                    borderColor: "lightblue",
+                    borderColor: "#80bfff",
                     backgroundColor: "lightgrey",
                     padding: 2,
                     borderStyle: "solid",
@@ -252,7 +252,7 @@ function Registration({ navigation }: Props) {
               isPressedFt
                 ? {
                     borderRadius: 3,
-                    borderColor: "lightblue",
+                    borderColor: "#80bfff",
                     backgroundColor: "lightgrey",
                     padding: 2,
                     borderStyle: "solid",
@@ -304,7 +304,7 @@ function Registration({ navigation }: Props) {
               isPressedKg
                 ? {
                     borderRadius: 3,
-                    borderColor: "lightblue",
+                    borderColor: "#80bfff",
                     backgroundColor: "lightgrey",
                     padding: 2,
                     borderStyle: "solid",
@@ -334,7 +334,7 @@ function Registration({ navigation }: Props) {
               isPressedLbs
                 ? {
                     borderRadius: 3,
-                    borderColor: "lightblue",
+                    borderColor: "#80bfff",
                     backgroundColor: "lightgrey",
                     padding: 2,
                     borderStyle: "solid",
@@ -492,7 +492,7 @@ function Registration({ navigation }: Props) {
               at least one upper case and lower case letter
             </Text>
             <Text style={{ color: "red" }}>
-              at least one upper case and lower case letter
+              at least one special character
             </Text>
           </View>
         ) : null}
@@ -510,7 +510,7 @@ function Registration({ navigation }: Props) {
               fontSize: 18,
               borderRadius: 3,
               borderColor: "black",
-              backgroundColor: "lightblue",
+              backgroundColor: "#80bfff",
               padding: 2,
               borderStyle: "solid",
               borderWidth: 2,
