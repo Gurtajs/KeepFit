@@ -11,7 +11,7 @@ import {
   Image,
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Footer } from "./Footer";
+import Footer from "./Footer";
 import type { RootStackParamList } from "../app/index";
 import { AuthContext } from "./AuthContext";
 import {
@@ -179,6 +179,8 @@ export default function Home({ navigation }: Props) {
                                               : "white" &&
                                                 muscleGroup === "Triceps"
                                               ? "mediumturquoise"
+                                              : "white" && muscleGroup === "Other"
+                                              ? "#ffd280"
                                               : "white",
                                         }}
                                         key={workout.workoutId}
@@ -206,6 +208,8 @@ export default function Home({ navigation }: Props) {
                                                 : "white" &&
                                                   muscleGroup === "Triceps"
                                                 ? "#2eb8b3"
+                                                : "white" && muscleGroup === "Other"
+                                                ? "#ffc14d"
                                                 : "white",
                                             position: "absolute",
                                             paddingBottom: 2,
@@ -293,20 +297,7 @@ export default function Home({ navigation }: Props) {
             <ActivityIndicator size="large" />
           </View>
         )}
-        <View
-          style={{
-            position: "absolute",
-            bottom: 0,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "flex-end",
-            backgroundColor: "lightblue",
-            left: 0,
-            right: 0,
-          }}
-        >
           <Footer navigation={navigation} />
-        </View>
       </View>
     </View>
   );

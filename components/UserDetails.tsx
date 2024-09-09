@@ -14,7 +14,7 @@ import {
   TurboModuleRegistry,
   Touchable,
 } from "react-native";
-import { Footer } from "./Footer";
+import Footer from "./Footer";
 import type { RootStackParamList } from "../app/index";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { patchUser } from "../apiRequests";
@@ -375,21 +375,7 @@ export default function UserDetails({ navigation }: Props) {
           </View>
         </View>
       </ScrollView>
-      <View
-        style={{
-          flex: 1,
-          position: "absolute",
-          bottom: 0,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
-          backgroundColor: "lightblue",
-          left: 0,
-          right: 0,
-        }}
-      >
         <Footer navigation={navigation} />
-      </View>
     </View>
   );
 }

@@ -108,7 +108,7 @@ function Login({ navigation }: Props) {
                 fontSize: 18,
                 borderRadius: 3,
                 borderColor: "black",
-                backgroundColor: "lightblue",
+                backgroundColor: "#80bfff",
                 padding: 2,
                 borderStyle: "solid",
                 borderWidth: 2,
