@@ -136,13 +136,13 @@ export function deleteWorkoutByWorkoutId(userId: number, workoutId: number) {
   })
 }
 
-export function postNutritionalGoals(calories: string, protein: string, carbs: string, fats: string) {
+export function postNutritionalGoals(calories: string, protein: string, carbs: string, fat: string, userId: number) {
   return axios.post(
     `https://aa70-77-102-154-75.ngrok-free.app/api/nutrigoals`, {
-      calories, protein, carbs, fats
+      calories, protein, carbs, fat, userId
     }
   ).then((response) =>{
-    console.log(response)
+    return response.data
   }).catch((error) => {
     console.log(error)
   })

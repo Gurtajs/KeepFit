@@ -1,10 +1,11 @@
 import { ScrollView, Text, View, TextInput, TouchableOpacity } from "react-native";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app";
 import { postNutritionalGoals } from "@/apiRequests";
+import { UserContext } from "./UserContext";
 type Props = NativeStackScreenProps<RootStackParamList, "Meals">;
 
 export default function Meals({ navigation }: Props) {
@@ -12,11 +13,15 @@ export default function Meals({ navigation }: Props) {
   const [protein, setProtein] = useState("");
   const [carbs, setCarbs] = useState("");
   const [fats, setFats] = useState("");
-  const [goals, setGoals] = useState([])
-
+  const [goals, setGoals] = useState<any[]>([])
+  const { userDetails, setUserDetails } = useContext(UserContext);
+  
   const addGoals = () => {
-    postNutritionalGoals(calories, protein, carbs, fats)
+    postNutritionalGoals(calories, protein, carbs, fats, (userDetails as any).userId).then((response:any)=> {
+      setGoals([response])
+    })
   }
+  console.log(goals)
 
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>
@@ -89,6 +94,11 @@ export default function Meals({ navigation }: Props) {
                 Enter goals
               </Text>
             </TouchableOpacity>
+            <Text style={{ color: "#FAF9F6"}}>Your goals for today:</Text>
+            <Text style={{ color: "#FAF9F6"}}>{(goals as any)[0].calories} Calories</Text>
+            <Text style={{ color: "#FAF9F6"}}>{(goals as any)[0].protein} Protein</Text>
+            <Text style={{ color: "#FAF9F6"}}>{(goals as any)[0].carbs} Carbs</Text>
+            <Text style={{ color: "#FAF9F6"}}>{(goals as any)[0].fat} Fats</Text>
         </View>
       </ScrollView>
       <Footer navigation={navigation} />
