@@ -142,6 +142,7 @@ export function postNutritionalGoals(calories: string, protein: string, carbs: s
       calories, protein, carbs, fat, userId
     }
   ).then((response) =>{
+    console.log(response.data)
     return response.data
   }).catch((error) => {
     console.log(error)
