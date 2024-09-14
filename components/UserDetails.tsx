@@ -324,7 +324,7 @@ export default function UserDetails({ navigation }: Props) {
                   />
                   {(userDetails as any).heightUnit === "cm" ? (
                     <Text style={{ color: "#FAF9F6" }}>
-                      (userDetails as any).heightUnit{" "}
+                      {(userDetails as any).heightUnit}
                     </Text>
                   ) : null}
                 </View>

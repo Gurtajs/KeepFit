@@ -13,6 +13,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app";
 import { postNutritionalGoals } from "@/apiRequests";
 import { UserContext } from "./UserContext";
+import { Calendar, LocaleConfig } from "react-native-calendars";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Meals">;
 
@@ -23,6 +24,7 @@ export default function Meals({ navigation }: Props) {
   const [fats, setFats] = useState("");
   const [goals, setGoals] = useState<any[]>([]);
   const { userDetails } = useContext(UserContext);
+  const [selected, setSelected] = useState("");
 
   const addGoals = () => {
     postNutritionalGoals(
@@ -59,6 +61,7 @@ export default function Meals({ navigation }: Props) {
       (prevDate) => new Date(prevDate.setDate(prevDate.getDate() - 1))
     );
   };
+
 
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>
@@ -138,7 +141,13 @@ export default function Meals({ navigation }: Props) {
               </Text>
             </>
           ) : null}
-
+           <Calendar
+                onDayPress={(day: any) => {
+                  setSelected(day.dateString);
+                 
+                }}
+                
+              />
           <View
             style={{
               marginTop: 20,
@@ -158,6 +167,12 @@ export default function Meals({ navigation }: Props) {
             </Text>
             <Button title="➡️" onPress={goForward} />
           </View>
+          <Text>Morning</Text>
+          <Button title="Add meal"></Button>
+          <Text>Afternoon</Text>
+          <Button title="Add meal"></Button>
+          <Text>Evening</Text>
+          <Button title="Add meal"></Button>
         </View>
       </ScrollView>
       <Footer navigation={navigation} />
