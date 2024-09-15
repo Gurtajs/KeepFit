@@ -125,6 +125,7 @@ export default function Workouts({ navigation }: Props) {
       },
     },
   ]);
+  
   const [showsAllWorkoutsText, setShowsAllWorkoutsText] = useState(true)
   const [loaded, setLoaded] = useState(false);
   const [starRating, setStarRating] = useState(0);
@@ -369,7 +370,6 @@ export default function Workouts({ navigation }: Props) {
                   }}
                   listMode="SCROLLVIEW"
                 />
-
                 <View style={{ marginLeft: 10, width: "60%" }}>
                   <TextInput
                     onChangeText={(text) => {

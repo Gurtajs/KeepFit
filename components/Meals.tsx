@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Button,
 } from "react-native";
-import { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -14,6 +14,7 @@ import { RootStackParamList } from "@/app";
 import { postNutritionalGoals } from "@/apiRequests";
 import { UserContext } from "./UserContext";
 import { Calendar, LocaleConfig } from "react-native-calendars";
+import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 
 type Props = NativeStackScreenProps<RootStackParamList, "Meals">;
 
@@ -25,7 +26,7 @@ export default function Meals({ navigation }: Props) {
   const [goals, setGoals] = useState<any[]>([]);
   const { userDetails } = useContext(UserContext);
   const [selected, setSelected] = useState("");
-
+  const [showCamera, setShowCamera] = useState(false)
   const addGoals = () => {
     postNutritionalGoals(
       calories,
@@ -62,12 +63,36 @@ export default function Meals({ navigation }: Props) {
     );
   };
 
+  const [facing, setFacing] = useState<CameraType>('back');
+  const [permission, requestPermission] = useCameraPermissions();
 
+  if (!permission) {
+    // Camera permissions are still loading.
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet.
+    return (
+      <View >
+        <Text >We need your permission to show the camera</Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
+
+  function toggleCameraFacing() {
+    setFacing(current => (current === 'back' ? 'front' : 'back'));
+  }
+  
+  const openCamera = () => {
+    setShowCamera((prev) => !prev)
+  }
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>
       <ScrollView>
         <Header />
-        <View style={{ marginLeft: 10 }}>
+        <View style={{ marginLeft: 10, marginBottom:60 }}>
           <Text style={{ fontSize: 18, color: "#FAF9F6" }}>Meals</Text>
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
             Set your goals:
@@ -167,15 +192,28 @@ export default function Meals({ navigation }: Props) {
             </Text>
             <Button title="➡️" onPress={goForward} />
           </View>
-          <Text>Morning</Text>
+          <Text style={{fontSize: 16, color: "#FAF9F6"}}>Breakfast</Text>
           <Button title="Add meal"></Button>
-          <Text>Afternoon</Text>
+          <Text style={{fontSize: 16, color: "#FAF9F6"}}>Lunch</Text>
           <Button title="Add meal"></Button>
-          <Text>Evening</Text>
+          <Text style={{fontSize: 16, color: "#FAF9F6"}}>Snacks</Text>
           <Button title="Add meal"></Button>
+          <Text style={{fontSize: 16, color: "#FAF9F6"}}>Dinner</Text>
+          <Button title="Add meal"></Button>
+          <Button title="scan barcode" onPress={openCamera}></Button>
+          {showCamera?  <CameraView facing={facing}>
+        <View style={{height:200}}>
+          <TouchableOpacity  onPress={toggleCameraFacing}>
+            <Text style={{fontSize: 16, color: "#FAF9F6"}}>Flip Camera</Text>
+          </TouchableOpacity>
+        </View>
+      </CameraView> : null}
+         
         </View>
       </ScrollView>
       <Footer navigation={navigation} />
     </View>
   );
 }
+
+
