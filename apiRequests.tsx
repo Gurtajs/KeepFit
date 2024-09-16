@@ -149,6 +149,17 @@ export function postNutritionalGoals(calories: string, protein: string, carbs: s
   })
 }
 
+export function getProductInfo(barcode:number) {
+  return axios.get(
+    `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`
+  ).then((response) => {
+    console.log(response.data.product)
+    return response.data
+  }).catch((error)=> {
+    console.log(error)
+  })
+}
+
 export default {
   postUser,
   getUserDetails,
@@ -159,5 +170,6 @@ export default {
   getMuscleGroups,
   getUserWorkoutByMuscleGroup,
   getWorkoutsByUserDate,
-  deleteWorkoutByWorkoutId
+  deleteWorkoutByWorkoutId,
+  getProductInfo
 };

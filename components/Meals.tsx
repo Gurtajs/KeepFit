@@ -5,16 +5,18 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
+  Alert,
 } from "react-native";
 import React, { useState, useContext, useEffect, useRef } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app";
-import { postNutritionalGoals } from "@/apiRequests";
+import { getProductInfo, postNutritionalGoals } from "@/apiRequests";
 import { UserContext } from "./UserContext";
 import { Calendar, LocaleConfig } from "react-native-calendars";
-import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
+import { Camera, useCameraDevices } from "react-native-vision-camera";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Meals">;
 
@@ -26,7 +28,38 @@ export default function Meals({ navigation }: Props) {
   const [goals, setGoals] = useState<any[]>([]);
   const { userDetails } = useContext(UserContext);
   const [selected, setSelected] = useState("");
-  const [showCamera, setShowCamera] = useState(false)
+  const [showCamera, setShowCamera] = useState(false);
+
+  const [barcode, setBarcode] = useState<number | null>(null);
+  const [scanning, setScanning] = useState(false);
+  const [scannedData, setScannedData] = useState(null);
+  const [productInfo, setProductInfo] = useState<any[]>([]);
+  const cameraRef = useRef(null);
+
+  const handleBarCodeScanned = (event: {
+    type: string;
+    data: string;
+    bounds?: {
+      origin: { x: number; y: number };
+      size: { width: number; height: number };
+    };
+    cornerPoints?: { x: number; y: number }[];
+  }) => {
+    setScannedData(event);
+    setBarcode(event.data);
+    setScanning(false);
+    getProductInfo(barcode as number).then((response) => {
+      setProductInfo(response);
+    });
+    Alert.alert(
+      "Bar code scanned!",
+      `Type: ${event.type}\nData: ${event.data}\nBounds: ${JSON.stringify(
+        event.bounds
+      )}\nCorner Points: ${JSON.stringify(event.cornerPoints)}`
+    );
+  };
+
+  
   const addGoals = () => {
     postNutritionalGoals(
       calories,
@@ -63,7 +96,7 @@ export default function Meals({ navigation }: Props) {
     );
   };
 
-  const [facing, setFacing] = useState<CameraType>('back');
+  const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
 
   if (!permission) {
@@ -74,25 +107,25 @@ export default function Meals({ navigation }: Props) {
   if (!permission.granted) {
     // Camera permissions are not granted yet.
     return (
-      <View >
-        <Text >We need your permission to show the camera</Text>
+      <View>
+        <Text>We need your permission to show the camera</Text>
         <Button onPress={requestPermission} title="grant permission" />
       </View>
     );
   }
 
   function toggleCameraFacing() {
-    setFacing(current => (current === 'back' ? 'front' : 'back'));
+    setFacing((current) => (current === "back" ? "front" : "back"));
   }
-  
+
   const openCamera = () => {
-    setShowCamera((prev) => !prev)
-  }
+    setShowCamera((prev) => !prev);
+  };
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>
       <ScrollView>
         <Header />
-        <View style={{ marginLeft: 10, marginBottom:60 }}>
+        <View style={{ marginLeft: 10, marginBottom: 60 }}>
           <Text style={{ fontSize: 18, color: "#FAF9F6" }}>Meals</Text>
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
             Set your goals:
@@ -166,13 +199,11 @@ export default function Meals({ navigation }: Props) {
               </Text>
             </>
           ) : null}
-           <Calendar
-                onDayPress={(day: any) => {
-                  setSelected(day.dateString);
-                 
-                }}
-                
-              />
+          <Calendar
+            onDayPress={(day: any) => {
+              setSelected(day.dateString);
+            }}
+          />
           <View
             style={{
               marginTop: 20,
@@ -192,28 +223,39 @@ export default function Meals({ navigation }: Props) {
             </Text>
             <Button title="➡️" onPress={goForward} />
           </View>
-          <Text style={{fontSize: 16, color: "#FAF9F6"}}>Breakfast</Text>
+          <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Breakfast</Text>
           <Button title="Add meal"></Button>
-          <Text style={{fontSize: 16, color: "#FAF9F6"}}>Lunch</Text>
+          <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Lunch</Text>
           <Button title="Add meal"></Button>
-          <Text style={{fontSize: 16, color: "#FAF9F6"}}>Snacks</Text>
+          <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Snacks</Text>
           <Button title="Add meal"></Button>
-          <Text style={{fontSize: 16, color: "#FAF9F6"}}>Dinner</Text>
+          <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Dinner</Text>
           <Button title="Add meal"></Button>
           <Button title="scan barcode" onPress={openCamera}></Button>
-          {showCamera?  <CameraView facing={facing}>
-        <View style={{height:200}}>
-          <TouchableOpacity  onPress={toggleCameraFacing}>
-            <Text style={{fontSize: 16, color: "#FAF9F6"}}>Flip Camera</Text>
-          </TouchableOpacity>
-        </View>
-      </CameraView> : null}
-         
+          {showCamera ? (
+            <CameraView facing={facing} onBarcodeScanned={handleBarCodeScanned}>
+              <View style={{ height: 200 }}>
+                <TouchableOpacity onPress={toggleCameraFacing}>
+                  <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
+                    Flip Camera
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </CameraView>
+          ) : null}
+          {scannedData && (
+            <View>
+              
+              <>
+              <Text>{(productInfo as any)._id}</Text>
+              {/* <Text>{(productInfo as any).product.product_name}</Text> */}
+              </>
+    
+            </View>
+          )}
         </View>
       </ScrollView>
       <Footer navigation={navigation} />
     </View>
   );
 }
-
-
