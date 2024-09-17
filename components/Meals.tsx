@@ -29,12 +29,13 @@ export default function Meals({ navigation }: Props) {
   const { userDetails } = useContext(UserContext);
   const [selected, setSelected] = useState("");
   const [showCamera, setShowCamera] = useState(false);
-
+  const [scanned, setScanned] = useState(false)
   const [barcode, setBarcode] = useState<number | null>(null);
   const [scanning, setScanning] = useState(false);
   const [scannedData, setScannedData] = useState(null);
   const [productInfo, setProductInfo] = useState<any[]>([]);
   const cameraRef = useRef(null);
+  const [isScanning, setIsScanning] = useState(true)
 
   const handleBarCodeScanned = (event: {
     type: string;
@@ -45,18 +46,26 @@ export default function Meals({ navigation }: Props) {
     };
     cornerPoints?: { x: number; y: number }[];
   }) => {
-    setScannedData(event);
-    setBarcode(event.data);
-    setScanning(false);
-    getProductInfo(barcode as number).then((response) => {
-      setProductInfo(response);
-    });
+    if (isScanning) {
+      setScannedData(event);
+      setBarcode(event.data);
+      setScanning(false);
+      setScanned(true)
+      setIsScanning(false)
     Alert.alert(
       "Bar code scanned!",
       `Type: ${event.type}\nData: ${event.data}\nBounds: ${JSON.stringify(
         event.bounds
       )}\nCorner Points: ${JSON.stringify(event.cornerPoints)}`
     );
+    setTimeout(() => {
+      setIsScanning(true)
+    }, 5000)
+    getProductInfo(event.data).then((response) => {
+      setProductInfo(response);
+      console.log("new", productInfo)
+    });
+  }
   };
 
   
@@ -121,6 +130,8 @@ export default function Meals({ navigation }: Props) {
   const openCamera = () => {
     setShowCamera((prev) => !prev);
   };
+
+  console.log("this", productInfo)
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>
       <ScrollView>
@@ -247,8 +258,15 @@ export default function Meals({ navigation }: Props) {
             <View>
               
               <>
-              <Text>{(productInfo as any)._id}</Text>
-              {/* <Text>{(productInfo as any).product.product_name}</Text> */}
+              {productInfo? 
+              <>
+              <Text style={{ fontSize: 16, color: "#FAF9F6" }}>{(productInfo as any)?.product_name}</Text>
+              <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Calories: {(productInfo as any).nutriments?.["energy-kcal"]}</Text>
+              <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Fats: {(productInfo as any)?.nutriments?.fat}</Text>
+              <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Carbs: {(productInfo as any)?.nutriments?.carbohydrates}</Text>
+              <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Proteins: {(productInfo as any)?.nutriments?.proteins}</Text>
+              </>
+              : null}
               </>
     
             </View>

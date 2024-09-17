@@ -154,7 +154,7 @@ export function getProductInfo(barcode:number) {
     `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`
   ).then((response) => {
     console.log(response.data.product)
-    return response.data
+    return response.data.product
   }).catch((error)=> {
     console.log(error)
   })
