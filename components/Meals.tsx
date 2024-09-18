@@ -132,7 +132,13 @@ export default function Meals({ navigation }: Props) {
     setVisibility(true)
   }
 
+  const closeScanner = () => {
+    setShowCamera((prev) => !prev)
+  }
   
+  const mealForm = () => {
+    navigation.navigate("MealForm")
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>
@@ -239,11 +245,14 @@ export default function Meals({ navigation }: Props) {
           {showCamera ? (
             <CameraView facing={facing} onBarcodeScanned={handleBarCodeScanned}>
               <View style={{ height: 200, width:200 }}>
+                <View style={{flex:1, flexDirection:"row", gap:170}}>
                 <TouchableOpacity onPress={toggleCameraFacing}>
                   <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
                     Flip Camera
                   </Text>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={closeScanner}><Text style={{ fontSize: 16, color: "#FAF9F6" }}>Close scanner</Text></TouchableOpacity>
+              </View>
               </View>
             </CameraView>
           ) : null}          
@@ -255,7 +264,6 @@ export default function Meals({ navigation }: Props) {
           <Button title="Add meal"></Button>
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Dinner</Text>
           <Button title="Add meal"></Button>
-          
           {scannedData && (
             <View>
               <>
@@ -285,6 +293,7 @@ export default function Meals({ navigation }: Props) {
                         (productInfo as any)?.nutriments?.proteins * 10
                       ) / 10}
                     </Text>
+                    <TouchableOpacity><Text>Add this meal</Text></TouchableOpacity>
                   </>
                 ) : null}
               </>
@@ -328,6 +337,7 @@ export default function Meals({ navigation }: Props) {
                         width: 150,
                         marginBottom: 10,
                       }}
+                      onPress={mealForm}
                     >
                       <Text style={{ fontSize: 18, textAlign: "center" }}>
                         Enter Meal

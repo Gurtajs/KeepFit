@@ -10,6 +10,7 @@ import Workouts from "../components/Workouts"
 import { WorkoutProvider } from "@/components/WorkoutContext";
 import { ImageProvider } from "@/components/ImageContext";
 import Meals from "@/components/Meals";
+import MealForm from "@/components/MealForm";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -19,6 +20,7 @@ export type RootStackParamList = {
   Meals: undefined;
   UserDetails: undefined;
   Footer: undefined;
+  MealForm: undefined
 };
 
 export default function Index() {
@@ -36,6 +38,7 @@ export default function Index() {
         <Stack.Screen name="Workouts" component={Workouts} />
         <Stack.Screen name="Meals" component={Meals} />
         <Stack.Screen name="UserDetails" component={UserDetails} />
+        <Stack.Screen name="MealForm" component={MealForm} />
       </Stack.Navigator>
     </WorkoutProvider>
     </AuthProvider>
