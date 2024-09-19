@@ -259,11 +259,11 @@ export default function Meals({ navigation }: Props) {
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Breakfast</Text>
           <Button title="Add meal" onPress={addMeal} ></Button>
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Lunch</Text>
-          <Button title="Add meal"></Button>
+          <Button title="Add meal" onPress={addMeal}></Button>
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Snacks</Text>
-          <Button title="Add meal"></Button>
+          <Button title="Add meal" onPress={addMeal}></Button>
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Dinner</Text>
-          <Button title="Add meal"></Button>
+          <Button title="Add meal" onPress={addMeal}></Button>
           {scannedData && (
             <View>
               <>
