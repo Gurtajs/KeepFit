@@ -9,7 +9,7 @@ import { postMeal } from "@/apiRequests";
 import { UserContext } from "./UserContext";
 type Props = NativeStackScreenProps<RootStackParamList, "MealForm">;
 
-export default function MealForm({navigation}: Props) {
+export default function MealForm({navigation, route}: Props) {
   const [foodName, setFoodName] = useState("")
   const [quantity, setQuantity] = useState("")
   const [calories, setCalories] = useState("")
@@ -17,13 +17,19 @@ export default function MealForm({navigation}: Props) {
   const [fats, setFats] = useState("")
   const [protein, setProtein] = useState("")
   const { userDetails, setUserDetails } = useContext(UserContext);
-  
+
   const addFood = () => {
-    postMeal(foodName, quantity, calories, carbs, fats, protein, (userDetails as any).userId)
+    postMeal(foodName, mealType, quantity, calories, carbs, fats, protein, (userDetails as any).userId)
   }
   
+  const { mealType } = route.params;
+  
   const goBack = () => {
-    navigation.navigate("Meals")
+    navigation.goBack() 
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Meals" }],
+    });
   }
 
   return(

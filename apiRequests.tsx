@@ -160,9 +160,9 @@ export function getProductInfo(barcode:number) {
   })
 }
 
-export function postMeal(foodName: string, quantity: string, calories: string, carbs: string, fats: string, protein: string, userId:number) {
+export function postMeal(foodName: string, mealType: string, quantity: string, calories: string, carbs: string, fats: string, protein: string, userId:number) {
   return axios.post('https://aa70-77-102-154-75.ngrok-free.app/api/meals', {
-    foodName, quantity, calories, carbs, fats, protein, userId
+    foodName, mealType, quantity, calories, carbs, fats, protein, userId
   }).then((response) => {
     console.log(response.data)
     return response.data

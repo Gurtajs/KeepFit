@@ -135,7 +135,7 @@ export default function Meals({ navigation }: Props) {
   const closeScanner = () => {
     setShowCamera((prev) => !prev)
   }
-  
+
   const mealForm = () => {
     navigation.navigate("MealForm")
   }
@@ -257,13 +257,13 @@ export default function Meals({ navigation }: Props) {
             </CameraView>
           ) : null}          
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Breakfast</Text>
-          <Button title="Add meal" onPress={addMeal} ></Button>
+          <Button title="Add Breakfast" onPress={() => navigation.navigate("MealForm", {mealType: "breakfast"})}></Button>
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Lunch</Text>
-          <Button title="Add meal" onPress={addMeal}></Button>
+          <Button title="Add Lunch" onPress={addMeal}></Button>
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Snacks</Text>
-          <Button title="Add meal" onPress={addMeal}></Button>
+          <Button title="Add Snacks" onPress={addMeal}></Button>
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Dinner</Text>
-          <Button title="Add meal" onPress={addMeal}></Button>
+          <Button title="Add Dinner" onPress={addMeal}></Button>
           {scannedData && (
             <View>
               <>
@@ -368,9 +368,7 @@ export default function Meals({ navigation }: Props) {
                   </View>
                 </View>
               </Modal>
-             
         </View>
-
       </ScrollView>
       <Footer navigation={navigation} />
     </View>
