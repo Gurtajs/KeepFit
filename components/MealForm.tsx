@@ -17,13 +17,16 @@ export default function MealForm({navigation, route}: Props) {
   const [fats, setFats] = useState("")
   const [protein, setProtein] = useState("")
   const { userDetails, setUserDetails } = useContext(UserContext);
-
-  const addFood = () => {
-    postMeal(foodName, mealType, quantity, calories, carbs, fats, protein, (userDetails as any).userId)
-  }
   
   const { mealType } = route.params;
-  
+
+  const addFood = () => {
+    console.log(foodName)
+    postMeal(foodName, mealType, quantity, calories, carbs, fats, protein, (userDetails as any).userId)
+  }
+
+  console.log(quantity)
+
   const goBack = () => {
     navigation.goBack() 
     navigation.reset({

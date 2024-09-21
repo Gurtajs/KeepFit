@@ -19,6 +19,7 @@ import { Calendar, LocaleConfig } from "react-native-calendars";
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 type Props = NativeStackScreenProps<RootStackParamList, "Meals">;
+import { getMeals} from "@/apiRequests";
 
 export default function Meals({ navigation }: Props) {
   const [calories, setCalories] = useState("");
@@ -37,6 +38,16 @@ export default function Meals({ navigation }: Props) {
   const cameraRef = useRef(null);
   const [isScanning, setIsScanning] = useState(true);
   const [visibility, setVisibility] = useState(false)
+  const [meals, setMeals] = useState([])
+  useEffect(() => {
+    if (userDetails) {
+      getMeals((userDetails as any).userId).then((response: any) => {
+        setMeals(response);
+      }).catch((error) => {
+        console.error("Error fetching meals:", error);
+      });
+    }
+  }, [userDetails]);
 
   const handleBarCodeScanned = (event: {
     type: string;
@@ -104,12 +115,10 @@ export default function Meals({ navigation }: Props) {
   const [permission, requestPermission] = useCameraPermissions();
 
   if (!permission) {
-    // Camera permissions are still loading.
     return <View />;
   }
 
   if (!permission.granted) {
-    // Camera permissions are not granted yet.
     return (
       <View>
         <Text>We need your permission to show the camera</Text>
@@ -258,12 +267,49 @@ export default function Meals({ navigation }: Props) {
           ) : null}          
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Breakfast</Text>
           <Button title="Add Breakfast" onPress={() => navigation.navigate("MealForm", {mealType: "breakfast"})}></Button>
+          {meals.filter((meal:any) => meal.mealTime == 'breakfast').map((filteredMeal)=>
+          <View>
+          <Text>{(filteredMeal as any).mealName}</Text>
+          <Text>{(filteredMeal as any).quantity}</Text>
+          <Text>{(filteredMeal as any).calories}</Text>
+          <Text>{(filteredMeal as any).carbs}</Text>
+          <Text>{(filteredMeal as any).fats}</Text>
+          <Text>{(filteredMeal as any).protein}</Text>
+          </View> )}
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Lunch</Text>
-          <Button title="Add Lunch" onPress={addMeal}></Button>
+          <Button title="Add Lunch" onPress={() => navigation.navigate("MealForm", {mealType: "lunch"})}></Button>
+          {meals.filter((meal:any) => meal.mealTime == 'lunch').map((filteredMeal)=>
+          <View>
+          <Text>{(filteredMeal as any).mealName}</Text>
+          <Text>{(filteredMeal as any).quantity}</Text>
+          <Text>{(filteredMeal as any).calories}</Text>
+          <Text>{(filteredMeal as any).carbs}</Text>
+          <Text>{(filteredMeal as any).fats}</Text>
+          <Text>{(filteredMeal as any).protein}</Text>
+          </View> )}
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Snacks</Text>
-          <Button title="Add Snacks" onPress={addMeal}></Button>
+          <Button title="Add Snacks" onPress={() => navigation.navigate("MealForm", {mealType: "snacks"})}></Button>
+          {meals.filter((meal:any) => meal.mealTime == 'snacks').map((filteredMeal)=>
+          <View>
+          <Text>{(filteredMeal as any).mealName}</Text>
+          <Text>{(filteredMeal as any).quantity}</Text>
+          <Text>{(filteredMeal as any).calories}</Text>
+          <Text>{(filteredMeal as any).carbs}</Text>
+          <Text>{(filteredMeal as any).fats}</Text>
+          <Text>{(filteredMeal as any).protein}</Text>
+          </View> )}
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Dinner</Text>
-          <Button title="Add Dinner" onPress={addMeal}></Button>
+          {meals.filter((meal:any) => meal.mealTime == 'dinner').map((filteredMeal)=>
+          <View>
+          <Text>{(filteredMeal as any).mealName}</Text>
+          <Text>{(filteredMeal as any).quantity}</Text>
+          <Text>{(filteredMeal as any).calories}</Text>
+          <Text>{(filteredMeal as any).carbs}</Text>
+          <Text>{(filteredMeal as any).fats}</Text>
+          <Text>{(filteredMeal as any).protein}</Text>
+          </View> )}
+          <Button title="Add Dinner" onPress={() => navigation.navigate("MealForm", {mealType: "dinner"})}></Button>
+
           {scannedData && (
             <View>
               <>
