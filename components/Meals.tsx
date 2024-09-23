@@ -39,13 +39,13 @@ export default function Meals({ navigation }: Props) {
   const [isScanning, setIsScanning] = useState(true);
   const [visibility, setVisibility] = useState(false)
   const [meals, setMeals] = useState([])
+  
   useEffect(() => {
     if (userDetails) {
       getMeals((userDetails as any).userId).then((response: any) => {
+        console.log(response)
         setMeals(response);
-      }).catch((error) => {
-        console.error("Error fetching meals:", error);
-      });
+      })
     }
   }, [userDetails]);
 
@@ -266,11 +266,11 @@ export default function Meals({ navigation }: Props) {
             </CameraView>
           ) : null} 
           <View style={{gap:15}}>
-          <View>     
+          <View style={{gap:8}}>     
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Breakfast</Text>
           <Button title="Add Breakfast" onPress={() => navigation.navigate("MealForm", {mealType: "breakfast"})}></Button>
           {meals.filter((meal:any) => meal.mealTime == 'breakfast').map((filteredMeal)=>
-          <View style={{gap:8}}>
+          <View style={{}} key={(filteredMeal as any).MealId}>
           <Text style={{color: "#FAF9F6"}}>{(filteredMeal as any).mealName}</Text>
           <Text style={{color: "#FAF9F6"}}>Quantity: {(filteredMeal as any).quantity}</Text>
           <Text style={{color: "#FAF9F6"}}>Calories{(filteredMeal as any).calories}</Text>
@@ -278,12 +278,16 @@ export default function Meals({ navigation }: Props) {
           <Text style={{color: "#FAF9F6"}}>Fats: {(filteredMeal as any).fats}</Text>
           <Text style={{color: "#FAF9F6"}}>Protein: {(filteredMeal as any).protein}</Text>
           </View> )}
+          <Text>Total Calories {meals.filter((meal:any) => meal.mealTime == 'breakfast').reduce((acc: any, meal:any) => acc + meal.calories, 0)}</Text>
+          <Text>Total Carbs {meals.filter((meal:any) => meal.mealTime == 'breakfast').reduce((acc: any, meal:any) => acc + meal.carbs, 0)}</Text>
+          <Text>Total Fats {meals.filter((meal:any) => meal.mealTime == 'breakfast').reduce((acc: any, meal:any) => acc + meal.fats, 0)}</Text>
+          <Text>Total Protein {meals.filter((meal:any) => meal.mealTime == 'breakfast').reduce((acc: any, meal:any) => acc + meal.protein, 0)}</Text>
           </View>  
-          <View>    
+          <View style={{gap:8}}>    
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Lunch</Text>
           <Button title="Add Lunch" onPress={() => navigation.navigate("MealForm", {mealType: "lunch"})}></Button>
           {meals.filter((meal:any) => meal.mealTime == 'lunch').map((filteredMeal)=>
-          <View style={{gap:8}}>
+          <View style={{}} key={(filteredMeal as any).MealId}>
           <Text style={{color: "#FAF9F6"}}>{(filteredMeal as any).mealName}</Text>
           <Text style={{color: "#FAF9F6"}}>Quantity: {(filteredMeal as any).quantity}</Text>
           <Text style={{color: "#FAF9F6"}}>Calories{(filteredMeal as any).calories}</Text>
@@ -291,12 +295,16 @@ export default function Meals({ navigation }: Props) {
           <Text style={{color: "#FAF9F6"}}>Fats: {(filteredMeal as any).fats}</Text>
           <Text style={{color: "#FAF9F6"}}>Protein: {(filteredMeal as any).protein}</Text>
           </View> )}
+          <Text>Total Calories {meals.filter((meal:any) => meal.mealTime == 'lunch').reduce((acc: any, meal:any) => acc + meal.calories, 0)}</Text>
+          <Text>Total Carbs {meals.filter((meal:any) => meal.mealTime == 'lunch').reduce((acc: any, meal:any) => acc + meal.carbs, 0)}</Text>
+          <Text>Total Fats {meals.filter((meal:any) => meal.mealTime == 'lunch').reduce((acc: any, meal:any) => acc + meal.fats, 0)}</Text>
+          <Text>Total Protein {meals.filter((meal:any) => meal.mealTime == 'lunch').reduce((acc: any, meal:any) => acc + meal.protein, 0)}</Text>
           </View>  
           <View style={{gap:8}}> 
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Snacks</Text>
           <Button title="Add Snacks" onPress={() => navigation.navigate("MealForm", {mealType: "snacks"})}></Button>
           {meals.filter((meal:any) => meal.mealTime == 'snacks').map((filteredMeal)=>
-          <View style={{}}>
+          <View style={{}} key={(filteredMeal as any).MealId}>
           <Text style={{color: "#FAF9F6"}}>{(filteredMeal as any).mealName}</Text>
           <Text style={{color: "#FAF9F6"}}>Quantity: {(filteredMeal as any).quantity}</Text>
           <Text style={{color: "#FAF9F6"}}>Calories{(filteredMeal as any).calories}</Text>
@@ -304,12 +312,16 @@ export default function Meals({ navigation }: Props) {
           <Text style={{color: "#FAF9F6"}}>Fats: {(filteredMeal as any).fats}</Text>
           <Text style={{color: "#FAF9F6"}}>Protein: {(filteredMeal as any).protein}</Text>
           </View> )}
+          <Text>Total Calories {meals.filter((meal:any) => meal.mealTime == 'snacks').reduce((acc: any, meal:any) => acc + meal.calories, 0)}</Text>
+          <Text>Total Carbs {meals.filter((meal:any) => meal.mealTime == 'snacks').reduce((acc: any, meal:any) => acc + meal.carbs, 0)}</Text>
+          <Text>Total Fats {meals.filter((meal:any) => meal.mealTime == 'snacks').reduce((acc: any, meal:any) => acc + meal.fats, 0)}</Text>
+          <Text>Total Protein {meals.filter((meal:any) => meal.mealTime == 'snacks').reduce((acc: any, meal:any) => acc + meal.protein, 0)}</Text>
           </View> 
           <View style={{gap:8}}> 
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Dinner</Text>
           <Button title="Add Dinner" onPress={() => navigation.navigate("MealForm", {mealType: "dinner"})}></Button>
           {meals.filter((meal:any) => meal.mealTime == 'dinner').map((filteredMeal)=>
-          <View>
+          <View key={(filteredMeal as any).MealId}>
           <Text style={{color: "#FAF9F6"}}>{(filteredMeal as any).mealName}</Text>
           <Text style={{color: "#FAF9F6"}}>Quantity: {(filteredMeal as any).quantity}</Text>
           <Text style={{color: "#FAF9F6"}}>Calories{(filteredMeal as any).calories}</Text>
@@ -317,8 +329,17 @@ export default function Meals({ navigation }: Props) {
           <Text style={{color: "#FAF9F6"}}>Fats: {(filteredMeal as any).fats}</Text>
           <Text style={{color: "#FAF9F6"}}>Protein: {(filteredMeal as any).protein}</Text>
           </View> )}
+          <Text>Total Calories {meals.filter((meal:any) => meal.mealTime == 'dinner').reduce((acc: any, meal:any) => acc + meal.calories, 0)}</Text>
+          <Text>Total Carbs {meals.filter((meal:any) => meal.mealTime == 'dinner').reduce((acc: any, meal:any) => acc + meal.carbs, 0)}</Text>
+          <Text>Total Fats {meals.filter((meal:any) => meal.mealTime == 'dinner').reduce((acc: any, meal:any) => acc + meal.fats, 0)}</Text>
+          <Text>Total Protein {meals.filter((meal:any) => meal.mealTime == 'dinner').reduce((acc: any, meal:any) => acc + meal.protein, 0)}</Text>
           </View> 
           </View>
+          <Text>Total of the day:</Text>
+          <Text>Calories {meals.reduce((acc:any, meal:any) => acc + (Number(meal.calories) || 0), 0)}</Text>
+          <Text>Carbs {meals.reduce((acc:any, meal:any) => acc + (Number(meal.carbs) || 0), 0)}</Text>
+          <Text>Fats {meals.reduce((acc:any, meal:any) => acc + (Number(meal.fats) || 0), 0)}</Text>
+          <Text>Protein {meals.reduce((acc:any, meal:any) => acc + (Number(meal.protein) || 0), 0)}</Text>
           {scannedData && (
             <View>
               <>
