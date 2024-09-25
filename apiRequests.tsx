@@ -172,7 +172,6 @@ export function postMeal(mealName: string, mealTime: string, quantity: string, c
 }
 
 export function getMeals(userId: number) {
-  console.log(userId)
   return axios.get(`https://aa70-77-102-154-75.ngrok-free.app/api/users/${userId}/meals`).then((response) => {
     console.log("this", response.data)
     return response.data
@@ -180,6 +179,16 @@ export function getMeals(userId: number) {
     console.log(error)
   })
 } 
+
+export function deleteMealByMealId(userId: number, mealId:number) {
+  return axios.delete(
+    `https://aa70-77-102-154-75.ngrok-free.app/api/users/${userId}/meals/${mealId}`
+  ).then((response) =>{
+    console.log("deleted")
+  }).catch((error) => {
+    console.log(error)
+  })
+}
 
 
 export default {
@@ -193,5 +202,6 @@ export default {
   getUserWorkoutByMuscleGroup,
   getWorkoutsByUserDate,
   deleteWorkoutByWorkoutId,
-  getProductInfo
+  getProductInfo,
+  deleteMealByMealId
 };
