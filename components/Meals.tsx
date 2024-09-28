@@ -6,20 +6,24 @@ import {
   TouchableOpacity,
   Button,
   Alert,
-  Modal
+  Modal,
 } from "react-native";
 import React, { useState, useContext, useEffect, useRef } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app";
-import { deleteMealByMealId, getProductInfo, postNutritionalGoals } from "@/apiRequests";
+import {
+  deleteMealByMealId,
+  getProductInfo,
+  postNutritionalGoals,
+} from "@/apiRequests";
 import { UserContext } from "./UserContext";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 type Props = NativeStackScreenProps<RootStackParamList, "Meals">;
-import { getMeals} from "@/apiRequests";
+import { getMeals } from "@/apiRequests";
 import UserDetails from "./UserDetails";
 
 export default function Meals({ navigation }: Props) {
@@ -38,15 +42,15 @@ export default function Meals({ navigation }: Props) {
   const [productInfo, setProductInfo] = useState<any[]>([]);
   const cameraRef = useRef(null);
   const [isScanning, setIsScanning] = useState(true);
-  const [visibility, setVisibility] = useState(false)
-  const [meals, setMeals] = useState([])
-  
+  const [visibility, setVisibility] = useState(false);
+  const [meals, setMeals] = useState([]);
+
   useEffect(() => {
     if (userDetails) {
       getMeals((userDetails as any).userId).then((response: any) => {
-        console.log(response)
+        console.log(response);
         setMeals(response);
-      })
+      });
     }
   }, [userDetails]);
 
@@ -134,28 +138,20 @@ export default function Meals({ navigation }: Props) {
 
   const openCamera = () => {
     setShowCamera((prev) => !prev);
-    setVisibility(false)
+    setVisibility(false);
   };
 
-  
-  const addMeal = () => {
-    setVisibility(true)
-  }
-
   const closeScanner = () => {
-    setShowCamera((prev) => !prev)
-  }
-
-  const mealForm = () => {
-    navigation.navigate("MealForm")
-  }
+    setShowCamera((prev) => !prev);
+  };
 
   const deleteMeal = () => {
-    deleteMealByMealId((userDetails as any).userId, (meals as any).mealId).then(()=>{
-      console.log("deleted successfully")
-    })
-  }
-
+    deleteMealByMealId((userDetails as any).userId, (meals as any).mealId).then(
+      () => {
+        console.log("deleted successfully");
+      }
+    );
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>
@@ -261,97 +257,343 @@ export default function Meals({ navigation }: Props) {
           </View>
           {showCamera ? (
             <CameraView facing={facing} onBarcodeScanned={handleBarCodeScanned}>
-              <View style={{ height: 200, width:200 }}>
-                <View style={{flex:1, flexDirection:"row", gap:170}}>
-                <TouchableOpacity onPress={toggleCameraFacing}>
-                  <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
-                    Flip Camera
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={closeScanner}><Text style={{ fontSize: 16, color: "#FAF9F6" }}>Close scanner</Text></TouchableOpacity>
-              </View>
+              <View style={{ height: 200, width: 200 }}>
+                <View style={{ flex: 1, flexDirection: "row", gap: 170 }}>
+                  <TouchableOpacity onPress={toggleCameraFacing}>
+                    <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
+                      Flip Camera
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={closeScanner}>
+                    <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
+                      Close scanner
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </CameraView>
-          ) : null} 
-          <View style={{gap:15}}>
-          <View style={{gap:8}}>     
-          <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Breakfast</Text>
-          <Button title="Add Breakfast" onPress={() => navigation.navigate("MealForm", {mealType: "breakfast"})}></Button>
-          {meals.filter((meal:any) => meal.mealTime == 'breakfast').map((filteredMeal)=>
-          <View style={{}} key={(filteredMeal as any).MealId}>
-          <Text style={{color: "#FAF9F6"}}>{(filteredMeal as any).mealName}</Text>
-          <Text style={{color: "#FAF9F6"}}>Quantity: {(filteredMeal as any).quantity}</Text>
-          <Text style={{color: "#FAF9F6"}}>Calories{(filteredMeal as any).calories}</Text>
-          <Text style={{color: "#FAF9F6"}}>Carbs: {(filteredMeal as any).carbs}</Text>
-          <Text style={{color: "#FAF9F6"}}>Fats: {(filteredMeal as any).fats}</Text>
-          <Text style={{color: "#FAF9F6"}}>Protein: {(filteredMeal as any).protein}</Text>
-          <TouchableOpacity onPress={deleteMeal}><Text>Delete meal</Text></TouchableOpacity>
-          </View> )}
-          <Text>Total Calories {meals.filter((meal:any) => meal.mealTime == 'breakfast').reduce((acc: any, meal:any) => acc + meal.calories, 0)}</Text>
-          <Text>Total Carbs {meals.filter((meal:any) => meal.mealTime == 'breakfast').reduce((acc: any, meal:any) => acc + meal.carbs, 0)}</Text>
-          <Text>Total Fats {meals.filter((meal:any) => meal.mealTime == 'breakfast').reduce((acc: any, meal:any) => acc + meal.fats, 0)}</Text>
-          <Text>Total Protein {meals.filter((meal:any) => meal.mealTime == 'breakfast').reduce((acc: any, meal:any) => acc + meal.protein, 0)}</Text>
-          </View>  
-          <View style={{gap:8}}>    
-          <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Lunch</Text>
-          <Button title="Add Lunch" onPress={() => navigation.navigate("MealForm", {mealType: "lunch"})}></Button>
-          {meals.filter((meal:any) => meal.mealTime == 'lunch').map((filteredMeal)=>
-          <View style={{}} key={(filteredMeal as any).MealId}>
-          <Text style={{color: "#FAF9F6"}}>{(filteredMeal as any).mealName}</Text>
-          <Text style={{color: "#FAF9F6"}}>Quantity: {(filteredMeal as any).quantity}</Text>
-          <Text style={{color: "#FAF9F6"}}>Calories{(filteredMeal as any).calories}</Text>
-          <Text style={{color: "#FAF9F6"}}>Carbs: {(filteredMeal as any).carbs}</Text>
-          <Text style={{color: "#FAF9F6"}}>Fats: {(filteredMeal as any).fats}</Text>
-          <Text style={{color: "#FAF9F6"}}>Protein: {(filteredMeal as any).protein}</Text>
-          <TouchableOpacity onPress={deleteMeal}><Text>Delete meal</Text></TouchableOpacity>
-          </View> )}
-          <Text>Total Calories {meals.filter((meal:any) => meal.mealTime == 'lunch').reduce((acc: any, meal:any) => acc + meal.calories, 0)}</Text>
-          <Text>Total Carbs {meals.filter((meal:any) => meal.mealTime == 'lunch').reduce((acc: any, meal:any) => acc + meal.carbs, 0)}</Text>
-          <Text>Total Fats {meals.filter((meal:any) => meal.mealTime == 'lunch').reduce((acc: any, meal:any) => acc + meal.fats, 0)}</Text>
-          <Text>Total Protein {meals.filter((meal:any) => meal.mealTime == 'lunch').reduce((acc: any, meal:any) => acc + meal.protein, 0)}</Text>
-          </View>  
-          <View style={{gap:8}}> 
-          <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Snacks</Text>
-          <Button title="Add Snacks" onPress={() => navigation.navigate("MealForm", {mealType: "snacks"})}></Button>
-          {meals.filter((meal:any) => meal.mealTime == 'snacks').map((filteredMeal)=>
-          <View style={{}} key={(filteredMeal as any).MealId}>
-          <Text style={{color: "#FAF9F6"}}>{(filteredMeal as any).mealName}</Text>
-          <Text style={{color: "#FAF9F6"}}>Quantity: {(filteredMeal as any).quantity}</Text>
-          <Text style={{color: "#FAF9F6"}}>Calories{(filteredMeal as any).calories}</Text>
-          <Text style={{color: "#FAF9F6"}}>Carbs: {(filteredMeal as any).carbs}</Text>
-          <Text style={{color: "#FAF9F6"}}>Fats: {(filteredMeal as any).fats}</Text>
-          <Text style={{color: "#FAF9F6"}}>Protein: {(filteredMeal as any).protein}</Text>
-          <TouchableOpacity onPress={deleteMeal}><Text>Delete meal</Text></TouchableOpacity>
-          </View> )}
-          <Text>Total Calories {meals.filter((meal:any) => meal.mealTime == 'snacks').reduce((acc: any, meal:any) => acc + meal.calories, 0)}</Text>
-          <Text>Total Carbs {meals.filter((meal:any) => meal.mealTime == 'snacks').reduce((acc: any, meal:any) => acc + meal.carbs, 0)}</Text>
-          <Text>Total Fats {meals.filter((meal:any) => meal.mealTime == 'snacks').reduce((acc: any, meal:any) => acc + meal.fats, 0)}</Text>
-          <Text>Total Protein {meals.filter((meal:any) => meal.mealTime == 'snacks').reduce((acc: any, meal:any) => acc + meal.protein, 0)}</Text>
-          </View> 
-          <View style={{gap:8}}> 
-          <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Dinner</Text>
-          <Button title="Add Dinner" onPress={() => navigation.navigate("MealForm", {mealType: "dinner"})}></Button>
-          {meals.filter((meal:any) => meal.mealTime == 'dinner').map((filteredMeal)=>
-          <View key={(filteredMeal as any).MealId}>
-          <Text style={{color: "#FAF9F6"}}>{(filteredMeal as any).mealName}</Text>
-          <Text style={{color: "#FAF9F6"}}>Quantity: {(filteredMeal as any).quantity}</Text>
-          <Text style={{color: "#FAF9F6"}}>Calories{(filteredMeal as any).calories}</Text>
-          <Text style={{color: "#FAF9F6"}}>Carbs: {(filteredMeal as any).carbs}</Text>
-          <Text style={{color: "#FAF9F6"}}>Fats: {(filteredMeal as any).fats}</Text>
-          <Text style={{color: "#FAF9F6"}}>Protein: {(filteredMeal as any).protein}</Text>
-          <TouchableOpacity onPress={deleteMeal}><Text>Delete meal</Text></TouchableOpacity>
-          </View> )}
-          <Text>Total Calories {meals.filter((meal:any) => meal.mealTime == 'dinner').reduce((acc: any, meal:any) => acc + meal.calories, 0)}</Text>
-          <Text>Total Carbs {meals.filter((meal:any) => meal.mealTime == 'dinner').reduce((acc: any, meal:any) => acc + meal.carbs, 0)}</Text>
-          <Text>Total Fats {meals.filter((meal:any) => meal.mealTime == 'dinner').reduce((acc: any, meal:any) => acc + meal.fats, 0)}</Text>
-          <Text>Total Protein {meals.filter((meal:any) => meal.mealTime == 'dinner').reduce((acc: any, meal:any) => acc + meal.protein, 0)}</Text>
-          </View> 
+          ) : null}
+          <View style={{ gap: 15 }}>
+            <View style={{ gap: 8 }}>
+              <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Breakfast</Text>
+              <Button
+                title="Enter breakfast"
+                onPress={() =>
+                  navigation.navigate("MealForm", { mealType: "breakfast" })
+                }
+              ></Button>
+              <Button title="Scan barcode" onPress={openCamera}></Button>
+              {meals
+                .filter((meal: any) => meal.mealTime == "breakfast")
+                .map((filteredMeal) => (
+                  <View style={{}} key={(filteredMeal as any).MealId}>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      {(filteredMeal as any).mealName}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Quantity: {(filteredMeal as any).quantity}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Calories: {(filteredMeal as any).calories}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Carbs: {(filteredMeal as any).carbs}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Fats: {(filteredMeal as any).fats}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Protein: {(filteredMeal as any).protein}
+                    </Text>
+                    <TouchableOpacity onPress={deleteMeal}>
+                      <Text style={{
+                      marginTop:5,
+                      borderWidth: 2,
+                      borderColor: "darkgrey",
+                      borderStyle: "solid",
+                      borderRadius: 5,
+                      width: 80,
+                      fontSize: 12,
+                      padding: 2,
+                      textAlign: "center",
+                      color: "#FAF9F6",
+                    }}>Delete meal</Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Calories{" "}
+                {meals
+                  .filter((meal: any) => meal.mealTime == "breakfast")
+                  .reduce((acc: any, meal: any) => acc + meal.calories, 0)}
+              </Text>
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Carbs{" "}
+                {meals
+                  .filter((meal: any) => meal.mealTime == "breakfast")
+                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}
+              </Text>
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Fats{" "}
+                {meals
+                  .filter((meal: any) => meal.mealTime == "breakfast")
+                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}
+              </Text>
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Protein{" "}
+                {meals
+                  .filter((meal: any) => meal.mealTime == "breakfast")
+                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}
+              </Text>
+            </View>
+
+            <View style={{ gap: 8 }}>
+              <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Lunch</Text>
+              <Button
+                title="Enter lunch"
+                onPress={() =>
+                  navigation.navigate("MealForm", { mealType: "lunch" })
+                }
+              ></Button>
+              <Button title="Scan barcode" onPress={openCamera}></Button>
+              {meals
+                .filter((meal: any) => meal.mealTime == "lunch")
+                .map((filteredMeal) => (
+                  <View style={{}} key={(filteredMeal as any).MealId}>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      {(filteredMeal as any).mealName}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Quantity: {(filteredMeal as any).quantity}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Calories: {(filteredMeal as any).calories}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Carbs: {(filteredMeal as any).carbs}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Fats: {(filteredMeal as any).fats}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Protein: {(filteredMeal as any).protein}
+                    </Text>
+                    <TouchableOpacity onPress={deleteMeal}>
+                      <Text style={{
+                      marginTop:5,
+                      borderWidth: 2,
+                      borderColor: "darkgrey",
+                      borderStyle: "solid",
+                      borderRadius: 5,
+                      width: 80,
+                      fontSize: 12,
+                      padding: 2,
+                      textAlign: "center",
+                      color: "#FAF9F6",
+                    }}>Delete meal</Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Calories{" "}
+                {meals
+                  .filter((meal: any) => meal.mealTime == "lunch")
+                  .reduce((acc: any, meal: any) => acc + meal.calories, 0)}
+              </Text>
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Carbs{" "}
+                {meals
+                  .filter((meal: any) => meal.mealTime == "lunch")
+                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}
+              </Text>
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Fats{" "}
+                {meals
+                  .filter((meal: any) => meal.mealTime == "lunch")
+                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}
+              </Text>
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Protein{" "}
+                {meals
+                  .filter((meal: any) => meal.mealTime == "lunch")
+                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}
+              </Text>
+            </View>
+            <View style={{ gap: 8 }}>
+              <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Snacks</Text>
+              <Button
+                title="Enter snack"
+                onPress={() =>
+                  navigation.navigate("MealForm", { mealType: "snacks" })
+                }
+              ></Button>
+              <Button title="Scan barcode" onPress={openCamera}></Button>
+              {meals
+                .filter((meal: any) => meal.mealTime == "snacks")
+                .map((filteredMeal) => (
+                  <View style={{}} key={(filteredMeal as any).MealId}>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      {(filteredMeal as any).mealName}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Quantity: {(filteredMeal as any).quantity}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Calories: {(filteredMeal as any).calories}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Carbs: {(filteredMeal as any).carbs}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Fats: {(filteredMeal as any).fats}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Protein: {(filteredMeal as any).protein}
+                    </Text>
+                    <TouchableOpacity onPress={deleteMeal}>
+                      <Text style={{
+                      marginTop:5,
+                      borderWidth: 2,
+                      borderColor: "darkgrey",
+                      borderStyle: "solid",
+                      borderRadius: 5,
+                      width: 80,
+                      fontSize: 12,
+                      padding: 2,
+                      textAlign: "center",
+                      color: "#FAF9F6",
+                    }}>Delete meal</Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Calories{" "}
+                {meals
+                  .filter((meal: any) => meal.mealTime == "snacks")
+                  .reduce((acc: any, meal: any) => acc + meal.calories, 0)}
+              </Text>
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Carbs{" "}
+                {meals
+                  .filter((meal: any) => meal.mealTime == "snacks")
+                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}
+              </Text>
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Fats{" "}
+                {meals
+                  .filter((meal: any) => meal.mealTime == "snacks")
+                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}
+              </Text>
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Protein{" "}
+                {meals
+                  .filter((meal: any) => meal.mealTime == "snacks")
+                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}
+              </Text>
+            </View>
+            <View style={{ gap: 8 }}>
+              <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Dinner</Text>
+              <Button
+                title="Enter dinner"
+                onPress={() =>
+                  navigation.navigate("MealForm", { mealType: "dinner" })
+                }
+              ></Button>
+              <Button title="Scan barcode" onPress={openCamera}></Button>
+              {meals
+                .filter((meal: any) => meal.mealTime == "dinner")
+                .map((filteredMeal) => (
+                  <View key={(filteredMeal as any).MealId}>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      {(filteredMeal as any).mealName}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Quantity: {(filteredMeal as any).quantity}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Calories: {(filteredMeal as any).calories}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Carbs: {(filteredMeal as any).carbs}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Fats: {(filteredMeal as any).fats}
+                    </Text>
+                    <Text style={{ color: "#FAF9F6" }}>
+                      Protein: {(filteredMeal as any).protein}
+                    </Text>
+                    <TouchableOpacity onPress={deleteMeal}>
+                      <Text style={{
+                      marginTop:5,
+                      borderWidth: 2,
+                      borderColor: "darkgrey",
+                      borderStyle: "solid",
+                      borderRadius: 5,
+                      width: 80,
+                      fontSize: 12,
+                      padding: 2,
+                      textAlign: "center",
+                      color: "#FAF9F6",
+                    }}>Delete meal</Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Calories:
+                {" " + meals
+                  .filter((meal: any) => meal.mealTime == "dinner")
+                  .reduce((acc: any, meal: any) => acc + meal.calories, 0)}
+              </Text>
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Carbs:
+                {" " + meals
+                  .filter((meal: any) => meal.mealTime == "dinner")
+                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}
+              </Text>
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Fats:
+                {" " + meals
+                  .filter((meal: any) => meal.mealTime == "dinner")
+                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}
+              </Text>
+              <Text style={{ color: "#FAF9F6" }}>
+                Total Protein: 
+                {" " + meals
+                  .filter((meal: any) => meal.mealTime == "dinner")
+                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}
+              </Text>
+            </View>
+
           </View>
-          <Text>Total of the day:</Text>
-          <Text>Calories {meals.reduce((acc:any, meal:any) => acc + (Number(meal.calories) || 0), 0)}</Text>
-          <Text>Carbs {meals.reduce((acc:any, meal:any) => acc + (Number(meal.carbs) || 0), 0)}</Text>
-          <Text>Fats {meals.reduce((acc:any, meal:any) => acc + (Number(meal.fats) || 0), 0)}</Text>
-          <Text>Protein {meals.reduce((acc:any, meal:any) => acc + (Number(meal.protein) || 0), 0)}</Text>
+          <Text style={{ fontSize: 16, color: "#FAF9F6", marginTop:10 }}>Total of the day:</Text>
+          <Text style={{ color: "#FAF9F6" }}>
+            Calories:
+            {" " + meals.reduce(
+              (acc: any, meal: any) => acc + (Number(meal.calories) || 0),
+              0
+            )}
+          </Text>
+          <Text style={{ color: "#FAF9F6" }}>
+            Carbs:
+            {" " + meals.reduce(
+              (acc: any, meal: any) => acc + (Number(meal.carbs) || 0),
+              0
+            )}
+          </Text>
+          <Text style={{ color: "#FAF9F6" }}>
+            Fats:
+            {" " + meals.reduce(
+              (acc: any, meal: any) => acc + (Number(meal.fats) || 0),
+              0
+            )}
+          </Text>
+          <Text style={{ color: "#FAF9F6" }}>
+            Protein:
+            {" " + meals.reduce(
+              (acc: any, meal: any) => acc + (Number(meal.protein) || 0),
+              0
+            )}
+          </Text>
           {scannedData && (
             <View>
               <>
@@ -381,81 +623,14 @@ export default function Meals({ navigation }: Props) {
                         (productInfo as any)?.nutriments?.proteins * 10
                       ) / 10}
                     </Text>
-                    <TouchableOpacity><Text>Add this meal</Text></TouchableOpacity>
+                    <TouchableOpacity>
+                      <Text>Add this meal</Text>
+                    </TouchableOpacity>
                   </>
                 ) : null}
               </>
             </View>
           )}
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={visibility}
-                onRequestClose={() => {
-                  setVisibility(!visibility);
-                }}
-              >
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <View
-                    style={{
-                      backgroundColor: "#383838",
-                      borderRadius: 20,
-                      padding: 25,
-                      alignItems: "center",
-                      shadowRadius: 4,
-                      elevation: 5,
-                      width: "50%",
-                      marginTop: 60,
-                    }}
-                  >
-                    <TouchableOpacity
-                      style={{
-                        borderRadius: 3,
-                        borderColor: "black",
-                        backgroundColor: "lightgrey",
-                        padding: 2,
-                        borderStyle: "solid",
-                        borderWidth: 2,
-                        width: 150,
-                        marginBottom: 10,
-                      }}
-                      onPress={mealForm}
-                    >
-                      <Text style={{ fontSize: 18, textAlign: "center" }}>
-                        Enter Meal
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={{
-                        borderRadius: 3,
-                        borderColor: "black",
-                        backgroundColor: "lightgrey",
-                        padding: 2,
-                        borderStyle: "solid",
-                        borderWidth: 2,
-                        width: 150,
-                      }}
-                      onPress={openCamera}>
-                      <Text style={{ fontSize: 18, textAlign: "center" }}>
-                        Scan barcode
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => setVisibility(!visibility)}
-                    >
-                      <Text style={{ color: "#FAF9F6", marginTop: 10 }}>
-                        Close
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </Modal>
         </View>
       </ScrollView>
       <Footer navigation={navigation} />
