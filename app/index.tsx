@@ -20,7 +20,7 @@ export type RootStackParamList = {
   Meals: undefined;
   UserDetails: undefined;
   Footer: undefined;
-  MealForm: {mealType: string}
+  MealForm: {mealType: string, date:Date}
 };
 
 export default function Index() {

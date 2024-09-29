@@ -19,10 +19,11 @@ export default function MealForm({navigation, route}: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
   
   const { mealType } = route.params;
-
+  const { date }  = route.params
+  console.log(date)
   const addFood = () => {
     console.log(foodName)
-    postMeal(foodName, mealType, quantity, calories, carbs, fats, protein, (userDetails as any).userId)
+    postMeal(foodName, mealType, quantity, calories, carbs, fats, protein, date, (userDetails as any).userId)
   }
 
   console.log(quantity)

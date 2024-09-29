@@ -279,7 +279,7 @@ export default function Meals({ navigation }: Props) {
               <Button
                 title="Enter breakfast"
                 onPress={() =>
-                  navigation.navigate("MealForm", { mealType: "breakfast" })
+                  navigation.navigate("MealForm", { mealType: "breakfast", date: currentDate })
                 }
               ></Button>
               <Button title="Scan barcode" onPress={openCamera}></Button>
