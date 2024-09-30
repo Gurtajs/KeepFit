@@ -25,8 +25,9 @@ import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 type Props = NativeStackScreenProps<RootStackParamList, "Meals">;
 import UserDetails from "./UserDetails";
+import { useIsFocused } from "@react-navigation/native";
 
-export default function Meals({ navigation }: Props) {
+export default function Meals({ navigation, route }: Props) {
   const [calories, setCalories] = useState("");
   const [protein, setProtein] = useState("");
   const [carbs, setCarbs] = useState("");
@@ -86,7 +87,7 @@ export default function Meals({ navigation }: Props) {
 
   const [currentDate, setCurrentDate] = useState(new Date());
 
-
+  const isFocused = useIsFocused()
 
   const formatDate = (date: any) => {
     let day = date.getDate();
@@ -108,9 +109,8 @@ export default function Meals({ navigation }: Props) {
         setMeals(response);
       });
     }
-  }, [userDetails, newDate]);
+  }, [userDetails, newDate, isFocused]);
   
-  console.log("this one", currentDate)
 
   const goForward = () => {
     setCurrentDate(
@@ -160,6 +160,8 @@ export default function Meals({ navigation }: Props) {
       }
     );
   };
+
+
 
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>

@@ -30,10 +30,10 @@ export default function MealForm({navigation, route}: Props) {
 
   const goBack = () => {
     navigation.goBack() 
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Meals" }],
-    });
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [{ name: "Meals"}],
+    // });
   }
 
   return(
