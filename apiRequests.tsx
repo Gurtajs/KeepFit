@@ -160,9 +160,9 @@ export function getProductInfo(barcode:number) {
   })
 }
 
-export function postMeal(mealName: string, mealTime: string, quantity: string, calories: string, carbs: string, fats: string, protein: string, date: Date, userId:number) {
+export function postMeal(mealName: string, mealTime: string, quantity: string, calories: string, carbs: string, fats: string, protein: string, mealDate: Date, userId:number) {
   return axios.post('https://54fc-77-102-154-75.ngrok-free.app/api/meals', {
-    mealName, mealTime, quantity, calories, carbs, fats, protein, date, userId
+    mealName, mealTime, quantity, calories, carbs, fats, protein, mealDate, userId
   }).then((response) => {
     console.log(response.data)
     return response.data
@@ -171,8 +171,8 @@ export function postMeal(mealName: string, mealTime: string, quantity: string, c
   })
 }
 
-export function getMeals(userId: number) {
-  return axios.get(`https://54fc-77-102-154-75.ngrok-free.app/api/users/${userId}/meals`).then((response) => {
+export function getMealsByDate(userId: number, mealDate: string) {
+  return axios.get(`https://54fc-77-102-154-75.ngrok-free.app/api/users/${userId}/meals/${mealDate}`).then((response) => {
     console.log("this", response.data)
     return response.data
   }).catch((error) => {

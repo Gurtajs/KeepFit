@@ -20,7 +20,7 @@ export default function MealForm({navigation, route}: Props) {
   
   const { mealType } = route.params;
   const { date }  = route.params
-  console.log(date)
+
   const addFood = () => {
     console.log(foodName)
     postMeal(foodName, mealType, quantity, calories, carbs, fats, protein, date, (userDetails as any).userId)

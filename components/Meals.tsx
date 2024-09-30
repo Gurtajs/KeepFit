@@ -15,6 +15,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app";
 import {
   deleteMealByMealId,
+  getMealsByDate,
   getProductInfo,
   postNutritionalGoals,
 } from "@/apiRequests";
@@ -23,7 +24,6 @@ import { Calendar, LocaleConfig } from "react-native-calendars";
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 type Props = NativeStackScreenProps<RootStackParamList, "Meals">;
-import { getMeals } from "@/apiRequests";
 import UserDetails from "./UserDetails";
 
 export default function Meals({ navigation }: Props) {
@@ -45,14 +45,6 @@ export default function Meals({ navigation }: Props) {
   const [visibility, setVisibility] = useState(false);
   const [meals, setMeals] = useState([]);
 
-  useEffect(() => {
-    if (userDetails) {
-      getMeals((userDetails as any).userId).then((response: any) => {
-        console.log(response);
-        setMeals(response);
-      });
-    }
-  }, [userDetails]);
 
   const handleBarCodeScanned = (event: {
     type: string;
@@ -94,6 +86,8 @@ export default function Meals({ navigation }: Props) {
 
   const [currentDate, setCurrentDate] = useState(new Date());
 
+
+
   const formatDate = (date: any) => {
     let day = date.getDate();
     let month = date.getMonth() + 1;
@@ -103,6 +97,20 @@ export default function Meals({ navigation }: Props) {
       month < 10 ? "0" + month : month
     }-${year}`;
   };
+  
+  const newDate = formatDate(currentDate)[6]+formatDate(currentDate)[7]+formatDate(currentDate)[8]+formatDate(currentDate)[9]+formatDate(currentDate)[5]+formatDate(currentDate)[3]+formatDate(currentDate)[4]+formatDate(currentDate)[2]+formatDate(currentDate)[0]+formatDate(currentDate)[1]
+  console.log(newDate)
+
+    useEffect(() => {
+    if (userDetails) {
+      getMealsByDate((userDetails as any).userId, newDate).then((response: any) => {
+        console.log(response);
+        setMeals(response);
+      });
+    }
+  }, [userDetails, newDate]);
+  
+  console.log("this one", currentDate)
 
   const goForward = () => {
     setCurrentDate(
@@ -352,7 +360,7 @@ export default function Meals({ navigation }: Props) {
               <Button
                 title="Enter lunch"
                 onPress={() =>
-                  navigation.navigate("MealForm", { mealType: "lunch" })
+                  navigation.navigate("MealForm", { mealType: "lunch",  date: currentDate })
                 }
               ></Button>
               <Button title="Scan barcode" onPress={openCamera}></Button>
@@ -424,7 +432,7 @@ export default function Meals({ navigation }: Props) {
               <Button
                 title="Enter snack"
                 onPress={() =>
-                  navigation.navigate("MealForm", { mealType: "snacks" })
+                  navigation.navigate("MealForm", { mealType: "snacks",  date: currentDate })
                 }
               ></Button>
               <Button title="Scan barcode" onPress={openCamera}></Button>
@@ -496,7 +504,7 @@ export default function Meals({ navigation }: Props) {
               <Button
                 title="Enter dinner"
                 onPress={() =>
-                  navigation.navigate("MealForm", { mealType: "dinner" })
+                  navigation.navigate("MealForm", { mealType: "dinner",  date: currentDate })
                 }
               ></Button>
               <Button title="Scan barcode" onPress={openCamera}></Button>
