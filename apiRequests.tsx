@@ -181,6 +181,8 @@ export function getMealsByDate(userId: number, mealDate: string) {
 } 
 
 export function deleteMealByMealId(userId: number, mealId:number) {
+  
+  console.log(mealId)
   return axios.delete(
     `https://54fc-77-102-154-75.ngrok-free.app/api/users/${userId}/meals/${mealId}`
   ).then((response) =>{

@@ -20,14 +20,13 @@ import {
   postNutritionalGoals,
 } from "@/apiRequests";
 import { UserContext } from "./UserContext";
-import { Calendar, LocaleConfig } from "react-native-calendars";
+import { Calendar } from "react-native-calendars";
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
-import { Camera, useCameraDevices } from "react-native-vision-camera";
 type Props = NativeStackScreenProps<RootStackParamList, "Meals">;
-import UserDetails from "./UserDetails";
 import { useIsFocused } from "@react-navigation/native";
+import DeleteMeal from "./DeleteMeal";
 
-export default function Meals({ navigation, route }: Props) {
+export default function Meals({ navigation }: Props) {
   const [calories, setCalories] = useState("");
   const [protein, setProtein] = useState("");
   const [carbs, setCarbs] = useState("");
@@ -44,7 +43,7 @@ export default function Meals({ navigation, route }: Props) {
   const cameraRef = useRef(null);
   const [isScanning, setIsScanning] = useState(true);
   const [visibility, setVisibility] = useState(false);
-  const [meals, setMeals] = useState([]);
+  const [meals, setMeals] = useState<any[]>([]);
 
 
   const handleBarCodeScanned = (event: {
@@ -153,13 +152,7 @@ export default function Meals({ navigation, route }: Props) {
     setShowCamera((prev) => !prev);
   };
 
-  const deleteMeal = () => {
-    deleteMealByMealId((userDetails as any).userId, (meals as any).mealId).then(
-      () => {
-        console.log("deleted successfully");
-      }
-    );
-  };
+ 
 
 
 
@@ -315,20 +308,7 @@ export default function Meals({ navigation, route }: Props) {
                     <Text style={{ color: "#FAF9F6" }}>
                       Protein: {(filteredMeal as any).protein}
                     </Text>
-                    <TouchableOpacity onPress={deleteMeal}>
-                      <Text style={{
-                      marginTop:5,
-                      borderWidth: 2,
-                      borderColor: "darkgrey",
-                      borderStyle: "solid",
-                      borderRadius: 5,
-                      width: 80,
-                      fontSize: 12,
-                      padding: 2,
-                      textAlign: "center",
-                      color: "#FAF9F6",
-                    }}>Delete meal</Text>
-                    </TouchableOpacity>
+                  <DeleteMeal userDetails = {userDetails} meals = {meals} meal = {filteredMeal} setMeals={setMeals}/>
                   </View>
                 ))}
               <Text style={{ color: "#FAF9F6" }}>
@@ -388,20 +368,7 @@ export default function Meals({ navigation, route }: Props) {
                     <Text style={{ color: "#FAF9F6" }}>
                       Protein: {(filteredMeal as any).protein}
                     </Text>
-                    <TouchableOpacity onPress={deleteMeal}>
-                      <Text style={{
-                      marginTop:5,
-                      borderWidth: 2,
-                      borderColor: "darkgrey",
-                      borderStyle: "solid",
-                      borderRadius: 5,
-                      width: 80,
-                      fontSize: 12,
-                      padding: 2,
-                      textAlign: "center",
-                      color: "#FAF9F6",
-                    }}>Delete meal</Text>
-                    </TouchableOpacity>
+                    <DeleteMeal userDetails = {userDetails} meals = {meals} meal = {filteredMeal} setMeals={setMeals}/>
                   </View>
                 ))}
               <Text style={{ color: "#FAF9F6" }}>
@@ -460,20 +427,7 @@ export default function Meals({ navigation, route }: Props) {
                     <Text style={{ color: "#FAF9F6" }}>
                       Protein: {(filteredMeal as any).protein}
                     </Text>
-                    <TouchableOpacity onPress={deleteMeal}>
-                      <Text style={{
-                      marginTop:5,
-                      borderWidth: 2,
-                      borderColor: "darkgrey",
-                      borderStyle: "solid",
-                      borderRadius: 5,
-                      width: 80,
-                      fontSize: 12,
-                      padding: 2,
-                      textAlign: "center",
-                      color: "#FAF9F6",
-                    }}>Delete meal</Text>
-                    </TouchableOpacity>
+                    <DeleteMeal userDetails = {userDetails} meals = {meals} meal = {filteredMeal} setMeals={setMeals}/>
                   </View>
                 ))}
               <Text style={{ color: "#FAF9F6" }}>
@@ -532,20 +486,7 @@ export default function Meals({ navigation, route }: Props) {
                     <Text style={{ color: "#FAF9F6" }}>
                       Protein: {(filteredMeal as any).protein}
                     </Text>
-                    <TouchableOpacity onPress={deleteMeal}>
-                      <Text style={{
-                      marginTop:5,
-                      borderWidth: 2,
-                      borderColor: "darkgrey",
-                      borderStyle: "solid",
-                      borderRadius: 5,
-                      width: 80,
-                      fontSize: 12,
-                      padding: 2,
-                      textAlign: "center",
-                      color: "#FAF9F6",
-                    }}>Delete meal</Text>
-                    </TouchableOpacity>
+                    <DeleteMeal userDetails = {userDetails} meals = {meals} meal = {filteredMeal} setMeals={setMeals}/>
                   </View>
                 ))}
               <Text style={{ color: "#FAF9F6" }}>

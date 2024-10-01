@@ -26,14 +26,9 @@ export default function MealForm({navigation, route}: Props) {
     postMeal(foodName, mealType, quantity, calories, carbs, fats, protein, date, (userDetails as any).userId)
   }
 
-  console.log(quantity)
 
   const goBack = () => {
     navigation.goBack() 
-    // navigation.reset({
-    //   index: 0,
-    //   routes: [{ name: "Meals"}],
-    // });
   }
 
   return(
