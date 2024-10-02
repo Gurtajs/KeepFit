@@ -4,24 +4,29 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useState } from "react";
 
 interface deleteProps {
-  userDetails: object,
-  meals: Array<any>
-  meal: object,
-  setMeals: React.Dispatch<React.SetStateAction<Array<string>>>
+  userDetails: object;
+  meals: Array<any>;
+  meal: object;
+  setMeals: React.Dispatch<React.SetStateAction<Array<string>>>;
 }
 
-export default function DeleteMeal({userDetails, meals, meal, setMeals}:deleteProps) {
-  
+export default function DeleteMeal({
+  userDetails,
+  meals,
+  meal,
+  setMeals,
+}: deleteProps) {
   const deleteMeal = () => {
-    deleteMealByMealId((userDetails as any).userId, (meal as any).mealId)
-        const updatedMeals = meals.filter((singleMeal) => singleMeal.mealId!== (meal as any).mealId)
-        setMeals(updatedMeals)
-      }
-      const [modalVisible, setModalVisible] = useState(false);
-      const openPopUp = () => {
-        setModalVisible(true);
-      };
-  
+    deleteMealByMealId((userDetails as any).userId, (meal as any).mealId);
+    const updatedMeals = meals.filter(
+      (singleMeal) => singleMeal.mealId !== (meal as any).mealId
+    );
+    setMeals(updatedMeals);
+  };
+  const [modalVisible, setModalVisible] = useState(false);
+  const openPopUp = () => {
+    setModalVisible(true);
+  };
 
   return (
     <View style={{ position: "absolute", bottom: 0, right: 0 }}>

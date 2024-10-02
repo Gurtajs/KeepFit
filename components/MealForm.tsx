@@ -17,13 +17,16 @@ export default function MealForm({navigation, route}: Props) {
   const [fats, setFats] = useState("")
   const [protein, setProtein] = useState("")
   const { userDetails, setUserDetails } = useContext(UserContext);
-  
+  const [added, setAdded] = useState(false)
+
   const { mealType } = route.params;
   const { date }  = route.params
 
   const addFood = () => {
     console.log(foodName)
-    postMeal(foodName, mealType, quantity, calories, carbs, fats, protein, date, (userDetails as any).userId)
+    postMeal(foodName, mealType, quantity, calories, carbs, fats, protein, date, (userDetails as any).userId).then(()=>{
+      setAdded(true)
+    })
   }
 
 
@@ -102,6 +105,7 @@ export default function MealForm({navigation, route}: Props) {
                   textAlign: "center",
                   color: "#FAF9F6",
                 }}>Add food</Text></TouchableOpacity>
+                {added ? <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Meal added!</Text> : null}
                   </View>
     <Footer navigation={navigation} />
     </View>

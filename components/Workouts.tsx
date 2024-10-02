@@ -7,22 +7,19 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
-  Pressable,
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../app/index";
 import Footer from "./Footer";
 import {
-  deleteWorkoutByWorkoutId,
   getWorkoutsByUserDate,
   postWorkout,
 } from "../apiRequests";
 import DropDownPicker from "react-native-dropdown-picker";
 import { WorkoutContext } from "./WorkoutContext";
-import { Calendar, LocaleConfig } from "react-native-calendars";
+import { Calendar } from "react-native-calendars";
 import Header from "./Header";
 type Props = NativeStackScreenProps<RootStackParamList, "Workouts">;
-import DeleteWorkout from "./DeleteWorkout";
 import AllWorkouts from "./AllWorkouts";
 import StarRating from "./StarRating";
 

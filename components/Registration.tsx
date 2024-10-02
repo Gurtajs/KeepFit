@@ -1,4 +1,4 @@
-import { Children, createContext, useContext, useState } from "react";
+import {useContext, useState } from "react";
 import {
   View,
   Text,
@@ -6,15 +6,12 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
-  Button,
-  Image,
 } from "react-native";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "./AuthContext";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app";
 import * as ImagePicker from "expo-image-picker";
-import ImageViewer from "./ImageViewer";
 import { postUser } from "../apiRequests";
 import { ImageContext } from "./ImageContext";
 

@@ -1,4 +1,4 @@
-import { useState, useContext, useRef, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { UserContext } from "./UserContext";
 import {
   Text,
@@ -18,7 +18,6 @@ import Footer from "./Footer";
 import type { RootStackParamList } from "../app/index";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { patchUser } from "../apiRequests";
-import { ImageContext } from "./ImageContext";
 import Header from "./Header";
 import * as ImagePicker from "expo-image-picker";
 type Props = NativeStackScreenProps<RootStackParamList, "UserDetails">;

@@ -4,8 +4,6 @@ import { useContext, useEffect, useState } from "react";
 import {
   ScrollView,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
   ActivityIndicator,
   Image,
@@ -16,10 +14,7 @@ import type { RootStackParamList } from "../app/index";
 import { AuthContext } from "./AuthContext";
 import {
   getUserDetails,
-  getWorkouts,
   getWorkoutsByUser,
-  getMuscleGroups,
-  getUserWorkoutByMuscleGroup,
 } from "../apiRequests";
 import { useFocusEffect } from "@react-navigation/native";
 import { WorkoutContext } from "./WorkoutContext";

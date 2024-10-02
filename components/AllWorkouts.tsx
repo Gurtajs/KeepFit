@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { View, Text } from "react-native";
 import DeleteWorkout from "./DeleteWorkout";
 import { WorkoutContext } from "./WorkoutContext";

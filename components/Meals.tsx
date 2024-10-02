@@ -14,10 +14,10 @@ import Footer from "./Footer";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app";
 import {
-  deleteMealByMealId,
   getMealsByDate,
   getProductInfo,
   postNutritionalGoals,
+  postMeal
 } from "@/apiRequests";
 import { UserContext } from "./UserContext";
 import { Calendar } from "react-native-calendars";
@@ -38,17 +38,19 @@ export default function Meals({ navigation }: Props) {
   const [scanned, setScanned] = useState(false);
   const [barcode, setBarcode] = useState<number | null>(null);
   const [scanning, setScanning] = useState(false);
-  const [scannedData, setScannedData] = useState(null);
+  const [scannedData, setScannedData] = useState<any | null>(null);
   const [productInfo, setProductInfo] = useState<any[]>([]);
   const cameraRef = useRef(null);
   const [isScanning, setIsScanning] = useState(true);
   const [visibility, setVisibility] = useState(false);
   const [meals, setMeals] = useState<any[]>([]);
+  const [foodName, setFoodName] = useState("")
+  const [quantity, setQuantity] = useState("")
 
 
   const handleBarCodeScanned = (event: {
     type: string;
-    data: string;
+    data: number;
     bounds?: {
       origin: { x: number; y: number };
       size: { width: number; height: number };
@@ -68,9 +70,21 @@ export default function Meals({ navigation }: Props) {
       getProductInfo(event.data).then((response) => {
         setProductInfo(response);
         console.log("new", productInfo);
-      });
+      }).then(() => {
+        setFoodName((productInfo as any)?.product_name)
+        setQuantity('100')
+        setCalories((productInfo as any).nutriments?.["energy-kcal"])
+        setCarbs((Math.round(
+          (productInfo as any)?.nutriments?.carbohydrates * 10
+        ) / 10).toString())
+        setFats((Math.round((productInfo as any)?.nutriments?.fat * 10) /
+          10).toString())
+        setProtein((Math.round(
+          (productInfo as any)?.nutriments?.proteins * 10
+        ) / 10).toString())
+      })
     }
-  };
+  }
 
   const addGoals = () => {
     postNutritionalGoals(
@@ -152,9 +166,18 @@ export default function Meals({ navigation }: Props) {
     setShowCamera((prev) => !prev);
   };
 
- 
-
-
+  const addFood = () => {
+    console.log(foodName)
+    console.log(quantity)
+    console.log(calories)
+    console.log(carbs)
+    console.log(fats)
+    console.log(protein)
+    console.log(currentDate)
+    console.log((userDetails as any).userId)
+    postMeal(foodName, 'breakfast', quantity, calories, carbs, fats, protein, currentDate, (userDetails as any).userId)
+    }
+  
 
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>
@@ -300,13 +323,13 @@ export default function Meals({ navigation }: Props) {
                       Calories: {(filteredMeal as any).calories}
                     </Text>
                     <Text style={{ color: "#FAF9F6" }}>
-                      Carbs: {(filteredMeal as any).carbs}
+                      Carbs: {(filteredMeal as any).carbs}g
                     </Text>
                     <Text style={{ color: "#FAF9F6" }}>
-                      Fats: {(filteredMeal as any).fats}
+                      Fats: {(filteredMeal as any).fats}g
                     </Text>
                     <Text style={{ color: "#FAF9F6" }}>
-                      Protein: {(filteredMeal as any).protein}
+                      Protein: {(filteredMeal as any).protein}g
                     </Text>
                   <DeleteMeal userDetails = {userDetails} meals = {meals} meal = {filteredMeal} setMeals={setMeals}/>
                   </View>
@@ -321,19 +344,19 @@ export default function Meals({ navigation }: Props) {
                 Total Carbs{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "breakfast")
-                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}
+                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Fats{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "breakfast")
-                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}
+                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Protein{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "breakfast")
-                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}
+                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}g
               </Text>
             </View>
 
@@ -360,13 +383,13 @@ export default function Meals({ navigation }: Props) {
                       Calories: {(filteredMeal as any).calories}
                     </Text>
                     <Text style={{ color: "#FAF9F6" }}>
-                      Carbs: {(filteredMeal as any).carbs}
+                      Carbs: {(filteredMeal as any).carbs}g
                     </Text>
                     <Text style={{ color: "#FAF9F6" }}>
-                      Fats: {(filteredMeal as any).fats}
+                      Fats: {(filteredMeal as any).fats}g
                     </Text>
                     <Text style={{ color: "#FAF9F6" }}>
-                      Protein: {(filteredMeal as any).protein}
+                      Protein: {(filteredMeal as any).protein}g
                     </Text>
                     <DeleteMeal userDetails = {userDetails} meals = {meals} meal = {filteredMeal} setMeals={setMeals}/>
                   </View>
@@ -381,19 +404,19 @@ export default function Meals({ navigation }: Props) {
                 Total Carbs{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "lunch")
-                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}
+                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Fats{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "lunch")
-                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}
+                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Protein{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "lunch")
-                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}
+                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}g
               </Text>
             </View>
             <View style={{ gap: 8 }}>
@@ -416,16 +439,16 @@ export default function Meals({ navigation }: Props) {
                       Quantity: {(filteredMeal as any).quantity}
                     </Text>
                     <Text style={{ color: "#FAF9F6" }}>
-                      Calories: {(filteredMeal as any).calories}
+                      Calories: {(filteredMeal as any).calories}g
                     </Text>
                     <Text style={{ color: "#FAF9F6" }}>
-                      Carbs: {(filteredMeal as any).carbs}
+                      Carbs: {(filteredMeal as any).carbs}g
                     </Text>
                     <Text style={{ color: "#FAF9F6" }}>
-                      Fats: {(filteredMeal as any).fats}
+                      Fats: {(filteredMeal as any).fats}g
                     </Text>
                     <Text style={{ color: "#FAF9F6" }}>
-                      Protein: {(filteredMeal as any).protein}
+                      Protein: {(filteredMeal as any).protein}g
                     </Text>
                     <DeleteMeal userDetails = {userDetails} meals = {meals} meal = {filteredMeal} setMeals={setMeals}/>
                   </View>
@@ -440,19 +463,19 @@ export default function Meals({ navigation }: Props) {
                 Total Carbs{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "snacks")
-                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}
+                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Fats{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "snacks")
-                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}
+                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Protein{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "snacks")
-                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}
+                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}g
               </Text>
             </View>
             <View style={{ gap: 8 }}>
@@ -478,13 +501,13 @@ export default function Meals({ navigation }: Props) {
                       Calories: {(filteredMeal as any).calories}
                     </Text>
                     <Text style={{ color: "#FAF9F6" }}>
-                      Carbs: {(filteredMeal as any).carbs}
+                      Carbs: {(filteredMeal as any).carbs}g
                     </Text>
                     <Text style={{ color: "#FAF9F6" }}>
-                      Fats: {(filteredMeal as any).fats}
+                      Fats: {(filteredMeal as any).fats}g
                     </Text>
                     <Text style={{ color: "#FAF9F6" }}>
-                      Protein: {(filteredMeal as any).protein}
+                      Protein: {(filteredMeal as any).protein}g
                     </Text>
                     <DeleteMeal userDetails = {userDetails} meals = {meals} meal = {filteredMeal} setMeals={setMeals}/>
                   </View>
@@ -499,19 +522,19 @@ export default function Meals({ navigation }: Props) {
                 Total Carbs:
                 {" " + meals
                   .filter((meal: any) => meal.mealTime == "dinner")
-                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}
+                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Fats:
                 {" " + meals
                   .filter((meal: any) => meal.mealTime == "dinner")
-                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}
+                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Protein: 
                 {" " + meals
                   .filter((meal: any) => meal.mealTime == "dinner")
-                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}
+                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}g
               </Text>
             </View>
 
@@ -529,21 +552,21 @@ export default function Meals({ navigation }: Props) {
             {" " + meals.reduce(
               (acc: any, meal: any) => acc + (Number(meal.carbs) || 0),
               0
-            )}
+            )}g
           </Text>
           <Text style={{ color: "#FAF9F6" }}>
             Fats:
             {" " + meals.reduce(
               (acc: any, meal: any) => acc + (Number(meal.fats) || 0),
               0
-            )}
+            )}g
           </Text>
           <Text style={{ color: "#FAF9F6" }}>
             Protein:
             {" " + meals.reduce(
               (acc: any, meal: any) => acc + (Number(meal.protein) || 0),
               0
-            )}
+            )}g
           </Text>
           {scannedData && (
             <View>
@@ -574,7 +597,7 @@ export default function Meals({ navigation }: Props) {
                         (productInfo as any)?.nutriments?.proteins * 10
                       ) / 10}
                     </Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={addFood}>
                       <Text>Add this meal</Text>
                     </TouchableOpacity>
                   </>
@@ -586,5 +609,5 @@ export default function Meals({ navigation }: Props) {
       </ScrollView>
       <Footer navigation={navigation} />
     </View>
-  );
-}
+  )
+  }
