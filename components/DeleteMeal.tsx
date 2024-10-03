@@ -22,6 +22,7 @@ export default function DeleteMeal({
       (singleMeal) => singleMeal.mealId !== (meal as any).mealId
     );
     setMeals(updatedMeals);
+    setModalVisible(false)
   };
   const [modalVisible, setModalVisible] = useState(false);
   const openPopUp = () => {

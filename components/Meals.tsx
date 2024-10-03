@@ -17,7 +17,7 @@ import {
   getMealsByDate,
   getProductInfo,
   postNutritionalGoals,
-  postMeal
+  postMeal,
 } from "@/apiRequests";
 import { UserContext } from "./UserContext";
 import { Calendar } from "react-native-calendars";
@@ -44,9 +44,9 @@ export default function Meals({ navigation }: Props) {
   const [isScanning, setIsScanning] = useState(true);
   const [visibility, setVisibility] = useState(false);
   const [meals, setMeals] = useState<any[]>([]);
-  const [foodName, setFoodName] = useState("")
-  const [quantity, setQuantity] = useState("")
-
+  const [foodName, setFoodName] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [mealAdded, setMealAdded] = useState(false);
 
   const handleBarCodeScanned = (event: {
     type: string;
@@ -70,21 +70,31 @@ export default function Meals({ navigation }: Props) {
       getProductInfo(event.data).then((response) => {
         setProductInfo(response);
         console.log("new", productInfo);
-      }).then(() => {
-        setFoodName((productInfo as any)?.product_name)
-        setQuantity('100')
-        setCalories((productInfo as any).nutriments?.["energy-kcal"])
-        setCarbs((Math.round(
-          (productInfo as any)?.nutriments?.carbohydrates * 10
-        ) / 10).toString())
-        setFats((Math.round((productInfo as any)?.nutriments?.fat * 10) /
-          10).toString())
-        setProtein((Math.round(
-          (productInfo as any)?.nutriments?.proteins * 10
-        ) / 10).toString())
-      })
+      });
     }
-  }
+  };
+
+  useEffect(() => {
+    if (productInfo) {
+      setFoodName((productInfo as any)?.product_name);
+      console.log("this one", foodName);
+      setQuantity("100");
+      setCalories((productInfo as any).nutriments?.["energy-kcal"]);
+      setCarbs(
+        (
+          Math.round((productInfo as any)?.nutriments?.carbohydrates * 10) / 10
+        ).toString()
+      );
+      setFats(
+        (Math.round((productInfo as any)?.nutriments?.fat * 10) / 10).toString()
+      );
+      setProtein(
+        (
+          Math.round((productInfo as any)?.nutriments?.proteins * 10) / 10
+        ).toString()
+      );
+    }
+  }, [productInfo]);
 
   const addGoals = () => {
     postNutritionalGoals(
@@ -100,7 +110,7 @@ export default function Meals({ navigation }: Props) {
 
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  const isFocused = useIsFocused()
+  const isFocused = useIsFocused();
 
   const formatDate = (date: any) => {
     let day = date.getDate();
@@ -111,19 +121,30 @@ export default function Meals({ navigation }: Props) {
       month < 10 ? "0" + month : month
     }-${year}`;
   };
-  
-  const newDate = formatDate(currentDate)[6]+formatDate(currentDate)[7]+formatDate(currentDate)[8]+formatDate(currentDate)[9]+formatDate(currentDate)[5]+formatDate(currentDate)[3]+formatDate(currentDate)[4]+formatDate(currentDate)[2]+formatDate(currentDate)[0]+formatDate(currentDate)[1]
-  console.log(newDate)
 
-    useEffect(() => {
+  const newDate =
+    formatDate(currentDate)[6] +
+    formatDate(currentDate)[7] +
+    formatDate(currentDate)[8] +
+    formatDate(currentDate)[9] +
+    formatDate(currentDate)[5] +
+    formatDate(currentDate)[3] +
+    formatDate(currentDate)[4] +
+    formatDate(currentDate)[2] +
+    formatDate(currentDate)[0] +
+    formatDate(currentDate)[1];
+
+  useEffect(() => {
     if (userDetails) {
-      getMealsByDate((userDetails as any).userId, newDate).then((response: any) => {
-        console.log(response);
-        setMeals(response);
-      });
+      getMealsByDate((userDetails as any).userId, newDate).then(
+        (response: any) => {
+          console.log(response);
+          setMeals(response);
+          setMealAdded(false);
+        }
+      );
     }
-  }, [userDetails, newDate, isFocused]);
-  
+  }, [userDetails, newDate, isFocused, mealAdded]);
 
   const goForward = () => {
     setCurrentDate(
@@ -167,17 +188,18 @@ export default function Meals({ navigation }: Props) {
   };
 
   const addFood = () => {
-    console.log(foodName)
-    console.log(quantity)
-    console.log(calories)
-    console.log(carbs)
-    console.log(fats)
-    console.log(protein)
-    console.log(currentDate)
-    console.log((userDetails as any).userId)
-    postMeal(foodName, 'breakfast', quantity, calories, carbs, fats, protein, currentDate, (userDetails as any).userId)
-    }
-  
+    postMeal(
+      foodName,
+      "breakfast",
+      quantity,
+      calories,
+      carbs,
+      fats,
+      protein,
+      currentDate,
+      (userDetails as any).userId
+    ).then(() => setMealAdded(true));
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>
@@ -305,7 +327,10 @@ export default function Meals({ navigation }: Props) {
               <Button
                 title="Enter breakfast"
                 onPress={() =>
-                  navigation.navigate("MealForm", { mealType: "breakfast", date: currentDate })
+                  navigation.navigate("MealForm", {
+                    mealType: "breakfast",
+                    date: currentDate,
+                  })
                 }
               ></Button>
               <Button title="Scan barcode" onPress={openCamera}></Button>
@@ -331,7 +356,12 @@ export default function Meals({ navigation }: Props) {
                     <Text style={{ color: "#FAF9F6" }}>
                       Protein: {(filteredMeal as any).protein}g
                     </Text>
-                  <DeleteMeal userDetails = {userDetails} meals = {meals} meal = {filteredMeal} setMeals={setMeals}/>
+                    <DeleteMeal
+                      userDetails={userDetails}
+                      meals={meals}
+                      meal={filteredMeal}
+                      setMeals={setMeals}
+                    />
                   </View>
                 ))}
               <Text style={{ color: "#FAF9F6" }}>
@@ -344,19 +374,22 @@ export default function Meals({ navigation }: Props) {
                 Total Carbs{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "breakfast")
-                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}g
+                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}
+                g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Fats{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "breakfast")
-                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}g
+                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}
+                g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Protein{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "breakfast")
-                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}g
+                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}
+                g
               </Text>
             </View>
 
@@ -365,7 +398,10 @@ export default function Meals({ navigation }: Props) {
               <Button
                 title="Enter lunch"
                 onPress={() =>
-                  navigation.navigate("MealForm", { mealType: "lunch",  date: currentDate })
+                  navigation.navigate("MealForm", {
+                    mealType: "lunch",
+                    date: currentDate,
+                  })
                 }
               ></Button>
               <Button title="Scan barcode" onPress={openCamera}></Button>
@@ -391,7 +427,12 @@ export default function Meals({ navigation }: Props) {
                     <Text style={{ color: "#FAF9F6" }}>
                       Protein: {(filteredMeal as any).protein}g
                     </Text>
-                    <DeleteMeal userDetails = {userDetails} meals = {meals} meal = {filteredMeal} setMeals={setMeals}/>
+                    <DeleteMeal
+                      userDetails={userDetails}
+                      meals={meals}
+                      meal={filteredMeal}
+                      setMeals={setMeals}
+                    />
                   </View>
                 ))}
               <Text style={{ color: "#FAF9F6" }}>
@@ -404,19 +445,22 @@ export default function Meals({ navigation }: Props) {
                 Total Carbs{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "lunch")
-                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}g
+                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}
+                g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Fats{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "lunch")
-                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}g
+                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}
+                g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Protein{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "lunch")
-                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}g
+                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}
+                g
               </Text>
             </View>
             <View style={{ gap: 8 }}>
@@ -424,7 +468,10 @@ export default function Meals({ navigation }: Props) {
               <Button
                 title="Enter snack"
                 onPress={() =>
-                  navigation.navigate("MealForm", { mealType: "snacks",  date: currentDate })
+                  navigation.navigate("MealForm", {
+                    mealType: "snacks",
+                    date: currentDate,
+                  })
                 }
               ></Button>
               <Button title="Scan barcode" onPress={openCamera}></Button>
@@ -450,7 +497,12 @@ export default function Meals({ navigation }: Props) {
                     <Text style={{ color: "#FAF9F6" }}>
                       Protein: {(filteredMeal as any).protein}g
                     </Text>
-                    <DeleteMeal userDetails = {userDetails} meals = {meals} meal = {filteredMeal} setMeals={setMeals}/>
+                    <DeleteMeal
+                      userDetails={userDetails}
+                      meals={meals}
+                      meal={filteredMeal}
+                      setMeals={setMeals}
+                    />
                   </View>
                 ))}
               <Text style={{ color: "#FAF9F6" }}>
@@ -463,19 +515,22 @@ export default function Meals({ navigation }: Props) {
                 Total Carbs{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "snacks")
-                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}g
+                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}
+                g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Fats{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "snacks")
-                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}g
+                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}
+                g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Protein{" "}
                 {meals
                   .filter((meal: any) => meal.mealTime == "snacks")
-                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}g
+                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}
+                g
               </Text>
             </View>
             <View style={{ gap: 8 }}>
@@ -483,7 +538,10 @@ export default function Meals({ navigation }: Props) {
               <Button
                 title="Enter dinner"
                 onPress={() =>
-                  navigation.navigate("MealForm", { mealType: "dinner",  date: currentDate })
+                  navigation.navigate("MealForm", {
+                    mealType: "dinner",
+                    date: currentDate,
+                  })
                 }
               ></Button>
               <Button title="Scan barcode" onPress={openCamera}></Button>
@@ -509,64 +567,84 @@ export default function Meals({ navigation }: Props) {
                     <Text style={{ color: "#FAF9F6" }}>
                       Protein: {(filteredMeal as any).protein}g
                     </Text>
-                    <DeleteMeal userDetails = {userDetails} meals = {meals} meal = {filteredMeal} setMeals={setMeals}/>
+                    <DeleteMeal
+                      userDetails={userDetails}
+                      meals={meals}
+                      meal={filteredMeal}
+                      setMeals={setMeals}
+                    />
                   </View>
                 ))}
               <Text style={{ color: "#FAF9F6" }}>
                 Total Calories:
-                {" " + meals
-                  .filter((meal: any) => meal.mealTime == "dinner")
-                  .reduce((acc: any, meal: any) => acc + meal.calories, 0)}
+                {" " +
+                  meals
+                    .filter((meal: any) => meal.mealTime == "dinner")
+                    .reduce((acc: any, meal: any) => acc + meal.calories, 0)}
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Carbs:
-                {" " + meals
-                  .filter((meal: any) => meal.mealTime == "dinner")
-                  .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}g
+                {" " +
+                  meals
+                    .filter((meal: any) => meal.mealTime == "dinner")
+                    .reduce((acc: any, meal: any) => acc + meal.carbs, 0)}
+                g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
                 Total Fats:
-                {" " + meals
-                  .filter((meal: any) => meal.mealTime == "dinner")
-                  .reduce((acc: any, meal: any) => acc + meal.fats, 0)}g
+                {" " +
+                  meals
+                    .filter((meal: any) => meal.mealTime == "dinner")
+                    .reduce((acc: any, meal: any) => acc + meal.fats, 0)}
+                g
               </Text>
               <Text style={{ color: "#FAF9F6" }}>
-                Total Protein: 
-                {" " + meals
-                  .filter((meal: any) => meal.mealTime == "dinner")
-                  .reduce((acc: any, meal: any) => acc + meal.protein, 0)}g
+                Total Protein:
+                {" " +
+                  meals
+                    .filter((meal: any) => meal.mealTime == "dinner")
+                    .reduce((acc: any, meal: any) => acc + meal.protein, 0)}
+                g
               </Text>
             </View>
-
           </View>
-          <Text style={{ fontSize: 16, color: "#FAF9F6", marginTop:10 }}>Total of the day:</Text>
+          <Text style={{ fontSize: 16, color: "#FAF9F6", marginTop: 10 }}>
+            Total of the day:
+          </Text>
           <Text style={{ color: "#FAF9F6" }}>
             Calories:
-            {" " + meals.reduce(
-              (acc: any, meal: any) => acc + (Number(meal.calories) || 0),
-              0
-            )}
+            {" " +
+              meals.reduce(
+                (acc: any, meal: any) => acc + (Number(meal.calories) || 0),
+                0
+              )}
           </Text>
           <Text style={{ color: "#FAF9F6" }}>
             Carbs:
-            {" " + meals.reduce(
-              (acc: any, meal: any) => acc + (Number(meal.carbs) || 0),
-              0
-            )}g
+            {" " +
+              meals.reduce(
+                (acc: any, meal: any) => acc + (Number(meal.carbs) || 0),
+                0
+              )}
+            g
           </Text>
           <Text style={{ color: "#FAF9F6" }}>
             Fats:
-            {" " + meals.reduce(
-              (acc: any, meal: any) => acc + (Number(meal.fats) || 0),
-              0
-            )}g
+            {" " +
+              meals.reduce(
+                (acc: any, meal: any) => acc + (Number(meal.fats) || 0),
+                0
+              )}
+            g
           </Text>
           <Text style={{ color: "#FAF9F6" }}>
             Protein:
-            {" " + meals.reduce(
-              (acc: any, meal: any) => acc + (Number(meal.protein) || 0),
-              0
-            )}g
+            {" " +
+              meals.reduce(
+                (acc: any, meal: any) => acc + (Number(meal.protein) || 0),
+                0
+              )}
+            g
           </Text>
           {scannedData && (
             <View>
@@ -598,7 +676,7 @@ export default function Meals({ navigation }: Props) {
                       ) / 10}
                     </Text>
                     <TouchableOpacity onPress={addFood}>
-                      <Text>Add this meal</Text>
+                      <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Add this meal</Text>
                     </TouchableOpacity>
                   </>
                 ) : null}
@@ -609,5 +687,5 @@ export default function Meals({ navigation }: Props) {
       </ScrollView>
       <Footer navigation={navigation} />
     </View>
-  )
-  }
+  );
+}
