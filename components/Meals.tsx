@@ -178,19 +178,23 @@ export default function Meals({ navigation }: Props) {
     setFacing((current) => (current === "back" ? "front" : "back"));
   }
 
-  const openCamera = () => {
-    setShowCamera((prev) => !prev);
+  const [scannedMealType, setScannedMealType] = useState<string | null>(null);
+
+
+  const openCamera = (mealType: string) => {
+    setScannedMealType(mealType)
+    setShowCamera(true);
     setVisibility(false);
   };
 
   const closeScanner = () => {
-    setShowCamera((prev) => !prev);
+    setShowCamera(false);
   };
 
   const addFood = () => {
     postMeal(
       foodName,
-      "breakfast",
+      scannedMealType,
       quantity,
       calories,
       carbs,
@@ -333,7 +337,7 @@ export default function Meals({ navigation }: Props) {
                   })
                 }
               ></Button>
-              <Button title="Scan barcode" onPress={openCamera}></Button>
+              <Button title="Scan barcode" onPress={()=>openCamera("breakfast")}></Button>
               {meals
                 .filter((meal: any) => meal.mealTime == "breakfast")
                 .map((filteredMeal) => (
@@ -404,7 +408,7 @@ export default function Meals({ navigation }: Props) {
                   })
                 }
               ></Button>
-              <Button title="Scan barcode" onPress={openCamera}></Button>
+              <Button title="Scan barcode" onPress={()=> openCamera("lunch")}></Button>
               {meals
                 .filter((meal: any) => meal.mealTime == "lunch")
                 .map((filteredMeal) => (
@@ -474,7 +478,7 @@ export default function Meals({ navigation }: Props) {
                   })
                 }
               ></Button>
-              <Button title="Scan barcode" onPress={openCamera}></Button>
+              <Button title="Scan barcode" onPress={()=>openCamera("snacks")}></Button>
               {meals
                 .filter((meal: any) => meal.mealTime == "snacks")
                 .map((filteredMeal) => (
@@ -544,7 +548,7 @@ export default function Meals({ navigation }: Props) {
                   })
                 }
               ></Button>
-              <Button title="Scan barcode" onPress={openCamera}></Button>
+              <Button title="Scan barcode" onPress={()=>openCamera("dinner")}></Button>
               {meals
                 .filter((meal: any) => meal.mealTime == "dinner")
                 .map((filteredMeal) => (
@@ -676,7 +680,21 @@ export default function Meals({ navigation }: Props) {
                       ) / 10}
                     </Text>
                     <TouchableOpacity onPress={addFood}>
-                      <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Add this meal</Text>
+                      <Text
+                        style={{
+                          borderWidth: 2,
+                          borderColor: "darkgrey",
+                          borderStyle: "solid",
+                          borderRadius: 5,
+                          width: 120,
+                          fontSize: 14,
+                          padding: 2,
+                          textAlign: "center",
+                          color: "#FAF9F6",
+                        }}
+                      >
+                        Add this meal
+                      </Text>
                     </TouchableOpacity>
                   </>
                 ) : null}
