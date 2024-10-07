@@ -27,6 +27,8 @@ import { useIsFocused } from "@react-navigation/native";
 import DeleteMeal from "./DeleteMeal";
 
 export default function Meals({ navigation }: Props) {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [scannedMealType, setScannedMealType] = useState<any | null>(null);
   const [calories, setCalories] = useState("");
   const [protein, setProtein] = useState("");
   const [carbs, setCarbs] = useState("");
@@ -178,17 +180,16 @@ export default function Meals({ navigation }: Props) {
     setFacing((current) => (current === "back" ? "front" : "back"));
   }
 
-  const [scannedMealType, setScannedMealType] = useState<string | null>(null);
-
-
   const openCamera = (mealType: string) => {
-    setScannedMealType(mealType)
+    setScannedMealType(mealType);
+    setModalVisible(true);
     setShowCamera(true);
     setVisibility(false);
   };
 
   const closeScanner = () => {
     setShowCamera(false);
+    setModalVisible(false);
   };
 
   const addFood = () => {
@@ -307,24 +308,45 @@ export default function Meals({ navigation }: Props) {
             </Text>
             <Button title="➡️" onPress={goForward} />
           </View>
-          {showCamera ? (
-            <CameraView facing={facing} onBarcodeScanned={handleBarCodeScanned}>
-              <View style={{ height: 200, width: 200 }}>
-                <View style={{ flex: 1, flexDirection: "row", gap: 170 }}>
-                  <TouchableOpacity onPress={toggleCameraFacing}>
-                    <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
-                      Flip Camera
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={closeScanner}>
-                    <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
-                      Close scanner
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            {showCamera ? (
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flex: 1,
+                }}
+              >
+                <CameraView
+                  facing={facing}
+                  onBarcodeScanned={handleBarCodeScanned}
+                  style={{ width: 250, height: 300 }}
+                >
+                  <View style={{ height: 200, width: 210 }}>
+                    <View style={{ flex: 1, flexDirection: "row", gap: 20 }}>
+                      <TouchableOpacity onPress={toggleCameraFacing}>
+                        <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
+                          Flip Camera
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={closeScanner}>
+                        <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
+                          Close scanner
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </CameraView>
               </View>
-            </CameraView>
-          ) : null}
+            ) : null}
+          </Modal>
           <View style={{ gap: 15 }}>
             <View style={{ gap: 8 }}>
               <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Breakfast</Text>
@@ -337,7 +359,10 @@ export default function Meals({ navigation }: Props) {
                   })
                 }
               ></Button>
-              <Button title="Scan barcode" onPress={()=>openCamera("breakfast")}></Button>
+              <Button
+                title="Scan barcode"
+                onPress={() => openCamera("breakfast")}
+              ></Button>
               {meals
                 .filter((meal: any) => meal.mealTime == "breakfast")
                 .map((filteredMeal) => (
@@ -408,7 +433,10 @@ export default function Meals({ navigation }: Props) {
                   })
                 }
               ></Button>
-              <Button title="Scan barcode" onPress={()=> openCamera("lunch")}></Button>
+              <Button
+                title="Scan barcode"
+                onPress={() => openCamera("lunch")}
+              ></Button>
               {meals
                 .filter((meal: any) => meal.mealTime == "lunch")
                 .map((filteredMeal) => (
@@ -478,7 +506,10 @@ export default function Meals({ navigation }: Props) {
                   })
                 }
               ></Button>
-              <Button title="Scan barcode" onPress={()=>openCamera("snacks")}></Button>
+              <Button
+                title="Scan barcode"
+                onPress={() => openCamera("snacks")}
+              ></Button>
               {meals
                 .filter((meal: any) => meal.mealTime == "snacks")
                 .map((filteredMeal) => (
@@ -548,7 +579,10 @@ export default function Meals({ navigation }: Props) {
                   })
                 }
               ></Button>
-              <Button title="Scan barcode" onPress={()=>openCamera("dinner")}></Button>
+              <Button
+                title="Scan barcode"
+                onPress={() => openCamera("dinner")}
+              ></Button>
               {meals
                 .filter((meal: any) => meal.mealTime == "dinner")
                 .map((filteredMeal) => (
