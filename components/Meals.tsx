@@ -49,7 +49,7 @@ export default function Meals({ navigation }: Props) {
   const [foodName, setFoodName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [mealAdded, setMealAdded] = useState(false);
-
+  const [mealModal, setMealModal] = useState(false);
   const handleBarCodeScanned = (event: {
     type: string;
     data: number;
@@ -71,6 +71,7 @@ export default function Meals({ navigation }: Props) {
       }, 5000);
       getProductInfo(event.data).then((response) => {
         setProductInfo(response);
+        setMealModal(true);
         console.log("new", productInfo);
       });
     }
@@ -185,6 +186,7 @@ export default function Meals({ navigation }: Props) {
     setModalVisible(true);
     setShowCamera(true);
     setVisibility(false);
+    setMealModal(false);
   };
 
   const closeScanner = () => {
@@ -203,7 +205,12 @@ export default function Meals({ navigation }: Props) {
       protein,
       currentDate,
       (userDetails as any).userId
-    ).then(() => setMealAdded(true));
+    ).then(() => {
+      setMealAdded(true)
+      setModalVisible(false)
+      setMealModal(false)
+      setScanned(false)
+    });
   };
 
   return (
@@ -361,7 +368,9 @@ export default function Meals({ navigation }: Props) {
               ></Button>
               <Button
                 title="Scan barcode"
-                onPress={() => openCamera("breakfast")}
+                onPress={() => {
+                  openCamera("breakfast");
+                }}
               ></Button>
               {meals
                 .filter((meal: any) => meal.mealTime == "breakfast")
@@ -682,58 +691,92 @@ export default function Meals({ navigation }: Props) {
                 (acc: any, meal: any) => acc + (Number(meal.protein) || 0),
                 0
               )}
-            g
           </Text>
-          {scannedData && (
-            <View>
-              <>
-                {productInfo ? (
-                  <>
-                    <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
-                      {(productInfo as any)?.product_name}
+          {scannedData && productInfo && scanned && (
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                }}
+              >
+                <View
+                  style={{
+                    width: 300,
+                    padding: 20,
+                    backgroundColor: "#fff",
+                    borderRadius: 10,
+                  }}
+                >
+                  <Text style={{ fontSize: 16 }}>
+                    {(productInfo as any)?.product_name}
+                  </Text>
+                  <Text style={{ fontSize: 16 }}>
+                    Calories: {(productInfo as any).nutriments?.["energy-kcal"]}
+                  </Text>
+                  <Text style={{ fontSize: 16 }}>
+                    Fats:{" "}
+                    {Math.round((productInfo as any)?.nutriments?.fat * 10) /
+                      10}
+                  </Text>
+                  <Text style={{ fontSize: 16 }}>
+                    Carbs:{" "}
+                    {Math.round(
+                      (productInfo as any)?.nutriments?.carbohydrates * 10
+                    ) / 10}
+                  </Text>
+                  <Text style={{ fontSize: 16 }}>
+                    Proteins:{" "}
+                    {Math.round(
+                      (productInfo as any)?.nutriments?.proteins * 10
+                    ) / 10}
+                  </Text>
+                  <TouchableOpacity onPress={addFood}>
+                    <Text
+                      style={{
+                        borderWidth: 2,
+                        borderColor: "darkgrey",
+                        borderStyle: "solid",
+                        borderRadius: 5,
+                        width: 120,
+                        fontSize: 14,
+                        padding: 2,
+                        textAlign: "center",
+                      }}
+                    >
+                      Add this meal
                     </Text>
-                    <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
-                      Calories:{" "}
-                      {(productInfo as any).nutriments?.["energy-kcal"]}
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalVisible(false);
+                      setProductInfo([]);
+                      setMealModal(false);
+                      setScanned(false);
+                    }}
+                    style={{
+                      marginTop: 20,
+                      padding: 10,
+                      backgroundColor: "#2196F3",
+                      borderRadius: 5,
+                    }}
+                  >
+                    <Text style={{ color: "#fff", textAlign: "center" }}>
+                      Close
                     </Text>
-                    <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
-                      Fats:{" "}
-                      {Math.round((productInfo as any)?.nutriments?.fat * 10) /
-                        10}
-                    </Text>
-                    <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
-                      Carbs:{" "}
-                      {Math.round(
-                        (productInfo as any)?.nutriments?.carbohydrates * 10
-                      ) / 10}
-                    </Text>
-                    <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
-                      Proteins:{" "}
-                      {Math.round(
-                        (productInfo as any)?.nutriments?.proteins * 10
-                      ) / 10}
-                    </Text>
-                    <TouchableOpacity onPress={addFood}>
-                      <Text
-                        style={{
-                          borderWidth: 2,
-                          borderColor: "darkgrey",
-                          borderStyle: "solid",
-                          borderRadius: 5,
-                          width: 120,
-                          fontSize: 14,
-                          padding: 2,
-                          textAlign: "center",
-                          color: "#FAF9F6",
-                        }}
-                      >
-                        Add this meal
-                      </Text>
-                    </TouchableOpacity>
-                  </>
-                ) : null}
-              </>
-            </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
           )}
         </View>
       </ScrollView>
