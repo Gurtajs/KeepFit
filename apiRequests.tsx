@@ -136,10 +136,11 @@ export function deleteWorkoutByWorkoutId(userId: number, workoutId: number) {
   })
 }
 
-export function postNutritionalGoals(calories: string, protein: string, carbs: string, fat: string, userId: number) {
+export function postNutritionalGoals(calories: string, protein: string, carbs: string, fat: string, newDate:string, userId: number) {
+  console.log(newDate)
   return axios.post(
     `https://54fc-77-102-154-75.ngrok-free.app/api/nutrigoals`, {
-      calories, protein, carbs, fat, userId
+      calories, protein, carbs, fat, newDate, userId
     }
   ).then((response) =>{
     console.log(response.data)
@@ -185,6 +186,16 @@ export function deleteMealByMealId(userId: number, mealId:number) {
     `https://54fc-77-102-154-75.ngrok-free.app/api/users/${userId}/meals/${mealId}`
   ).then((response) =>{
     console.log("deleted")
+  }).catch((error) => {
+    console.log(error)
+  })
+}
+
+export function getDailyGoals(userId: number) {
+  return axios.get(
+    `https://54fc-77-102-154-75.ngrok-free.app/api/nutrigoals/${userId}`
+  ).then((response) => {
+    return response.data
   }).catch((error) => {
     console.log(error)
   })

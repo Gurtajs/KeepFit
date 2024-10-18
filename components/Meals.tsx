@@ -18,6 +18,7 @@ import {
   getProductInfo,
   postNutritionalGoals,
   postMeal,
+  getDailyGoals,
 } from "@/apiRequests";
 import { UserContext } from "./UserContext";
 import { Calendar } from "react-native-calendars";
@@ -50,6 +51,8 @@ export default function Meals({ navigation }: Props) {
   const [quantity, setQuantity] = useState("");
   const [mealAdded, setMealAdded] = useState(false);
   const [mealModal, setMealModal] = useState(false);
+  const [date, setDate] = useState("")
+
   const handleBarCodeScanned = (event: {
     type: string;
     data: number;
@@ -76,6 +79,11 @@ export default function Meals({ navigation }: Props) {
       });
     }
   };
+
+  
+  getDailyGoals((userDetails as any).userId).then((response)=> setGoals(response))
+
+  
 
   useEffect(() => {
     if (productInfo) {
@@ -105,6 +113,7 @@ export default function Meals({ navigation }: Props) {
       protein,
       carbs,
       fats,
+      newDate,
       (userDetails as any).userId
     ).then((response: any) => {
       setGoals([response]);
@@ -276,6 +285,7 @@ export default function Meals({ navigation }: Props) {
           </TouchableOpacity>
           <Text style={{ color: "#FAF9F6" }}>Your goals for today:</Text>
           {goals.length ? (
+            
             <>
               <Text style={{ color: "#FAF9F6" }}>
                 {(goals as any)[0].calories} Calories
@@ -293,7 +303,9 @@ export default function Meals({ navigation }: Props) {
           ) : null}
           <Calendar
             onDayPress={(day: any) => {
+              console.log(day.dateString)
               setSelected(day.dateString);
+              setDate(day.dateString)
             }}
           />
           <View
@@ -311,7 +323,7 @@ export default function Meals({ navigation }: Props) {
             <Text
               style={{ color: "#FAF9F6", fontSize: 18, marginVertical: 10 }}
             >
-              {formatDate(currentDate)}
+              {date ? date: formatDate(currentDate)}
             </Text>
             <Button title="➡️" onPress={goForward} />
           </View>
@@ -656,7 +668,7 @@ export default function Meals({ navigation }: Props) {
             </View>
           </View>
           <Text style={{ fontSize: 16, color: "#FAF9F6", marginTop: 10 }}>
-            Total of the day:
+            Total nutrients of the day:
           </Text>
           <Text style={{ color: "#FAF9F6" }}>
             Calories:
@@ -692,6 +704,26 @@ export default function Meals({ navigation }: Props) {
                 0
               )}
           </Text>
+          <View>
+            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Surplus or deficit calculation:</Text>
+            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Calories: {Number(calories)-meals.reduce(
+                (acc: any, meal: any) => acc + (Number(meal.calories) || 0),
+                0
+              )}</Text>
+            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Carbs: {Number(carbs)-meals.reduce(
+                (acc: any, meal: any) => acc + (Number(meal.carbs) || 0),
+                0
+              )}</Text>
+            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Fats: {Number(fats)-meals.reduce(
+                (acc: any, meal: any) => acc + (Number(meal.fats) || 0),
+                0
+              )}</Text>
+            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Protein: {Number(protein)-meals.reduce(
+                (acc: any, meal: any) => acc + (Number(meal.protein) || 0),
+                0
+              )}</Text>
+
+          </View>
           {scannedData && productInfo && scanned && (
             <Modal
               animationType="slide"
