@@ -6,6 +6,8 @@ This fitness mobile application allows users to log their workouts, track their 
 - Update their profile information on the profile page
 - View their recorded workouts
 - Delete their workouts
+- View how many calories and protein they need daily to achieve their goals
+- Add their nutritional goals such as calories, carbs, fats and protein
 - Add their meals either by adding them manually or by scanning barcode which fetches nutritional information from a public food api
 - Delete their meals
 
