@@ -228,6 +228,8 @@ export default function Meals({ navigation }: Props) {
         <Header />
         <View style={{ marginLeft: 10, marginBottom: 60 }}>
           <Text style={{ fontSize: 18, color: "#FAF9F6" }}>Meals</Text>
+          <Text>According to your height and weight, to gain muscle mass your daily recommended protein is between {(userDetails as any).weight * 1.2}g and {(userDetails as any).weight * 1.7}g of protein</Text>
+          <Text>The recommended calories are:</Text>
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
             Set your goals:
           </Text>
