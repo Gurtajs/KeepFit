@@ -27,6 +27,7 @@ function Registration({ navigation }: Props) {
   const [permission, requestPermission] = ImagePicker.useCameraPermissions();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
   const [height, setHeight] = useState("");
@@ -39,6 +40,7 @@ function Registration({ navigation }: Props) {
   const [isPressedLbs, setIsPressedLbs] = useState(false);
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState(false);
+  const [genderError, setGenderError] = useState(false)
   const [ageError, setAgeError] = useState(false);
   const handleCreateAccount = () => {
     if (!firstName) {
@@ -46,6 +48,9 @@ function Registration({ navigation }: Props) {
     }
     if (!lastName) {
       setLastNameError(true);
+    }
+    if (!gender) {
+      setGenderError(true)
     }
     if (!age) {
       setAgeError(true);
@@ -71,6 +76,7 @@ function Registration({ navigation }: Props) {
             email,
             firstName,
             lastName,
+            gender,
             age,
             selectedImage,
             height,
@@ -169,6 +175,29 @@ function Registration({ navigation }: Props) {
         />
         {lastNameError ? (
           <Text style={{ color: "red" }}>Last name cannot be blank</Text>
+        ) : null}
+             <Text style={{ fontWeight: "bold", fontSize: 18, color: "#FAF9F6" }}>
+          Gender<Text style={{ color: "red" }}>*</Text>
+        </Text>
+        <TextInput
+          style={{
+            borderRadius: 3,
+            borderColor: "darkgrey",
+            padding: 2,
+            borderStyle: "solid",
+            borderWidth: 2,
+            width: "60%",
+            color: "#FAF9F6",
+          }}
+          placeholder="Enter your gender"
+          placeholderTextColor={"#FAF9F6"}
+          onChangeText={(text) => {
+            setGender(text);
+          }}
+          value={gender}
+        />
+        {genderError ? (
+          <Text style={{ color: "red" }}>Gender cannot be blank</Text>
         ) : null}
         <Text style={{ fontWeight: "bold", fontSize: 18, color: "#FAF9F6" }}>
           Age<Text style={{ color: "red" }}>*</Text>

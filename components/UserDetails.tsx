@@ -24,8 +24,10 @@ type Props = NativeStackScreenProps<RootStackParamList, "UserDetails">;
 
 export default function UserDetails({ navigation }: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
+  console.log(userDetails)
   const [firstName, setFirstName] = useState((userDetails as any).firstName);
   const [lastName, setLastName] = useState((userDetails as any).lastName);
+  const [gender, setGender] = useState((userDetails as any).gender);
   const [age, setAge] = useState((userDetails as any).age);
   const [selectedImage, setSelectedImage] = useState(
     (userDetails as any).profilePicture
@@ -34,6 +36,7 @@ export default function UserDetails({ navigation }: Props) {
   const [weight, setWeight] = useState((userDetails as any).weight);
   const [editedFirstName, setEditedFirstName] = useState(false);
   const [editedLastName, setEditedLastName] = useState(false);
+  const [editedGender, setEditedGender] = useState(false);
   const [editedAge, setEditedAge] = useState(false);
   const [editedHeight, setEditedHeight] = useState(false);
   const [editedWeight, setEditedWeight] = useState(false);
@@ -51,6 +54,14 @@ export default function UserDetails({ navigation }: Props) {
     setEditedLastName(true);
     setTimeout(() => {
       setEditedLastName(false);
+    }, 1200);
+  };
+
+  const editUserGender = () => {
+    patchUser((userDetails as any).gender, "gender", gender);
+    setEditedGender(true);
+    setTimeout(() => {
+      setEditedGender(false);
     }, 1200);
   };
 
@@ -276,7 +287,35 @@ export default function UserDetails({ navigation }: Props) {
                   <Text style={{ color: "#FAF9F6" }}>Last name updated!</Text>
                 ) : null}
               </View>
-
+              <View
+                style={{
+                  borderWidth: 2,
+                  borderColor: "darkgrey",
+                  borderStyle: "solid",
+                  borderRadius: 5,
+                  width: 300,
+                }}
+              >
+                <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
+                  {" "}
+                  Gender{" "}
+                </Text>
+                <TextInput
+                  style={{ paddingLeft: 4, color: "#FAF9F6" }}
+                  onChangeText={(text) => setGender(text)}
+                  value={gender}
+                />
+              </View>
+              <View style={{ flexDirection: "row", gap: 25 }}>
+                <TouchableOpacity onPress={editUserGender}>
+                  <Text style={{ marginBottom: 15, color: "#FAF9F6" }}>
+                    Edit
+                  </Text>
+                </TouchableOpacity>
+                {editedGender ? (
+                  <Text style={{ color: "#FAF9F6" }}>Gender updated!</Text>
+                ) : null}
+              </View>
               <View
                 style={{
                   borderWidth: 2,
