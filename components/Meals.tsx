@@ -51,7 +51,7 @@ export default function Meals({ navigation }: Props) {
   const [quantity, setQuantity] = useState("");
   const [mealAdded, setMealAdded] = useState(false);
   const [mealModal, setMealModal] = useState(false);
-  const [date, setDate] = useState("")
+  const [date, setDate] = useState("");
 
   const handleBarCodeScanned = (event: {
     type: string;
@@ -80,10 +80,9 @@ export default function Meals({ navigation }: Props) {
     }
   };
 
-  
-  getDailyGoals((userDetails as any).userId).then((response)=> setGoals(response))
-
-  
+  getDailyGoals((userDetails as any).userId).then((response) =>
+    setGoals(response)
+  );
 
   useEffect(() => {
     if (productInfo) {
@@ -215,10 +214,10 @@ export default function Meals({ navigation }: Props) {
       currentDate,
       (userDetails as any).userId
     ).then(() => {
-      setMealAdded(true)
-      setModalVisible(false)
-      setMealModal(false)
-      setScanned(false)
+      setMealAdded(true);
+      setModalVisible(false);
+      setMealModal(false);
+      setScanned(false);
     });
   };
 
@@ -228,8 +227,98 @@ export default function Meals({ navigation }: Props) {
         <Header />
         <View style={{ marginLeft: 10, marginBottom: 60 }}>
           <Text style={{ fontSize: 18, color: "#FAF9F6" }}>Meals</Text>
-          <Text style={{ fontSize: 16, color: "#FAF9F6" }}>According to your height and weight, to gain muscle mass your daily recommended protein intake is between {(userDetails as any).weightUnit == 'kg' ? <Text>{(userDetails as any).weight * 1.2}g and {(userDetails as any).weight * 1.7}g of protein </Text> : <Text>{(userDetails as any).weight * 0.5}g and {(userDetails as any).weight * 0.8}g of protein </Text>}</Text>
-          <Text>Your daily recommended maintenance calories are: {(userDetails as any).gender == 'male' && (userDetails as any).weightUnit == 'kg' && (userDetails as any).heightUnit == 'cm' ? <Text>{10*(userDetails as any).weight}+{6.25*(userDetails as any).height}-{5*(userDetails as any).age}</Text>: null}</Text>
+          <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
+            According to your height and weight, to gain muscle mass your daily
+            recommended protein intake is between{" "}
+            {(userDetails as any).weightUnit == "kg" ? (
+              <Text>
+                {(userDetails as any).weight * 1.2}g and{" "}
+                {(userDetails as any).weight * 1.7}g of protein{" "}
+              </Text>
+            ) : (
+              <Text>
+                {(userDetails as any).weight * 0.5}g and{" "}
+                {(userDetails as any).weight * 0.8}g of protein{" "}
+              </Text>
+            )}
+          </Text>
+          <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
+            Your daily recommended maintenance calories given that you do
+            moderate exercise 3-5 times a week are:{" "}
+            {(userDetails as any).gender == "Male" &&
+            (userDetails as any).weightUnit == "kg" &&
+            (userDetails as any).heightUnit == "cm" ? (
+              <Text>
+                {(10 * (userDetails as any).weight +
+                  6.25 * (userDetails as any).height -
+                  (5 * (userDetails as any).age) + 5) *
+                  1.55}
+              </Text>
+            ) : (userDetails as any).gender == "Male" &&
+              (userDetails as any).weightUnit == "lbs" &&
+              (userDetails as any).heightUnit == "ft" ? (
+              <Text>
+                {(10 * ((userDetails as any).weight/2.20462) +
+                  (6.25 * ((userDetails as any).height*30.48)) -
+                  (5 * (userDetails as any).age) + 5) *
+                  1.55}
+              </Text>
+            ) : (userDetails as any).gender == "Male" &&
+              (userDetails as any).weightUnit == "lbs" &&
+              (userDetails as any).heightUnit == "cm" ? (
+              <Text>
+                {(10 * ((userDetails as any).weight/2.20462) +
+                  6.25 * (userDetails as any).height -
+                  (5 * (userDetails as any).age) + 5) *
+                  1.55}
+              </Text>
+            ) : (userDetails as any).gender == "Male" &&
+              (userDetails as any).weightUnit == "kg" &&
+              (userDetails as any).heightUnit == "ft" ? (
+              <Text>
+                {(10 * (userDetails as any).weight +
+                  (6.25 * ((userDetails as any).height*30.48)) -
+                  (5 * (userDetails as any).age) + 5) *
+                  1.55}
+              </Text>
+            ) : (userDetails as any).gender == "Female" &&
+              (userDetails as any).weightUnit == "kg" &&
+              (userDetails as any).heightUnit == "cm" ? (
+              <Text>
+                {(10 * (userDetails as any).weight +
+                  6.25 * (userDetails as any).height -
+                  (5 * (userDetails as any).age) - 161) *
+                  1.55}
+              </Text>
+            ) : (userDetails as any).gender == "Female" &&
+              (userDetails as any).weightUnit == "lbs" &&
+              (userDetails as any).heightUnit == "ft" ? (
+              <Text>
+                {(10 * ((userDetails as any).weight/2.20462) +
+                  (6.25 * ((userDetails as any).height*30.48)) -
+                  (5 * (userDetails as any).age) - 161) *
+                  1.55}
+              </Text>
+            ) : (userDetails as any).gender == "Female" &&
+              (userDetails as any).weightUnit == "lbs" &&
+              (userDetails as any).heightUnit == "cm" ? (
+              <Text>
+                {(10 * ((userDetails as any).weight/2.20462) +
+                  6.25 * (userDetails as any).height -
+                  (5 * (userDetails as any).age) - 161) *
+                  1.55}
+              </Text>
+            ) : (userDetails as any).gender == "Female" &&
+              (userDetails as any).weightUnit == "kg" &&
+              (userDetails as any).heightUnit == "ft" ? (
+              <Text>
+                {(10 * (userDetails as any).weight +
+                  (6.25 * ((userDetails as any).height*30.48)) -
+                  (5 * (userDetails as any).age) - 161) *
+                  1.55}
+              </Text>
+            ) : null}
+          </Text>
           <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
             Set your goals:
           </Text>
@@ -287,7 +376,6 @@ export default function Meals({ navigation }: Props) {
           </TouchableOpacity>
           <Text style={{ color: "#FAF9F6" }}>Your goals for today:</Text>
           {goals.length ? (
-            
             <>
               <Text style={{ color: "#FAF9F6" }}>
                 {(goals as any)[0].calories} Calories
@@ -305,9 +393,9 @@ export default function Meals({ navigation }: Props) {
           ) : null}
           <Calendar
             onDayPress={(day: any) => {
-              console.log(day.dateString)
+              console.log(day.dateString);
               setSelected(day.dateString);
-              setDate(day.dateString)
+              setDate(day.dateString);
             }}
           />
           <View
@@ -325,7 +413,7 @@ export default function Meals({ navigation }: Props) {
             <Text
               style={{ color: "#FAF9F6", fontSize: 18, marginVertical: 10 }}
             >
-              {date ? date: formatDate(currentDate)}
+              {date ? date : formatDate(currentDate)}
             </Text>
             <Button title="➡️" onPress={goForward} />
           </View>
@@ -707,24 +795,41 @@ export default function Meals({ navigation }: Props) {
               )}
           </Text>
           <View>
-            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Surplus or deficit calculation:</Text>
-            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Calories: {Number(calories)-meals.reduce(
-                (acc: any, meal: any) => acc + (Number(meal.calories) || 0),
-                0
-              )}</Text>
-            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Carbs: {Number(carbs)-meals.reduce(
-                (acc: any, meal: any) => acc + (Number(meal.carbs) || 0),
-                0
-              )}</Text>
-            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Fats: {Number(fats)-meals.reduce(
-                (acc: any, meal: any) => acc + (Number(meal.fats) || 0),
-                0
-              )}</Text>
-            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>Protein: {Number(protein)-meals.reduce(
-                (acc: any, meal: any) => acc + (Number(meal.protein) || 0),
-                0
-              )}</Text>
-
+            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
+              Surplus or deficit calculation:
+            </Text>
+            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
+              Calories:{" "}
+              {Number(calories) -
+                meals.reduce(
+                  (acc: any, meal: any) => acc + (Number(meal.calories) || 0),
+                  0
+                )}
+            </Text>
+            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
+              Carbs:{" "}
+              {Number(carbs) -
+                meals.reduce(
+                  (acc: any, meal: any) => acc + (Number(meal.carbs) || 0),
+                  0
+                )}
+            </Text>
+            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
+              Fats:{" "}
+              {Number(fats) -
+                meals.reduce(
+                  (acc: any, meal: any) => acc + (Number(meal.fats) || 0),
+                  0
+                )}
+            </Text>
+            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
+              Protein:{" "}
+              {Number(protein) -
+                meals.reduce(
+                  (acc: any, meal: any) => acc + (Number(meal.protein) || 0),
+                  0
+                )}
+            </Text>
           </View>
           {scannedData && productInfo && scanned && (
             <Modal

@@ -115,7 +115,8 @@ function Registration({ navigation }: Props) {
       alert("You did not select any image.");
     }
   };
-  
+   
+  console.log(gender)
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#121212" }}>
       <View
@@ -196,6 +197,7 @@ function Registration({ navigation }: Props) {
           }}
           value={gender}
         />
+    
         {genderError ? (
           <Text style={{ color: "red" }}>Gender cannot be blank</Text>
         ) : null}
