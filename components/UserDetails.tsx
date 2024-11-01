@@ -133,6 +133,10 @@ export default function UserDetails({ navigation }: Props) {
     }
   };
 
+  const logOut = () => {
+    navigation.navigate("Login")
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>
       <ScrollView>
@@ -411,6 +415,7 @@ export default function UserDetails({ navigation }: Props) {
               </View>
             </View>
           </View>
+          <TouchableOpacity onPress={logOut}><Text>Logout</Text></TouchableOpacity>
         </View>
       </ScrollView>
         <Footer navigation={navigation} />
