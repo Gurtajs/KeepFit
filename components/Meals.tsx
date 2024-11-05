@@ -80,9 +80,12 @@ export default function Meals({ navigation }: Props) {
     }
   };
 
-  getDailyGoals((userDetails as any).userId).then((response) =>
-    setGoals(response)
-  );
+  useEffect(() => {
+    getDailyGoals((userDetails as any).userId).then((response) =>
+      setGoals(response)
+    );
+  }, [])
+  
 
   useEffect(() => {
     if (productInfo) {
@@ -221,6 +224,11 @@ export default function Meals({ navigation }: Props) {
     });
   };
 
+  console.log(((10 * ((userDetails as any).weight/2.20462)) +
+    (6.25 * ((userDetails as any).height.length == 2 ? Number((userDetails as any).height[0]*12*2.54) : (userDetails as any).height.length == 4? (((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]))*2.54) : ((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]+(userDetails as any).height[3]))*2.54)) -
+    (5 * (userDetails as any).age) - 161) *
+    1.55)
+
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>
       <ScrollView>
@@ -259,7 +267,7 @@ export default function Meals({ navigation }: Props) {
               (userDetails as any).heightUnit == "ft" ? (
               <Text>
                 {(10 * ((userDetails as any).weight/2.20462) +
-                  (6.25 * ((userDetails as any).height*30.48)) -
+                  (6.25 * ((userDetails as any).height.length == 2 ? Number((userDetails as any).height[0]*12*2.54) : (userDetails as any).height.length == 4? (((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]))*2.54) : ((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]+(userDetails as any).height[3]))*2.54)) -
                   (5 * (userDetails as any).age) + 5) *
                   1.55}
               </Text>
@@ -277,7 +285,7 @@ export default function Meals({ navigation }: Props) {
               (userDetails as any).heightUnit == "ft" ? (
               <Text>
                 {(10 * (userDetails as any).weight +
-                  (6.25 * ((userDetails as any).height*30.48)) -
+                  (6.25 * ((userDetails as any).height.length == 2 ? Number((userDetails as any).height[0]*12*2.54) : (userDetails as any).height.length == 4? (((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]))*2.54) : ((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]+(userDetails as any).height[3]))*2.54)) -
                   (5 * (userDetails as any).age) + 5) *
                   1.55}
               </Text>
@@ -294,8 +302,8 @@ export default function Meals({ navigation }: Props) {
               (userDetails as any).weightUnit == "lbs" &&
               (userDetails as any).heightUnit == "ft" ? (
               <Text>
-                {(10 * ((userDetails as any).weight/2.20462) +
-                  (6.25 * ((userDetails as any).height*30.48)) -
+                {((10 * ((userDetails as any).weight/2.20462)) +
+                  (6.25 * ((userDetails as any).height.length == 2 ? Number((userDetails as any).height[0]*12*2.54) : (userDetails as any).height.length == 4? (((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]))*2.54) : ((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]+(userDetails as any).height[3]))*2.54)) -
                   (5 * (userDetails as any).age) - 161) *
                   1.55}
               </Text>
@@ -313,7 +321,7 @@ export default function Meals({ navigation }: Props) {
               (userDetails as any).heightUnit == "ft" ? (
               <Text>
                 {(10 * (userDetails as any).weight +
-                  (6.25 * ((userDetails as any).height*30.48)) -
+                  (6.25 * ((userDetails as any).height.length == 2 ? Number((userDetails as any).height[0]*12*2.54) : (userDetails as any).height.length == 4? (((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]))*2.54) : ((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]+(userDetails as any).height[3]))*2.54)) -
                   (5 * (userDetails as any).age) - 161) *
                   1.55}
               </Text>
@@ -393,7 +401,7 @@ export default function Meals({ navigation }: Props) {
           ) : null}
           <Calendar
             onDayPress={(day: any) => {
-              console.log(day.dateString);
+              
               setSelected(day.dateString);
               setDate(day.dateString);
             }}
