@@ -224,10 +224,9 @@ export default function Meals({ navigation }: Props) {
     });
   };
 
-  console.log(((10 * ((userDetails as any).weight/2.20462)) +
-    (6.25 * ((userDetails as any).height.length == 2 ? Number((userDetails as any).height[0]*12*2.54) : (userDetails as any).height.length == 4? (((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]))*2.54) : ((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]+(userDetails as any).height[3]))*2.54)) -
-    (5 * (userDetails as any).age) - 161) *
-    1.55)
+  const calendarDate = date[8] + date[9] + date[7] + date[5] + date[6] + date[4] + date[0] + date[1] + date[2] + date[3]
+  console.log(newDate)
+
 
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>
@@ -401,7 +400,6 @@ export default function Meals({ navigation }: Props) {
           ) : null}
           <Calendar
             onDayPress={(day: any) => {
-              
               setSelected(day.dateString);
               setDate(day.dateString);
             }}
@@ -421,7 +419,7 @@ export default function Meals({ navigation }: Props) {
             <Text
               style={{ color: "#FAF9F6", fontSize: 18, marginVertical: 10 }}
             >
-              {date ? date : formatDate(currentDate)}
+              {date ? calendarDate : formatDate(currentDate)}
             </Text>
             <Button title="➡️" onPress={goForward} />
           </View>
