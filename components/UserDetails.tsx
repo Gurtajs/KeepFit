@@ -413,9 +413,9 @@ export default function UserDetails({ navigation }: Props) {
                   <Text style={{ color: "#FAF9F6" }}>Weight updated!</Text>
                 ) : null}
               </View>
+              <TouchableOpacity onPress={logOut} style={{backgroundColor:"grey", borderRadius: 4, marginBottom:10, padding:8}}><Text style={{ fontSize: 16, color: "#FAF9F6", alignSelf:"center" }}>Logout</Text></TouchableOpacity>
             </View>
           </View>
-          <TouchableOpacity onPress={logOut}><Text>Logout</Text></TouchableOpacity>
         </View>
       </ScrollView>
         <Footer navigation={navigation} />

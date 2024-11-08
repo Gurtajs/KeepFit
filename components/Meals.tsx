@@ -52,7 +52,7 @@ export default function Meals({ navigation }: Props) {
   const [mealAdded, setMealAdded] = useState(false);
   const [mealModal, setMealModal] = useState(false);
   const [date, setDate] = useState("");
-
+  const [calendarOn, setCalendarOn] = useState(false);
   const handleBarCodeScanned = (event: {
     type: string;
     data: number;
@@ -84,8 +84,7 @@ export default function Meals({ navigation }: Props) {
     getDailyGoals((userDetails as any).userId).then((response) =>
       setGoals(response)
     );
-  }, [])
-  
+  }, []);
 
   useEffect(() => {
     if (productInfo) {
@@ -224,9 +223,22 @@ export default function Meals({ navigation }: Props) {
     });
   };
 
-  const calendarDate = date[8] + date[9] + date[7] + date[5] + date[6] + date[4] + date[0] + date[1] + date[2] + date[3]
-  console.log(newDate)
+  const calendarDate =
+    date[8] +
+    date[9] +
+    date[7] +
+    date[5] +
+    date[6] +
+    date[4] +
+    date[0] +
+    date[1] +
+    date[2] +
+    date[3];
+  console.log(newDate);
 
+  const showCalendar = () => {
+    setCalendarOn((prev) => !prev);
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: "#222222" }}>
@@ -258,25 +270,40 @@ export default function Meals({ navigation }: Props) {
               <Text>
                 {(10 * (userDetails as any).weight +
                   6.25 * (userDetails as any).height -
-                  (5 * (userDetails as any).age) + 5) *
+                  5 * (userDetails as any).age +
+                  5) *
                   1.55}
               </Text>
             ) : (userDetails as any).gender == "Male" &&
               (userDetails as any).weightUnit == "lbs" &&
               (userDetails as any).heightUnit == "ft" ? (
               <Text>
-                {(10 * ((userDetails as any).weight/2.20462) +
-                  (6.25 * ((userDetails as any).height.length == 2 ? Number((userDetails as any).height[0]*12*2.54) : (userDetails as any).height.length == 4? (((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]))*2.54) : ((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]+(userDetails as any).height[3]))*2.54)) -
-                  (5 * (userDetails as any).age) + 5) *
+                {(10 * ((userDetails as any).weight / 2.20462) +
+                  6.25 *
+                    ((userDetails as any).height.length == 2
+                      ? Number((userDetails as any).height[0] * 12 * 2.54)
+                      : (userDetails as any).height.length == 4
+                      ? ((userDetails as any).height[0] * 12 +
+                          Number((userDetails as any).height[2])) *
+                        2.54
+                      : ((userDetails as any).height[0] * 12 +
+                          Number(
+                            (userDetails as any).height[2] +
+                              (userDetails as any).height[3]
+                          )) *
+                        2.54) -
+                  5 * (userDetails as any).age +
+                  5) *
                   1.55}
               </Text>
             ) : (userDetails as any).gender == "Male" &&
               (userDetails as any).weightUnit == "lbs" &&
               (userDetails as any).heightUnit == "cm" ? (
               <Text>
-                {(10 * ((userDetails as any).weight/2.20462) +
+                {(10 * ((userDetails as any).weight / 2.20462) +
                   6.25 * (userDetails as any).height -
-                  (5 * (userDetails as any).age) + 5) *
+                  5 * (userDetails as any).age +
+                  5) *
                   1.55}
               </Text>
             ) : (userDetails as any).gender == "Male" &&
@@ -284,8 +311,21 @@ export default function Meals({ navigation }: Props) {
               (userDetails as any).heightUnit == "ft" ? (
               <Text>
                 {(10 * (userDetails as any).weight +
-                  (6.25 * ((userDetails as any).height.length == 2 ? Number((userDetails as any).height[0]*12*2.54) : (userDetails as any).height.length == 4? (((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]))*2.54) : ((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]+(userDetails as any).height[3]))*2.54)) -
-                  (5 * (userDetails as any).age) + 5) *
+                  6.25 *
+                    ((userDetails as any).height.length == 2
+                      ? Number((userDetails as any).height[0] * 12 * 2.54)
+                      : (userDetails as any).height.length == 4
+                      ? ((userDetails as any).height[0] * 12 +
+                          Number((userDetails as any).height[2])) *
+                        2.54
+                      : ((userDetails as any).height[0] * 12 +
+                          Number(
+                            (userDetails as any).height[2] +
+                              (userDetails as any).height[3]
+                          )) *
+                        2.54) -
+                  5 * (userDetails as any).age +
+                  5) *
                   1.55}
               </Text>
             ) : (userDetails as any).gender == "Female" &&
@@ -294,25 +334,40 @@ export default function Meals({ navigation }: Props) {
               <Text>
                 {(10 * (userDetails as any).weight +
                   6.25 * (userDetails as any).height -
-                  (5 * (userDetails as any).age) - 161) *
+                  5 * (userDetails as any).age -
+                  161) *
                   1.55}
               </Text>
             ) : (userDetails as any).gender == "Female" &&
               (userDetails as any).weightUnit == "lbs" &&
               (userDetails as any).heightUnit == "ft" ? (
               <Text>
-                {((10 * ((userDetails as any).weight/2.20462)) +
-                  (6.25 * ((userDetails as any).height.length == 2 ? Number((userDetails as any).height[0]*12*2.54) : (userDetails as any).height.length == 4? (((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]))*2.54) : ((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]+(userDetails as any).height[3]))*2.54)) -
-                  (5 * (userDetails as any).age) - 161) *
+                {(10 * ((userDetails as any).weight / 2.20462) +
+                  6.25 *
+                    ((userDetails as any).height.length == 2
+                      ? Number((userDetails as any).height[0] * 12 * 2.54)
+                      : (userDetails as any).height.length == 4
+                      ? ((userDetails as any).height[0] * 12 +
+                          Number((userDetails as any).height[2])) *
+                        2.54
+                      : ((userDetails as any).height[0] * 12 +
+                          Number(
+                            (userDetails as any).height[2] +
+                              (userDetails as any).height[3]
+                          )) *
+                        2.54) -
+                  5 * (userDetails as any).age -
+                  161) *
                   1.55}
               </Text>
             ) : (userDetails as any).gender == "Female" &&
               (userDetails as any).weightUnit == "lbs" &&
               (userDetails as any).heightUnit == "cm" ? (
               <Text>
-                {(10 * ((userDetails as any).weight/2.20462) +
+                {(10 * ((userDetails as any).weight / 2.20462) +
                   6.25 * (userDetails as any).height -
-                  (5 * (userDetails as any).age) - 161) *
+                  5 * (userDetails as any).age -
+                  161) *
                   1.55}
               </Text>
             ) : (userDetails as any).gender == "Female" &&
@@ -320,8 +375,21 @@ export default function Meals({ navigation }: Props) {
               (userDetails as any).heightUnit == "ft" ? (
               <Text>
                 {(10 * (userDetails as any).weight +
-                  (6.25 * ((userDetails as any).height.length == 2 ? Number((userDetails as any).height[0]*12*2.54) : (userDetails as any).height.length == 4? (((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]))*2.54) : ((userDetails as any).height[0]*12 + Number((userDetails as any).height[2]+(userDetails as any).height[3]))*2.54)) -
-                  (5 * (userDetails as any).age) - 161) *
+                  6.25 *
+                    ((userDetails as any).height.length == 2
+                      ? Number((userDetails as any).height[0] * 12 * 2.54)
+                      : (userDetails as any).height.length == 4
+                      ? ((userDetails as any).height[0] * 12 +
+                          Number((userDetails as any).height[2])) *
+                        2.54
+                      : ((userDetails as any).height[0] * 12 +
+                          Number(
+                            (userDetails as any).height[2] +
+                              (userDetails as any).height[3]
+                          )) *
+                        2.54) -
+                  5 * (userDetails as any).age -
+                  161) *
                   1.55}
               </Text>
             ) : null}
@@ -398,12 +466,19 @@ export default function Meals({ navigation }: Props) {
               </Text>
             </>
           ) : null}
-          <Calendar
-            onDayPress={(day: any) => {
-              setSelected(day.dateString);
-              setDate(day.dateString);
-            }}
-          />
+          <TouchableOpacity onPress={showCalendar}>
+            <Text style={{ fontSize: 16, color: "#FAF9F6" }}>
+              Show Calendar
+            </Text>
+          </TouchableOpacity>
+          {calendarOn ? (
+            <Calendar
+              onDayPress={(day: any) => {
+                setSelected(day.dateString);
+                setDate(day.dateString);
+              }}
+            />
+          ) : null}
           <View
             style={{
               marginTop: 20,
